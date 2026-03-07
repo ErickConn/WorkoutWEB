@@ -1,0 +1,28 @@
+.menu-navegacao{
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-radius: 10px;
+    margin: 4px;
+    box-shadow: 2px 2px 2px rgba(192, 185, 185, 0.886);
+
+    .botao-navegacao{
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-left: 40px;
+    }
+    
+    .atual{
+        color: blue;
+    }
+}
