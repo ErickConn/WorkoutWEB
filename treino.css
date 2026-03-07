@@ -119,6 +119,7 @@ h2{
     font-size: 20px;
     width: 25px;
     height: 25px;
+    text-decoration: none;
 }
 
 .edit:hover{
