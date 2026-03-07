@@ -1,0 +1,207 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+header{
+    width: 100%;
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 10px;
+}
+
+.arrow{
+    cursor: pointer;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.title{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.subtitle{
+    padding: 10px;
+    padding-top: 2px;
+    font-size: medium;
+    color: gray;
+    margin-left: 20px;
+}
+
+.line{
+    height: 1px;
+    width: 98%;
+    margin: 2px;
+    margin-top: 10px;
+    background-color: black;
+}
+
+h3{
+    margin: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.carga{
+    margin: 20px;
+}
+
+.peso{
+    color: gray;
+}
+
+strong{
+    font-size: x-large;
+    padding: 5px;
+    color: black;
+}
+
+.carga-hoje{
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    input{
+        border: 1px solid gray;
+        border-radius: 15px;
+        font-size: x-large;
+        padding: 10px;
+        position: relative;
+        padding-left: 20px;
+        width: 100%;
+        margin: 2px;
+    }
+
+    .input-container{
+        position: relative;
+        width: 80%;
+    }
+
+    a{
+        position: absolute;
+        color: gray;
+        right: 25px;
+        top: 15px;
+    }
+}
+
+.progresso{
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(172, 255, 47, 0.438);
+    border-radius: 20px;
+    color: green;
+        
+    strong{
+        font-size: large;
+    }
+}
+
+.dica{
+    background-color: rgba(0, 200, 255, 0.341);
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid blue;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    position: relative;
+    padding-left: 80px;
+
+    a{
+        position: absolute;
+        left: 25px;
+        top: 20px;
+        font-size: 30px;
+        background-color: blue;
+        border-radius: 10px;
+    }
+
+    p{
+        color: rgb(16, 16, 84);
+    }
+
+    .title{
+        color: blue;
+    }
+}
+
+.series-container{
+    .title{
+        margin-bottom: 0px;
+    }
+
+    .series{
+        margin: 20px;
+        margin-top: 0px;
+
+        p{
+            margin: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .detalhes{
+            position: absolute;
+            right: 0px;
+            color: grey;
+        }
+    }
+}
+
+.substitutos-container{
+    border: 1px solid purple;
+    border-radius: 10px;
+    margin: auto;
+    width: 80%;
+    .substitutos-title{
+        display: flex;
+    }
+    .substituir{
+        font-size: 40px;
+    }
+    .title{
+        font-weight: bold;
+        margin: 0;
+        color: purple;
+    }
+    .subtitle{
+        margin: 0;
+        color: purple;
+    }
+    .exercicios-substitutos{
+        margin: 40px;
+        margin-top: 20px;
+    }
+    .exercicio-substituto{
+        margin: 20px;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    .exercicio-substituto:hover{
+        box-shadow: 2px 2px 2px grey;
+    }
+    p{
+        color: gray;
+    }
+    .exercicio{
+        color: black;
+        font-weight: bold;
+    }
+}
+
