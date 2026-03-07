@@ -31,6 +31,14 @@ header{
     padding: 10px;
 }
 
+.registro{
+    box-shadow: 2px 2px 2px grey;
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+}
+
 .subtitle{
     padding: 10px;
     padding-top: 2px;
@@ -86,7 +94,7 @@ strong{
 
     .input-container{
         position: relative;
-        width: 80%;
+        width: 100%;
     }
 
     a{
@@ -103,6 +111,11 @@ strong{
     background-color: rgba(172, 255, 47, 0.438);
     border-radius: 20px;
     color: green;
+    box-shadow: 2px 2px 2px green;
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
         
     strong{
         font-size: large;
@@ -113,11 +126,12 @@ strong{
     background-color: rgba(0, 200, 255, 0.341);
     padding: 10px;
     border-radius: 15px;
-    border: 1px solid blue;
+    box-shadow: 2px 2px 2px grey;
     width: 80%;
     align-items: center;
     justify-content: center;
     margin: auto;
+    margin-top: 25px;
     position: relative;
     padding-left: 80px;
 
@@ -139,7 +153,15 @@ strong{
     }
 }
 
+.desempenho{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 100%;
+}
+
 .series-container{
+    padding: 20px;
     .title{
         margin-bottom: 0px;
     }
@@ -164,10 +186,12 @@ strong{
 }
 
 .substitutos-container{
-    border: 1px solid purple;
+    box-shadow: 2px 2px 2px purple;
     border-radius: 10px;
     margin: auto;
     width: 80%;
+    padding: 10px;
+
     .substitutos-title{
         display: flex;
     }
