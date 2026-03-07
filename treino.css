@@ -1,3 +1,20 @@
+*{
+    font-family: monospace;
+}
+
+h2{
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+
+.line{
+    width: 98%;
+    background-color: black;
+    height: 1px;
+    margin-bottom: 10px;
+}
+
 .card-treino{
     display: flex;
     position: relative;
@@ -9,6 +26,8 @@
     border-radius: 15px;
     box-shadow: 2px 2px 2px rgba(192, 185, 185, 0.886);
     padding-bottom: 10px;
+    cursor: pointer;
+    margin-bottom: 15px;
 
     .treino-atual{
         font-size: small;
@@ -34,14 +53,26 @@
         margin-top: 15px;
     }
 
-    progress{
+    .progress-bar{
         width: 95%;
-        text-align: center;
-        overflow:hidden;
-        padding: 12px;
-        transition: width 0.5s ease-in-out;
-        
+        background-color: #f3f3f3;
+        border-radius: 5px;
+        overflow: hidden;
+        height: 18px;
     }
+
+    .progress{
+        height: 18px;
+        background-color: blue;
+        width: 0;
+        margin: 0;
+        transition: width 0.4s ease;
+    }
+}
+
+.card-treino:hover{
+    box-shadow: 3px 3px 3px 3px rgba(192, 185, 185, 0.886);
+
 }
 
 .treino-livre{
@@ -56,6 +87,9 @@
         background-color: blueviolet;
         box-shadow: 2px 2px 2px rgba(192, 185, 185, 0.886);
     }
+    button:hover{
+        box-shadow: 3px 3px 3px 3px rgba(192, 185, 185, 0.886);
+    }
 }
 
 .grupo-muscular{
@@ -68,8 +102,27 @@
     background-color: rgb(255, 255, 255);
     padding: 10px;
     margin: 10px;
+    position: relative;
     box-shadow: 2px 2px 2px rgba(192, 185, 185, 0.886);
     border-radius: 15px;
+}
+
+.box-exercicio:hover{
+    box-shadow: 3px 3px 3px 3px rgba(192, 185, 185, 0.886);
+}
+
+.edit{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    color: gray;
+    font-size: 20px;
+    width: 25px;
+    height: 25px;
+}
+
+.edit:hover{
+    color: black;
 }
 
 .container{

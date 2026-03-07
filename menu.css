@@ -1,3 +1,7 @@
+*{
+    font-family: monospace;
+}
+
 .menu-navegacao{
     display: flex;
     position: fixed;
@@ -19,7 +23,15 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        margin-left: 40px;
+        margin-left: 20px;
+        margin-right: 20px;
+        width: 80px;
+        padding: 2px;
+        border-radius: 50%;
+    }
+
+    .botao-navegacao:hover{
+        box-shadow: 1px 1px 1px 1px  rgba(192, 185, 185, 0.886);
     }
     
     .atual{
