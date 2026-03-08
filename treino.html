@@ -11,7 +11,7 @@
     <header>
         <h2>🏆 Champions's Body</h2>
         <div class="line"></div>
-        <div class="card-treino">
+        <div class="card-treino" onclick=redirect()>
             <p><strong>Treino Sugerido </strong><a class="treino-atual-num">2/5</a> </p>
             <a class="treino-atual">Treino A - Peito e Tríceps</a>
             <div class="progress-bar">
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="treino-livre">
-            <button><strong>🌟 Iniciar Treino Livre</strong></button>
+            <button onclick=redirect('livre')><strong>🌟 Iniciar Treino Livre</strong></button>
         </div>
     </header>
     <main>
@@ -61,11 +61,20 @@
                 💪
                 <p class="atual">Treino</p>
             </a>
-            <a class="botao-navegacao">
+            <a class="botao-navegacao" href="./progresso.html">
                 📈
                 <p>Progresso</p>
             </a>
         </div>
     </footer>
 </body>
+<script>
+    function redirect(tipo){
+        if(tipo == "livre"){
+            window.location.href = '/treino-livre.html'
+        }else{
+            window.location.href = 'select-treino.html'
+        }
+    }
+</script>
 </html>
