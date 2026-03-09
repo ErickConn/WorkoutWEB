@@ -90,7 +90,7 @@
     margin: 10px;
     border: 1px solid purple;
     padding: 10px;
-    width: 80%;
+    width: 90%;
     max-width: 550px;
     position: relative;
     border-radius: 10px;
@@ -103,8 +103,8 @@
 
     .quantidade{
         position: absolute;
-        right: 20px;
-        top: 13px;
+        right: 10px;
+        top: 11px;
         font-weight: bold;
     }
 

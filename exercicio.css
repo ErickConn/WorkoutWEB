@@ -208,12 +208,14 @@ strong{
         color: purple;
     }
     .exercicios-substitutos{
-        margin: 40px;
+        margin: 20px;
         margin-top: 20px;
     }
     .exercicio-substituto{
-        margin: 20px;
-        padding: 10px;
+        width: 100%;
+        margin: 10px;
+        margin-left: 0;
+        padding: 20px;
         border-radius: 8px;
         cursor: pointer;
     }
