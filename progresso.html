@@ -2,10 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./progresso.css">
     <link rel="stylesheet" href="menu.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Progresso</title>
 </head>
+<body>  
+    <h1>DashBoard de Progresso</h1>
+    <div>
+        <p>Em breve, você poderá acompanhar seu progresso e conquistas aqui! Fique atento para atualizações emocionantes que ajudarão você a visualizar seu crescimento e alcançar seus objetivos de fitness de maneira mais eficaz.</p>
+    </div>
+</body>
+<body>
+    <!-- Conteúdo do dashboard de progresso -->  
+    <div class="dashboard">
+        <!-- Cards de progresso -->
+        <div class="cards">
+            <!-- Progresso de carga -->
+            <div class="card">
+                <h2>Progresso de Carga 🏋️</h2>
+                <p><strong>Seu valor atual.(Pegar o valor do banco de dados) - Ex.: 6000 </strong></p>
+                <p>Carga Total (Kg)</p>
+                <span> Sua variação de carga c/ unidade: (cargaAtual-cargaAnterior) kg - Ex.: +1500 kg</span>
+            </div>
+            <!-- Progresso de peso -->
+            <div class="card">
+                <h2>Progresso de Peso 📏</h2>
+                <p><strong>Seu valor atual.(Pegar o valor do banco de dados) - Ex.: 81,2 </strong></p>
+                <p>Peso Atual (Kg)</p>
+                <span> Sua variação de peso c/ unidade: (pesoAtual-pesoAnterior) kg - Ex.: +2,7 kg</span>
+            </div>
+            <!-- Progresso de tempo -->
+            <div class="card">
+                <h2>Progresso de Tempo ⏱️</h2>
+                <p><strong>Seu valor atual em semanas.(Pegar o valor do banco de dados) - Ex.: 7 semanas</strong></p>
+                <p>de acompanhamento</p>
+            </div>
+        </div>
+        <div class="report">
+            <h3>Relatório de Evolução 📊</h3>
+            <p>Em breve, você poderá acessar um relatório detalhado do seu progresso, incluindo gráficos e análises para ajudá-lo a entender melhor seu desempenho e identificar áreas de melhoria. Fique atento para essa funcionalidade que tornará sua jornada de fitness ainda mais informada e motivadora!</p>
+            <ul>
+                <li>Força (aumentou/diminuiu) <strong>(porcentagem)%</strong> em X semanas.</li>
+                <li>(Ganho/Perda) de <strong>(pesoAtual-pesoAnterior)kg</strong> de peso corporal.</li>
+                <li>Progressão média de <strong>(M)kg/semana</strong>.</li>
+            </ul>
+        </div>
+    </div>
+</body>
 <body>
     <footer>
         <div class="menu-navegacao">
@@ -15,11 +59,11 @@
             </a>
             <a class="botao-navegacao" href="select-treino.html">
                 💪
-                <p>Treino</p>
+                <p class="atual">Treino</p>
             </a>
             <a class="botao-navegacao">
                 📈
-                <p class="atual">Progresso</p>
+                <p>Progresso</p>
             </a>
         </div>
     </footer>
