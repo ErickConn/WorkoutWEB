@@ -1,22 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selecionar Treino</title>
 </head>
+
 <body>
-    <div class="card-treino" onclick=redirect()>
-        <p><strong>Treino Sugerido </strong><a class="treino-atual-num">2/5</a> </p>
-        <a class="treino-atual">Treino A - Peito e Tríceps</a>
-        <div class="progress-bar">
-            <div class="progress" style="width: 40%"></div>
-        </div>
+    <div>
+        <h2>Escolha seu treino</h2>
+    </div>
+    <div>
+        <p>Ultimo treino</p>
+        <a class="treino-A">Treino A - Peito e Tríceps</a>
+        <div>Realizado ha 2 dias</div>
+    </div>
+    <div class="card-treino1" onclick=redirect()>
+        <p><strong>Recomendado hoje</strong> </p>
+        <a class="treino-B">Treino B - Costa e Biceps</a>
+        <div>6 exercicios - 50 min</div> 
+    </div>
+    <div class="card-treino2" onclick=redirect()>
+        <a class="treino-A">Treino A - Peito e Tríceps</a>
+        <div>5 exercicios - 45 min</div> <div>ultima vez <p>2 dias atras</p></div>
+    </div>
+    <div class="card-treino3" onclick=redirect()>
+        <a class="treino-C">Treino C - Pernas e Ombros</a>
+        <div>6 exercicios - 60 min</div> <div>ultima vez <p>4 dias atras</p></div>
+    </div>
+    <div>ou</div>
+    <div><span> PERSONALIZE</span>
+     <P>Treino livre</P>
+        <span> Monte sua propria sessao </span>
+        <p>Escolha os exercicios que voce quer fazer hoje</p>
     </div>
 </body>
 <script>
-    function redirect(){
+    function redirect() {
         window.location.href = './treino.html'
     }
 </script>
+
 </html>
