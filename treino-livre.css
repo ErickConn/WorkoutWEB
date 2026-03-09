@@ -1,0 +1,191 @@
+*{
+    font-family: monospace;
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    .title{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+        .arrow{
+            text-decoration: none;
+            font-size: 20px;
+        }
+        h2{
+            margin: 10px;
+        }
+    }
+    .subtitle{
+        margin: 0;
+        margin-bottom: 5px;
+        margin-left: 10px;
+    }
+    .line{
+        width: 100%;
+        height: 1px;
+        background-color: black;
+        margin-bottom: 10px;
+    }
+}
+
+.buscar{
+    position: relative;
+    .lupa{
+        position: absolute;
+        font-size: 20px;
+        top: 4px;
+        left: 2px;
+    }
+    input{
+        padding: 10px;
+        border-radius: 10px;
+        border: 0;
+        width: 80%;
+        box-shadow: 2px 2px 2px rgb(120, 119, 119);
+        padding-left: 35px;
+    }
+}
+
+.filtro{
+    width: 100%;
+    margin: 10px;
+    margin-top: 15px;
+    h3{
+        font-size: 15px;
+    }
+    .filtros{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        width: 80%;
+        max-width: 550px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 2px rgb(120, 119, 119);
+        flex-wrap: wrap;
+    }
+    .tipo{
+        cursor: pointer;
+        padding: 8px;
+        font-weight: bold;
+        border-radius: 10px;
+    }
+    .tipo:hover{
+        background-color: rgb(206, 206, 206);
+    }
+    .selecionado{
+        background-color: blue;
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+    }
+}
+
+.selecionados{
+    margin: 10px;
+    border: 1px solid purple;
+    padding: 10px;
+    width: 80%;
+    max-width: 550px;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 2px 1px 1px purple;
+    color: purple;
+
+    .exercicios-selecionados{
+        width: 100%;
+    }
+
+    .quantidade{
+        position: absolute;
+        right: 20px;
+        top: 13px;
+        font-weight: bold;
+    }
+
+    .title{
+        font-weight: bold;
+    }
+
+    .exercicio{
+        margin: 10px;
+        width: 100%;
+        margin-bottom: 25px;
+        margin-top: 25px;
+        position: relative;
+        .titulo{
+            font-weight: bold;
+        }
+        .x{
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            cursor: pointer;
+        }
+    }
+
+    .exercicio:hover{
+        color: rgb(76, 4, 76);
+    }
+}
+
+.exercicios{
+    margin: 20px;
+    width: 80%;
+    .descricao{
+        display: flex;
+        flex-direction: column;
+    }
+    .card-exercicio{
+        border: 1px solid rgb(222, 222, 222);
+        margin-bottom: 10px;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        gap: 10px;
+        position: relative;
+
+        .adicionar{
+            cursor: pointer;
+            border: 1px solid rgb(231, 231, 231);
+            height: 20px;
+            padding: 2px;
+            border-radius: 20px;
+        }
+
+        .arrow{
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            cursor: pointer;
+        }
+
+        .arrow:hover{
+            font-weight: bold;
+        }
+    }
+}
+
+.iniciar{
+    width: 100%;
+    button{
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        color: white;
+        font-weight: bold;
+        background-color: purple;
+        cursor: pointer;
+    }
+    button:hover{
+        color: gray;
+    }
+}
+
+
