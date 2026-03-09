@@ -173,19 +173,27 @@
 }
 
 .iniciar{
-    width: 100%;
-    button{
-        width: 100%;
-        padding: 10px;
-        border-radius: 10px;
+    width: 95%;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    background-color: rgb(170, 11, 162);
+    cursor: pointer;
+    a{
+        text-decoration: none;
         color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-weight: bold;
-        background-color: purple;
-        cursor: pointer;
+        font-size: 15px;
+        margin: auto;
     }
-    button:hover{
-        color: gray;
-    }
+}
+
+.iniciar:hover{
+    box-shadow: 2px 2px 2px gray;
 }
 
 
