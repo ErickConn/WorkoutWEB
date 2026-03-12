@@ -7,48 +7,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Progresso</title>
 </head>
-<body>  
-    <h1>DashBoard de Progresso</h1>
-    <div>
-        <p>Em breve, você poderá acompanhar seu progresso e conquistas aqui! Fique atento para atualizações emocionantes que ajudarão você a visualizar seu crescimento e alcançar seus objetivos de fitness de maneira mais eficaz.</p>
-    </div>
-</body>
-<body>
-    <!-- Conteúdo do dashboard de progresso -->  
-    <div class="dashboard">
-        <!-- Cards de progresso -->
-        <div class="cards">
-            <!-- Progresso de carga -->
-            <div class="card">
-                <h2>Progresso de Carga 🏋️</h2>
-                <p><strong>Seu valor atual.(Pegar o valor do banco de dados) - Ex.: 6000 </strong></p>
-                <p>Carga Total (Kg)</p>
-                <span> Sua variação de carga c/ unidade: (cargaAtual-cargaAnterior) kg - Ex.: +1500 kg</span>
+<body> 
+    <header class="app-header">
+        <h2>DashBoard de Progresso</h2>
+    </header> 
+    <main>
+        <!-- Conteúdo do dashboard de progresso -->  
+        <div class="dashboard">
+            <!-- Cards de progresso -->
+            <div class="cards">
+                <!-- Progresso de carga -->
+                <div class="card">
+                    <div class="emoji">🏋️</div>
+                    <!-- Valor atual do usuário. Pegar o valor do banco de dados -->
+                    <h2><strong> 6000 </strong></h2>
+                    <p>Carga Total (Kg)</p>
+                    <!-- Variação do valor atual do usuário c/ unidade: cargaAtual - cargaAnterior. Pegar o valor do banco de dados. -->
+                    <div class="status-ganho"> +1500 kg</div>
+                </div>
+                <!-- Progresso de peso -->
+                <div class="card">
+                    <div class="emoji">⚖️</div>
+                    <!-- Valor atual do usuário. Pegar o valor do banco de dados -->
+                    <h2><strong> 81,2 </strong></h2>
+                    <p>Peso Atual (Kg)</p>
+                    <!-- Variação do valor atual do usuário c/ unidade: pesoAtual - pesoAnterior. Pegar o valor do banco de dados. -->
+                    <div class="status-perda">-2,7 kg</div>
+                </div>
+                <!-- Progresso de tempo -->
+                <div class="card">
+                    <div class="emoji">📅</div>
+                    <!-- Valor atual do usuário em semanas. Pegar o valor do banco de dados -->
+                    <h2><strong> 7 semanas</strong></h2>
+                    <p>de acompanhamento</p>
+                </div>
             </div>
-            <!-- Progresso de peso -->
-            <div class="card">
-                <h2>Progresso de Peso 📏</h2>
-                <p><strong>Seu valor atual.(Pegar o valor do banco de dados) - Ex.: 81,2 </strong></p>
-                <p>Peso Atual (Kg)</p>
-                <span> Sua variação de peso c/ unidade: (pesoAtual-pesoAnterior) kg - Ex.: +2,7 kg</span>
+            <!-- Botões dos Gráficos -->
+            <div class="chart-buttons">
+                <button id="btnForca" class="active">Evolução da Força</button>
+                <button id="btnPeso">Evolução do Peso</button>
             </div>
-            <!-- Progresso de tempo -->
-            <div class="card">
-                <h2>Progresso de Tempo ⏱️</h2>
-                <p><strong>Seu valor atual em semanas.(Pegar o valor do banco de dados) - Ex.: 7 semanas</strong></p>
-                <p>de acompanhamento</p>
+            <!-- Espaço para Gráficos de evolução -->
+            <div class="chart-area">
+                <canvas id="mainChart"></canvas>
+            </div>
+            <!-- Relatório -->
+            <div class="report">
+                <h3>📊 Relatório de Evolução</h3>
+                <ul>
+                    <li>Força (aumentou/diminuiu) <strong>(porcentagem)%</strong> em X semanas.</li>
+                    <li>(Ganho/Perda) de <strong>(pesoAtual-pesoAnterior)kg</strong> de peso corporal.</li>
+                    <li>Progressão média de <strong>(M)kg/semana</strong>.</li>
+                </ul>
             </div>
         </div>
-        <div class="report">
-            <h3>Relatório de Evolução 📊</h3>
-            <p>Em breve, você poderá acessar um relatório detalhado do seu progresso, incluindo gráficos e análises para ajudá-lo a entender melhor seu desempenho e identificar áreas de melhoria. Fique atento para essa funcionalidade que tornará sua jornada de fitness ainda mais informada e motivadora!</p>
-            <ul>
-                <li>Força (aumentou/diminuiu) <strong>(porcentagem)%</strong> em X semanas.</li>
-                <li>(Ganho/Perda) de <strong>(pesoAtual-pesoAnterior)kg</strong> de peso corporal.</li>
-                <li>Progressão média de <strong>(M)kg/semana</strong>.</li>
-            </ul>
-        </div>
-    </div>
+    </main>
     <!-- Rodapé -->
     <footer>
         <div class="menu-navegacao">
@@ -66,5 +79,7 @@
             </a>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="progresso.js"></script>
 </body>
 </html>
