@@ -1,0 +1,12 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f8f9fc;
+    color: #333;
+    margin-bottom: 80px;
+    overflow-y: scroll;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+}

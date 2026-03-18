@@ -1,10 +1,7 @@
 import React from "react"
 import { 
   Link,
-  Routes,
-  Route
  } from 'react-router-dom';
- import Home from "../pages/Home";
  import './menu.css';
 
 export default function Menu(){
@@ -30,9 +27,6 @@ export default function Menu(){
                     </Link>
                 </div>
             </div>
-            <Routes>
-                <Route path="/" element={<Home />}></Route>
-            </Routes>
         </footer>
     )  
 }
