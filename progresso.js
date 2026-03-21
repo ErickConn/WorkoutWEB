@@ -1,6 +1,15 @@
 const ctx = document.getElementById('mainChart');
 let chart; // variável para guardar o gráfico atual
 
+// Dados de relatorio 
+const cargaInicial = 4500; // Carga total da primeira insersao do usuario
+const cargaAtual = 6000; // Carga total da ultima insersao do usuario
+const pesoInicial = 83.9; // Peso da primeira insersao do usuario
+const pesoAtual = 81.2; // Peso da ultima insersao do usuario
+const semanas = 7; // Numero de semanas entre a primeira e a ultima insersao
+//const forcaPercentual = 25; // exemplo de cálculo
+//const progressaoMedia = 214; // exemplo de cálculo
+
 // Dados dos gráficos
 const dadosForca = {
   type: 'bar',
@@ -39,11 +48,56 @@ const dadosPeso = {
   }
 };
 
-// Função para renderizar gráfico
+// Funções da tela de progresso
+
+// 1. Função para renderizar gráfico
 function renderChart(config) {
   if (chart) chart.destroy(); // remove gráfico anterior
   chart = new Chart(ctx, config);
 }
+
+// 2. Função para atualizar o relatório de progresso
+function atualizarRelatorio() {
+  // Lógica para calcular e atualizar os valores do relatório
+  const relatorio = document.querySelector(".report ul");
+  relatorio.innerHTML = ""; // limpa conteúdo anterior
+
+  //Linha 1 : Força 
+  const forcaPercentual = ((cargaAtual - cargaInicial) / cargaInicial * 100).toFixed(1); 
+  const liForca = document.createElement('li');
+  if (forcaPercentual > 0) {
+    liForca.innerHTML = `Força aumentou <strong>${forcaPercentual}%</strong> em ${semanas} semanas.`;
+  } else if (forcaPercentual < 0) {
+    liForca.innerHTML = `Força diminuiu <strong>${Math.abs(forcaPercentual)}%</strong> em ${semanas} semanas.`;
+  } else {
+    liForca.innerHTML = `Força permaneceu estável em ${semanas} semanas.`;
+  }
+  relatorio.appendChild(liForca);
+
+  //Linha 2 : Peso
+  const diferencaPeso = (pesoAtual - pesoInicial).toFixed(1);
+  const liPeso = document.createElement('li');
+  if (diferencaPeso > 0) {
+    liPeso.innerHTML = `Ganho de <strong>${diferencaPeso}kg</strong> de peso corporal.`;
+  } else if (diferencaPeso < 0) {
+    liPeso.innerHTML = `Perda de <strong>${Math.abs(diferencaPeso)}kg</strong> de peso corporal.`;
+  } else {
+    liPeso.innerHTML = `Peso corporal estável.`;
+  }
+  relatorio.appendChild(liPeso);
+
+  // Linha 3: Progressão média semanal
+  const progressaoMedia = ((cargaAtual - cargaInicial) / semanas).toFixed(1);
+  const liProgressao = document.createElement('li');
+  liProgressao.innerHTML = `Progressão média de <strong>${progressaoMedia}kg/semana</strong>.`;
+  relatorio.appendChild(liProgressao);
+
+}
+
+// Inicializa relatório
+document.addEventListener('DOMContentLoaded', () => {
+  atualizarRelatorio();
+});
 
 // Inicializa com gráfico de força
 renderChart(dadosForca);
