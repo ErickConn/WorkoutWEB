@@ -1,23 +1,7 @@
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f5f6f8;
-            margin: 0;
-            padding: 24px 16px;
-            
-            /* Lógica de centralização absoluta */
-            display: flex;
-            justify-content: center; /* Centraliza horizontalmente */
-            align-items: center;     /* Centraliza verticalmente */
-            min-height: 100vh;       /* Ocupa 100% da altura da tela */
-        }
 
         .page-wrapper {
             width: 100%;
-            max-width: 900px; 
+            padding-bottom: 120px;
         }
 
         .layout-grid {

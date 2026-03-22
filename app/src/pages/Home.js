@@ -1,5 +1,5 @@
 import React from "react"
-import './home.css'
+import styles from './home.css'
 import Header from "../components/Header"
 
 export default function Home(){
