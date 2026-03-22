@@ -1,0 +1,101 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import "./select-treino.css";
+
+export default function Selecttreino() {
+    return (<><div class="app-container">
+        <header class="app-header">
+            🏆 <h1>Champion's Body</h1>
+        </header>
+
+        <main class="content">
+            <div class="banner-blue">
+                <h2>Escolha Seu Treino</h2>
+                <p>Selecione o treino de hoje</p>
+            </div>
+
+            <div class="card card-last-workout">
+                <div class="card-header-small">
+                    <span>📅 ÚLTIMO TREINO</span>
+                </div>
+                <h3>Treino A - Peito e Tríceps</h3>
+                <p class="text-muted">Realizado há 2 dias</p>
+            </div>
+
+            <div class="section-title">PLANO ABC - SUGESTÃO</div>
+
+            <div class="card card-green" onclick="redirect()">
+                <div class="card-header-flex">
+                    <span class="badge-title">✨ RECOMENDADO HOJE</span>
+                    <span class="arrow">➔</span>
+                </div>
+                <h2>Treino B</h2>
+                <p class="subtitle">Costas e Bíceps</p>
+                <div class="card-stats">
+                    <span>6 exercícios</span> • <span>~50 min</span>
+                </div>
+            </div>
+
+            <div class="card card-white" onclick="redirect()">
+                <div class="card-body-flex">
+                    <div class="icon-letter bg-blue-light">A</div>
+                    <div class="workout-info">
+                        <h3>Treino A</h3>
+                        <p class="text-muted">Peito e Tríceps</p>
+                    </div>
+                    <div class="workout-time">
+                        <span class="time-label">Última vez</span>
+                        <p><strong>2 dias atrás</strong></p>
+                    </div>
+                </div>
+                <div class="card-footer-stats">
+                    <span>5 exercícios</span> • <span>~45 min</span>
+                </div>
+            </div>
+
+            <div class="card card-white" onclick="redirect()">
+                <div class="card-body-flex">
+                    <div class="icon-letter bg-purple-light">C</div>
+                    <div class="workout-info">
+                        <h3>Treino C</h3>
+                        <p class="text-muted">Pernas e Ombros</p>
+                    </div>
+                    <div class="workout-time">
+                        <span class="time-label">Última vez</span>
+                        <p><strong>4 dias atrás</strong></p>
+                    </div>
+                </div>
+                <div class="card-footer-stats">
+                    <span>7 exercícios</span> • <span>~60 min</span>
+                </div>
+            </div>
+
+            <div class="divider">
+                <span>OU</span>
+            </div>
+
+            <div class="card card-purple" onclick="redirect()">
+                <div class="card-header-flex">
+                    <span class="badge-title">✨ PERSONALIZE</span>
+                    <span class="arrow">➔</span>
+                </div>
+                <h2>Treino Livre</h2>
+                <p class="subtitle">Monte sua própria sessão</p>
+                <p class="small-text">Escolha os exercícios que você quer fazer hoje</p>
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active">
+                <span class="nav-icon">💪</span>
+                <span>Treino</span>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">📈</span>
+                <span>Progresso</span>
+            </div>
+        </nav>
+    </div></>
+    )
+
+}

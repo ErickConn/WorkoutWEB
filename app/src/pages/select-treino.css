@@ -1,0 +1,341 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f8f9fc;
+    color: #333;
+}
+
+
+.app-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.app-header {
+    background-color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #eaeaea;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.app-header h1 {
+    font-size: 1.2rem;
+    color: #1a1a1a;
+}
+
+
+.content {
+    padding: 20px;
+    flex-grow: 1;
+    padding-bottom: 80px;
+}
+
+
+.card {
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+.banner-blue {
+    background: linear-gradient(135deg, #6b52ff, #4e32fa);
+    color: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.banner-blue h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.banner-blue p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+
+.card-last-workout {
+    background-color: #fff;
+    border-left: 5px solid #4e32fa;
+    padding: 16px 20px;
+}
+
+.card-header-small {
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.card-last-workout h3 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.text-muted {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+
+.section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #555;
+    margin: 32px 0 16px 4px;
+}
+
+
+.card-green {
+    background-color: #00b853;
+    color: white;
+}
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.badge-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.card-green h2,
+.card-purple h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.card-stats {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+
+.card-white {
+    background-color: #fff;
+    padding: 20px;
+}
+
+.card-body-flex {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.icon-letter {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.bg-blue-light {
+    background-color: #e6f0ff;
+    color: #4e32fa;
+}
+
+.bg-purple-light {
+    background-color: #f3e6ff;
+    color: #a832fa;
+}
+
+.workout-info {
+    flex: 1;
+}
+
+.workout-info h3 {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.workout-time {
+    text-align: right;
+}
+
+.time-label {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.workout-time p {
+    font-size: 0.9rem;
+    color: #333;
+    margin-top: 2px;
+}
+
+.card-footer-stats {
+    font-size: 0.85rem;
+    color: #666;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 16px;
+    margin-top: 8px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 32px 0;
+    color: #888;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.divider span {
+    padding: 0 15px;
+}
+
+.card-purple {
+    background-color: #a832fa;
+    color: white;
+}
+
+.card-purple .small-text {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    border-top: 1px solid #eaeaea;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: #888;
+    cursor: pointer;
+}
+
+.nav-item.active {
+    color: #4e32fa;
+}
+
+.nav-item.active .nav-icon {
+    background-color: #eef2ff;
+    padding: 4px 20px;
+    border-radius: 20px;
+}
+
+.nav-icon {
+    font-size: 1.3rem;
+}
+
+
+@media (min-width: 768px) {
+
+    .content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding-bottom: 40px;
+    }
+
+
+    .banner-blue,
+    .card-last-workout,
+    .section-title,
+    .card-green,
+    .divider,
+    .card-purple {
+        grid-column: 1 / -1;
+        margin-bottom: 0;
+    }
+
+
+    .card-white {
+        margin-bottom: 0;
+    }
+
+
+    .bottom-nav {
+        position: static;
+        border-top: none;
+        box-shadow: none;
+        background-color: transparent;
+        width: auto;
+        gap: 30px;
+        padding: 0;
+    }
+
+    .nav-item {
+        flex-direction: row;
+        font-size: 1rem;
+    }
+
+
+    .app-header {
+        justify-content: space-between;
+        padding: 16px 40px;
+    }
+
+
+    .app-header::after {
+        content: "";
+    }
+}
