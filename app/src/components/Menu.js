@@ -2,26 +2,26 @@ import React from "react"
 import { 
   Link,
  } from 'react-router-dom';
- import './menu.css';
+ import styles from './menu.module.css';
 
 export default function Menu(){
     return(
         <footer>
-            <div class="menu-navegacao">
-                <div class="botao-navegacao">
-                    <Link to="/" class="link">
+            <div className={styles['menu-navegacao']}>
+                <div className={styles['botao-navegacao']}>
+                    <Link to="/" className={styles.link}>
                         🧎‍♀️
                         <p>Perfil</p>
                     </Link>
                 </div>
-                <div class="botao-navegacao">
-                    <Link to="/treino" class="link">
+                <div className={styles['botao-navegacao']}>
+                    <Link to="/treino" className={styles.link}>
                         💪
-                        <p class="atual">Treino</p>
+                        <p className={styles.atual}>Treino</p>
                     </Link>
                 </div>
-                <div class="botao-navegacao">
-                    <Link to="/progresso" class="link">
+                <div className={styles['botao-navegacao']}>
+                    <Link to="/progresso" className={styles.link}>
                         📈
                         <p>Progresso</p>
                     </Link>

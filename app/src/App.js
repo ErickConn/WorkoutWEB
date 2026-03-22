@@ -1,4 +1,4 @@
-import './App.css';
+import styles from './App.module.css';
 import { 
   Routes,
   Route

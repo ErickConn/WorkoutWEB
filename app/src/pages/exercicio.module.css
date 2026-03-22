@@ -1,8 +1,8 @@
-header{
+.exercicioRoot header{
     width: 100%;
 }
 
-.app-header {
+.exercicioRoot .app-header {
     background-color: #fff;
     padding: 16px 20px;
     margin: 0;
@@ -45,11 +45,11 @@ header{
     margin-left: 20px;
 }
 
-main{
+.exercicioRoot main{
     margin-top: 20px;
 }
 
-h3{
+.exercicioRoot h3{
     margin: 10px;
     margin-bottom: 20px;
     margin-top: 20px;
@@ -59,11 +59,11 @@ h3{
     margin: 20px;
 }
 
-.peso{
+.exercicioRoot .peso{
     color: gray;
 }
 
-strong{
+.exercicioRoot strong{
     font-size: x-large;
     padding: 5px;
     color: black;
@@ -226,4 +226,3 @@ strong{
         font-weight: bold;
     }
 }
-
