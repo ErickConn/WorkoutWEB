@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import TreinoLivre from './pages/treino-livre';
 import Header from './components/Header';
 import Progresso from './pages/Progresso';
+import Exercicio from './pages/exercicio';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/treino" element={<Treino />}></Route>
         <Route path='/treino-livre' element={<TreinoLivre></TreinoLivre>}></Route>
         <Route path="/progresso" element={<Progresso></Progresso>}></Route>
+        <Route path='/exercicio' element={<Exercicio></Exercicio>}></Route>
       </Routes>
       <Menu></Menu>
     </>

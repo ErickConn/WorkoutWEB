@@ -1,6 +1,5 @@
 import React from "react"
 import './treino.css';
-import Header from "../components/Header";
 import { Link } from "react-router-dom";
 
 export default function Treino(){
@@ -27,7 +26,7 @@ export default function Treino(){
                 <span className="nome-exercicio">Supino Reto</span>
                 <p><span className="num-series">4x </span>
                 <span className="num-repeticoes">8-10</span> . <span className="carga">60kg</span></p>
-                <span className="edit">></span>
+                <Link to='/exercicio' className="edit">></Link>
             </div>
         </div>
         <div className="grupo-muscular">
@@ -39,7 +38,7 @@ export default function Treino(){
                 </label>                
                 <span className="nome-exercicio">Tríceps Corda</span>
                 <p><span className="num-series">4x </span><span className="num-repeticoes">8-10</span> . <span className="carga">60kg</span></p>
-                <span className="edit">></span>
+                <Link to='exercicio' className="edit">></Link>
             </div>
         </div>
     </div>
