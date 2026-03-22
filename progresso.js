@@ -1,3 +1,5 @@
+import React from "react"
+
 const ctx = document.getElementById('mainChart');
 let chart; // variável para guardar o gráfico atual
 
@@ -7,8 +9,6 @@ const cargaAtual = 6000; // Carga total da ultima insersao do usuario
 const pesoInicial = 83.9; // Peso da primeira insersao do usuario
 const pesoAtual = 81.2; // Peso da ultima insersao do usuario
 const semanas = 7; // Numero de semanas entre a primeira e a ultima insersao
-//const forcaPercentual = 25; // exemplo de cálculo
-//const progressaoMedia = 214; // exemplo de cálculo
 
 // Dados dos gráficos
 const dadosForca = {
@@ -53,7 +53,7 @@ const dadosPeso = {
 // 1. Função para renderizar gráfico
 function renderChart(config) {
   if (chart) chart.destroy(); // remove gráfico anterior
-  chart = new Chart(ctx, config);
+  // chart = new Chart(ctx, config);
 }
 
 // 2. Função para atualizar o relatório de progresso
@@ -89,7 +89,7 @@ function atualizarRelatorio() {
   // Linha 3: Progressão média semanal
   const progressaoMedia = ((cargaAtual - cargaInicial) / semanas).toFixed(1);
   const liProgressao = document.createElement('li');
-  liProgressao.innerHTML = `Progressão média de <strong>${progressaoMedia}kg/semana</strong>.`;
+  liProgressao.innerHTML = `Progressão média <strong>${progressaoMedia}kg/semana</strong>.`;
   relatorio.appendChild(liProgressao);
 
 }
