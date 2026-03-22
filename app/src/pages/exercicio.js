@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './exercicio.module.css'
+import { Link } from "react-router-dom";
 
 export default function Exercicio(){
     return(
@@ -7,7 +8,7 @@ export default function Exercicio(){
         <header className={styles['app-header']}>
         <div>
             <div className={styles.title}>
-                <a className={styles.arrow} href="./treino.html">⬅️</a>
+                <Link to ="/treino" className={styles.arrow}>⬅️</Link>
                 <h2>Supino Reto</h2>
             </div>
             <p className={styles.subtitle}><a className={styles['num-series']}>3x </a><a> 12-15 </a>reps</p>

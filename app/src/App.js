@@ -21,6 +21,7 @@ function App() {
         <Route path='/treino-livre' element={<TreinoLivre></TreinoLivre>}></Route>
         <Route path="/progresso" element={<Progresso></Progresso>}></Route>
         <Route path='/exercicio' element={<Exercicio></Exercicio>}></Route>
+        <Route path='/treino-livre' element={<TreinoLivre></TreinoLivre>}></Route>
       </Routes>
       <Menu></Menu>
     </>

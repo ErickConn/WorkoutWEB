@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 export default function Treino(){
     return(
         <main>
-            <div className={styles['card-treino']}>
+            <Link to='/treino-livre' className={styles['card-treino']}>
                 <p><strong>Treino Sugerido </strong><span className={styles['treino-atual-num']}>2/5</span> </p>
                 <span className={styles['treino-atual']}>Treino A - Peito e Tríceps</span>
                 <div className={styles['progress-bar']}>
                     <div className={styles.progress}></div>
                 </div>
-            </div>
+            </Link>
             <div className={styles['treino-livre']}>
                 <Link to="/treino-livre"><strong>🌟 Iniciar Treino Livre</strong></Link>
             </div>
@@ -38,7 +38,7 @@ export default function Treino(){
                         </label>
                         <span className={styles['nome-exercicio']}>Tríceps Corda</span>
                         <p><span className={styles['num-series']}>4x </span><span className={styles['num-repeticoes']}>8-10</span> . <span className={styles.carga}>60kg</span></p>
-                        <Link to='exercicio' className={styles.edit}>&gt;</Link>
+                        <Link to='/exercicio' className={styles.edit}>&gt;</Link>
                     </div>
                 </div>
             </div>
