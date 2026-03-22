@@ -7,8 +7,12 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    height: 100px;
+    padding: 10px 0;
+    background-color: #f8f9fc;
     border-radius: 10px;
     box-shadow: 2px 2px 2px rgba(192, 185, 185, 0.886);
+    z-index: 1000;
 
     .link{
         text-decoration: none;
