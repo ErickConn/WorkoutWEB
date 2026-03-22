@@ -6,101 +6,101 @@ export default function TreinoLivre(){
     return(
         <>
             <main>
-        <div class="buscar">
-            <a class="lupa">🔍</a>
+        <div className="buscar">
+            <a className="lupa">🔍</a>
             <input type="text" placeholder="Buscar exercícios..."/>
         </div>
-        <div class="filtro">
+        <div className="filtro">
             <h3>FILTRAR POR GRUPO MUSCULAR</h3>
-            <div class="filtros">
-                <div class="selecionado tipo">
+            <div className="filtros">
+                <div className="selecionado tipo">
                     <a>Todos</a>
                 </div>
-                <div class="tipo">
+                <div className="tipo">
                     <a>Peito</a>
                 </div>
-                <div class="tipo">
+                <div className="tipo">
                     <a>Costas</a>
                 </div>
-                <div class="tipo">
+                <div className="tipo">
                     <a>Pernas</a>
                 </div>
-                <div class="tipo">
+                <div className="tipo">
                     <a>Ombros</a>
                 </div>
-                <div class="tipo">
+                <div className="tipo">
                     <a>Bíceps</a>
                 </div>
-                <div class="tipo">
+                <div className="tipo">
                     <a>Tríceps</a>
                 </div>
             </div>
         </div>
-        <div class="selecionados">
-            <a class="title">🗓️ Exercícios Selecionados</a>
-            <a class="quantidade">3 exercícios</a>
-            <div class="exercicios-selecionados">
-                <div class="exercicio">
-                    <p class="titulo">Supino Reto</p>
+        <div className="selecionados">
+            <a className="title">🗓️ Exercícios Selecionados</a>
+            <a className="quantidade">3 exercícios</a>
+            <div className="exercicios-selecionados">
+                <div className="exercicio">
+                    <p className="titulo">Supino Reto</p>
                     <a>Peito . 4x 8-10</a>
-                    <a class="x">❌</a>
+                    <a className="x">❌</a>
                 </div>
-                <div class="exercicio">
-                    <p class="titulo">Remada Curvada</p>
+                <div className="exercicio">
+                    <p className="titulo">Remada Curvada</p>
                     <a>Costas . 4x 8-10</a>
-                    <a class="x">❌</a>
+                    <a className="x">❌</a>
                 </div>
-                <div class="exercicio">
-                    <p class="titulo">Agachamento Livre</p>
+                <div className="exercicio">
+                    <p className="titulo">Agachamento Livre</p>
                     <a>Pernas . 4x 8-10</a>
-                    <a class="x">❌</a>
+                    <a className="x">❌</a>
                 </div>
             </div>
         </div>
-        <div class="exercicios">
+        <div className="exercicios">
             <h3>BIBLIOTECA DE EXERCÍCIOS</h3>
-            <div class="card-exercicio">
-                <a class="adicionar">➕</a>
-                <div class="descricao">
+            <div className="card-exercicio">
+                <a className="adicionar">➕</a>
+                <div className="descricao">
                     <a>Crucifixo com Halteres</a>
                     <p>Peito . Halteres</p>
                 </div>
-                <a class="arrow">></a>
+                <a className="arrow">></a>
             </div>
-           <div class="card-exercicio">
-                <a class="adicionar">➕</a>
-                <div class="descricao">
+           <div className="card-exercicio">
+                <a className="adicionar">➕</a>
+                <div className="descricao">
                     <a>Crucifixo com Halteres</a>
                     <p>Peito . Halteres</p>
                 </div>
-                <a class="arrow">></a>
+                <a className="arrow">></a>
             </div>
-            <div class="card-exercicio">
-                <a class="adicionar">➕</a>
-                <div class="descricao">
+            <div className="card-exercicio">
+                <a className="adicionar">➕</a>
+                <div className="descricao">
                     <a>Crucifixo com Halteres</a>
                     <p>Peito . Halteres</p>
                 </div>
-                <a class="arrow">></a>
+                <a className="arrow">></a>
             </div>
-           <div class="card-exercicio">
-                <a class="adicionar">➕</a>
-                <div class="descricao">
+           <div className="card-exercicio">
+                <a className="adicionar">➕</a>
+                <div className="descricao">
                     <a>Crucifixo com Halteres</a>
                     <p>Peito . Halteres</p>
                 </div>
-                <a class="arrow">></a>
+                <a className="arrow">></a>
             </div>
-            <div class="card-exercicio">
-                <a class="adicionar">➕</a>
-                <div class="descricao">
+            <div className="card-exercicio">
+                <a className="adicionar">➕</a>
+                <div className="descricao">
                     <a>Crucifixo com Halteres</a>
                     <p>Peito . Halteres</p>
                 </div>
-                <a class="arrow">></a>
+                <a className="arrow">></a>
             </div>
         </div>
-        <div class="iniciar">
+        <div className="iniciar">
             <Link to="/treino">▶️ Iniciar Treino (3 exercícios)</Link>
         </div>
     </main>
