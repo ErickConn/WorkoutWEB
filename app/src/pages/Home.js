@@ -1,33 +1,33 @@
 import React from "react"
-import styles from './home.css'
+import './home.css'
 import Header from "../components/Header"
 
 export default function Home(){
     return(
     <>
-    <div class="page-wrapper">
+    <div className="page-wrapper">
         <h1>Dados Biometricos</h1>
         
-        <div class="layout-grid">
+        <div className="layout-grid">
             
-            <div class="form-section">
+            <div className="form-section">
                 <form>
-                    <div class="input-group">
+                    <div className="input-group">
                         <label>Peso atual(kg)</label>
                         <input type="number" step="0.1" min="0" value="78.5"/>
                     </div>
                     
-                    <div class="input-group">
+                    <div className="input-group">
                         <label>Altura (cm)</label>
                         <input type="number" step="0.1" min="0" value="175"/>
                     </div>
                     
-                    <div class="input-group">
+                    <div className="input-group">
                         <label>Idade</label>
                         <input type="number" min="0" value="28"/>
                     </div>
                     
-                    <div class="input-group">
+                    <div className="input-group">
                         <label>Nivel de Atividade</label>
                         <select>
                             <option selected>Moderado (3-5x/semana)</option>
@@ -36,7 +36,7 @@ export default function Home(){
                         </select>
                     </div>
                     
-                    <div class="input-group">
+                    <div className="input-group">
                         <label>Objetivo</label>
                         <select>
                             <option selected>Hipertrofia</option>
@@ -47,35 +47,35 @@ export default function Home(){
                 </form>
             </div>
 
-            <div class="result-section">
-                <div class="meta-card">
+            <div className="result-section">
+                <div className="meta-card">
                     <h2>Meta calculada</h2>
                     
-                    <div class="meta-row">
+                    <div className="meta-row">
                         <span>TMB (Taxa metabolica basal)</span>
                         <span>1,845 kcal</span>
                     </div>
-                    <div class="meta-row">
+                    <div className="meta-row">
                         <span>Meta Diária</span>
                         <span>2,300 kcal</span>
                     </div>
 
-                    <div class="divider"></div>
+                    <div className="divider"></div>
                     
-                    <span class="macros-header">Distribuição de Macros</span>
+                    <span className="macros-header">Distribuição de Macros</span>
                     
-                    <div class="macros-grid">
-                        <div class="macro-col">
-                            <span class="macro-val">175g</span>
-                            <span class="macro-lbl">Proteínas</span>
+                    <div className="macros-grid">
+                        <div className="macro-col">
+                            <span className="macro-val">175g</span>
+                            <span className="macro-lbl">Proteínas</span>
                         </div>
-                        <div class="macro-col">
-                            <span class="macro-val">233g</span>
-                            <span class="macro-lbl">Carboidratos</span>
+                        <div className="macro-col">
+                            <span className="macro-val">233g</span>
+                            <span className="macro-lbl">Carboidratos</span>
                         </div>
-                        <div class="macro-col">
-                            <span class="macro-val">66g</span>
-                            <span class="macro-lbl">Gorduras</span>
+                        <div className="macro-col">
+                            <span className="macro-val">66g</span>
+                            <span className="macro-lbl">Gorduras</span>
                         </div>
                     </div>
                 </div>
