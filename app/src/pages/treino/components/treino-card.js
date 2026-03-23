@@ -16,6 +16,7 @@ export default function TreinoCard( { treino } ){
                     {grupo.exercicios.map((exercicio, indexE) => (
                         <ExerciseCard 
                             key={indexE}
+                            id={exercicio.id}
                             nome={exercicio.nome}
                             numSeries={exercicio.numSeries}
                             numReps={exercicio.numReps}

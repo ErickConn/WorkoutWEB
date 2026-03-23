@@ -10,15 +10,15 @@ export default function Treino(){
             {
                 nome: "Peito",
                 exercicios: [
-                    { nome: "Supino Reto", numSeries: "4x", numReps: "8-10", carga: "80kg" },
-                    { nome: "Supino Inclinado", numSeries: "4x", numReps: "8-10", carga: "80kg" }
+                    { id: 0, nome: "Supino Reto", numSeries: "4x", numReps: "8-10", carga: "80kg" },
+                    { id: 1, nome: "Supino Inclinado", numSeries: "4x", numReps: "8-10", carga: "80kg" }
                 ]
             },
             {
                 nome: "Tríceps",
                 exercicios: [
-                    { nome: "Tríceps Corda", numSeries: "4x", numReps: "8-10", carga: "80kg" },
-                    { nome: "Tríceps Barra", numSeries: "4x", numReps: "8-10", carga: "80kg" }
+                    { id: 2, nome: "Tríceps Corda", numSeries: "4x", numReps: "8-10", carga: "80kg" },
+                    { id: 3, nome: "Tríceps Barra", numSeries: "4x", numReps: "8-10", carga: "80kg" }
                 ]
             }
         ]

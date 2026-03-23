@@ -13,7 +13,7 @@ export default function ExerciseCard( properties ){
                 <span className={styles['nome-exercicio']}>{properties.nome}</span>
                 <p><span className={styles['num-series']}>{properties.numSeries} </span>
                 <span className={styles['num-repeticoes']}>{properties.numReps}</span> . <span className={styles.carga}>{properties.carga}</span></p>
-                <Link to={`/exercicio/${properties.nome}`} className={styles.edit}>&gt;</Link>
+                <Link to={`/exercicio/${properties.id}`} className={styles.edit}>&gt;</Link>
             </div>
         </>
     )
