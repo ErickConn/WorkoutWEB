@@ -21,7 +21,7 @@ function App() {
         <Route path="/treino" element={<Treino />}></Route>
         <Route path='/treino-livre' element={<TreinoLivre/>}></Route>
         <Route path="/progresso" element={<Progresso/>}></Route>
-        <Route path='/exercicio' element={<Exercicio/>}></Route>
+        <Route path='/exercicio/:nome' element={<Exercicio/>}></Route>
         <Route path='/select-treino' element={<Selecttreino/>}></Route>
       </Routes>
       <Menu></Menu>

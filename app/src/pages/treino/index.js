@@ -1,13 +1,34 @@
 import React from "react"
 import styles from './treino.module.css';
 import { Link } from "react-router-dom";
+import TreinoCard from "./components/treino-card";
 
 export default function Treino(){
+    const treino = {
+        nome: "Treino A - Peito e Tríceps",
+        gruposMusculares: [
+            {
+                nome: "Peito",
+                exercicios: [
+                    { nome: "Supino Reto", numSeries: "4x", numReps: "8-10", carga: "80kg" },
+                    { nome: "Supino Inclinado", numSeries: "4x", numReps: "8-10", carga: "80kg" }
+                ]
+            },
+            {
+                nome: "Tríceps",
+                exercicios: [
+                    { nome: "Tríceps Corda", numSeries: "4x", numReps: "8-10", carga: "80kg" },
+                    { nome: "Tríceps Barra", numSeries: "4x", numReps: "8-10", carga: "80kg" }
+                ]
+            }
+        ]
+    };
+
     return(
         <main>
             <Link to='/select-treino' className={styles['card-treino']}>
                 <p><strong>Treino Sugerido </strong><span className={styles['treino-atual-num']}>2/5</span> </p>
-                <span className={styles['treino-atual']}>Treino A - Peito e Tríceps</span>
+                <span className={styles['treino-atual']}>{treino.nome}</span>
                 <div className={styles['progress-bar']}>
                     <div className={styles.progress}></div>
                 </div>
@@ -15,33 +36,7 @@ export default function Treino(){
             <div className={styles['treino-livre']}>
                 <Link to="/treino-livre"><strong>🌟 Iniciar Treino Livre</strong></Link>
             </div>
-            <div id="treino">
-                <div className={styles['grupo-muscular']}>
-                    <h3>Peito</h3>
-                    <div className={styles['box-exercicio']}>
-                        <label className={styles.container}>
-                            <input type="checkbox" className={styles.check}/>
-                            <span className={styles.checkmark}></span>
-                        </label>
-                        <span className={styles['nome-exercicio']}>Supino Reto</span>
-                        <p><span className={styles['num-series']}>4x </span>
-                        <span className={styles['num-repeticoes']}>8-10</span> . <span className={styles.carga}>60kg</span></p>
-                        <Link to='/exercicio' className={styles.edit}>&gt;</Link>
-                    </div>
-                </div>
-                <div className={styles['grupo-muscular']}>
-                    <h3>Tríceps</h3>
-                    <div className={styles['box-exercicio']}>
-                        <label className={styles.container}>
-                            <input type="checkbox" className={styles.check}/>
-                            <span className={styles.checkmark}></span>
-                        </label>
-                        <span className={styles['nome-exercicio']}>Tríceps Corda</span>
-                        <p><span className={styles['num-series']}>4x </span><span className={styles['num-repeticoes']}>8-10</span> . <span className={styles.carga}>60kg</span></p>
-                        <Link to='/exercicio' className={styles.edit}>&gt;</Link>
-                    </div>
-                </div>
-            </div>
+            <TreinoCard treino={treino}></TreinoCard>
         </main>
     )
 }

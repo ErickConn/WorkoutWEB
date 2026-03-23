@@ -1,8 +1,10 @@
 import React from "react";
 import styles from './exercicio.module.css'
 import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 export default function Exercicio(){
+    const { nome } = useParams();
     return(
         <div className={styles.exercicioRoot}>
         <header className={styles['app-header']}>
