@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import styles from './index.module.css';
+import './index.css';
 import  {BrowserRouter as Router} from 'react-router-dom';
 import App from './App.js';
-import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,5 +13,3 @@ root.render(
   </React.StrictMode>
 );
 
-
-reportWebVitals();

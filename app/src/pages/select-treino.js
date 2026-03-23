@@ -4,10 +4,6 @@ import styles from "./select-treino.module.css";
 export default function Selecttreino() {
     return (
         <div className={styles['app-container']}>
-            <header className={styles['app-header']}>
-                🏆 <h1>Champion's Body</h1>
-            </header>
-
             <main className={styles.content}>
                 <div className={styles['banner-blue']}>
                     <h2>Escolha Seu Treino</h2>
@@ -82,17 +78,6 @@ export default function Selecttreino() {
                     <p className={styles['small-text']}>Escolha os exercícios que você quer fazer hoje</p>
                 </div>
             </main>
-
-            <nav className={styles['bottom-nav']}>
-                <div className={`${styles['nav-item']} ${styles.active}`}>
-                    <span className={styles['nav-icon']}>💪</span>
-                    <span>Treino</span>
-                </div>
-                <div className={styles['nav-item']}>
-                    <span className={styles['nav-icon']}>📈</span>
-                    <span>Progresso</span>
-                </div>
-            </nav>
         </div>
     );
 }

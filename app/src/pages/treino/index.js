@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function Treino(){
     return(
         <main>
-            <Link to='/treino-livre' className={styles['card-treino']}>
+            <Link to='/select-treino' className={styles['card-treino']}>
                 <p><strong>Treino Sugerido </strong><span className={styles['treino-atual-num']}>2/5</span> </p>
                 <span className={styles['treino-atual']}>Treino A - Peito e Tríceps</span>
                 <div className={styles['progress-bar']}>

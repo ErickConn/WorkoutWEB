@@ -43,7 +43,6 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-bottom: 90px; /* para evitar sobreposição do footer */
 }
 
 .cards {
