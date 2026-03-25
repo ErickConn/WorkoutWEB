@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-//import { Line, Bar } from "react-chartjs-2";
 import styles from "./progresso.module.css";
+import ProgressChart from "./components/progress-chart";
+import ProgressReport from "./components/progress-report";
+import ProgressCard from "./components/progress-card";
 
 export default function Progresso() {
   // Simulação de dados vindos do backend
@@ -21,19 +23,6 @@ export default function Progresso() {
   // Carga inicial e atual a partir do array
   const cargaInicial = dadosUsuario.cargas[0];
   const cargaAtual = dadosUsuario.cargas[dadosUsuario.cargas.length-1];
-
-  // Dados do gráfico
-  const chartData = {
-    //type: tipoGrafico === "forca" ? 'bar' : 'line',
-    labels: dadosUsuario.datas,
-    datasets: [{
-      label: tipoGrafico === "forca" ? "Carga Total (kg)" : "Peso Corporal (kg)",
-      data: tipoGrafico === "forca" ? dadosUsuario.cargas : dadosUsuario.pesos,
-      borderColor: tipoGrafico === "forca" ? "#ffc100":"#3399ff",
-      backgroundColor: tipoGrafico === "forca" ? "rgba(255, 204, 0, 0.82)":"rgba(51, 153, 255, 0.64)",
-      fill: true
-    }]
-  };
   
   // Função para adicionar nova entrada
   function adicionarEntrada(novaCarga, novoPeso, novaData) {
@@ -60,23 +49,9 @@ export default function Progresso() {
         <div className={styles.dashboard}>
             {/* Cards */}
             <div className={styles.cards}>
-                <div className={styles.card}>
-                    <div className={styles.emoji}>🏋️</div>
-                    <h2><strong> {cargaAtual} </strong></h2>
-                    <p>Carga Total (Kg)</p>
-                    <div className={variacaoForca < 0 ? styles['status-perda'] : styles['status-ganho']}> {variacaoForca} kg</div>
-                </div>
-                <div className={styles.card}>
-                    <div className={styles.emoji}>⚖️</div>
-                    <h2><strong> {pesoAtual} </strong></h2>
-                    <p>Peso Atual (Kg)</p>
-                    <div className={variacaoPeso < 0 ? styles['status-perda'] : styles['status-ganho']}>{variacaoPeso}</div>
-                </div>
-                <div className={styles.card}>
-                    <div className={styles.emoji}>📅</div>
-                    <h2><strong> {dadosUsuario.semanas} semanas</strong></h2>
-                    <p>de acompanhamento</p>
-                </div>
+                <ProgressCard emoji="🏋️" valor={cargaAtual} titulo="Carga Total (Kg)" variacao={variacaoForca} descricao="kg"></ProgressCard >
+                <ProgressCard emoji="⚖️" valor={pesoAtual} titulo="Peso Atual (Kg)" variacao={variacaoPeso} descricao="kg"></ProgressCard >
+                <ProgressCard emoji="📅" valor={`${dadosUsuario.semanas} semanas`} titulo="de acompanhamento"></ProgressCard > 
             </div>
             {/* Botões */}
             <div className={styles['chart-buttons']}>
@@ -94,19 +69,9 @@ export default function Progresso() {
               </button>
             </div>
             {/* Gráfico */}
-            <div className={styles['chart-area']}>
-                {/*{tipoGrafico === "forca" ? <Bar data={chartData} /> : <Line data={chartData} />}*/}
-                <canvas id="mainChart"></canvas>
-            </div>
+            <ProgressChart tipo={tipoGrafico} datas={dadosUsuario.datas} cargas={dadosUsuario.cargas} pesos={dadosUsuario.pesos}></ProgressChart>
             {/* Relatório */}
-            <div className={styles.report}>
-                <h3>📊 Relatório de Evolução</h3>
-                <ul>
-                    <li> Força {variacaoForca > 0 ? "aumentou" : "diminuiu"} {variacaoPercForca}% em {dadosUsuario.semanas} semanas.</li>
-                    <li>{variacaoPeso > 0 ? "Ganho" : "Perda"} de {Math.abs(variacaoPeso)}kg de peso corporal.</li>
-                    <li>Progressão média de {mediaProgresso}kg/semana.</li>
-                </ul>
-            </div>
+            <ProgressReport cargaInicial={cargaInicial} cargaAtual={cargaAtual} pesoInicial={pesoInicial} pesoAtual={pesoAtual} semanas={dadosUsuario.semanas}></ProgressReport>
             <div>
               <p> O botão abaixo serve apenas para fins de demonstração e não estará no produto final:</p>
             </div>
