@@ -1,6 +1,6 @@
 import React from "react"
 import { 
-  Link,
+  NavLink,
  } from 'react-router-dom';
  import styles from './menu.module.css';
 
@@ -9,22 +9,22 @@ export default function Menu(){
         <footer>
             <div className={styles['menu-navegacao']}>
                 <div className={styles['botao-navegacao']}>
-                    <Link to="/" className={styles.link}>
+                    <NavLink to="/" className={({isActive})=> isActive? styles.atual :styles.link}>
                         🧎‍♀️
                         <p>Perfil</p>
-                    </Link>
+                    </NavLink>
                 </div>
                 <div className={styles['botao-navegacao']}>
-                    <Link to="/treino" className={styles.link}>
+                    <NavLink to="/treino" className={({isActive})=> isActive? styles.atual :styles.link}>
                         💪
-                        <p className={styles.atual}>Treino</p>
-                    </Link>
+                        <p>Treino</p>
+                    </NavLink>
                 </div>
                 <div className={styles['botao-navegacao']}>
-                    <Link to="/progresso" className={styles.link}>
+                    <NavLink to="/progresso"className={({isActive})=> isActive? styles.atual :styles.link}>
                         📈
                         <p>Progresso</p>
-                    </Link>
+                    </NavLink>
                 </div>
             </div>
         </footer>

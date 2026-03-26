@@ -15,9 +15,9 @@
     z-index: 1000;
 }
 
-.menu-navegacao .link{
+.menu-navegacao .link,
+.menu-navegacao .atual{
         text-decoration: none;
-        color: grey;
         display: flex;
         cursor: pointer;
         align-items: center;
@@ -28,6 +28,10 @@
         width: 80px;
         padding: 2px;
         border-radius: 50%;
+}
+
+.menu-navegacao .link {
+        color: grey;
 }
 
 .menu-navegacao .link:hover{
