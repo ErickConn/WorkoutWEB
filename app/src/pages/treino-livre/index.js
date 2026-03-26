@@ -5,6 +5,23 @@ import { Link } from "react-router-dom";
 export default function TreinoLivre(){
     return(
         <>
+          <div>
+            <div>←</div>
+            <div>
+              <h1>Criar Treino Personalizado</h1>
+              <p>Monte sua sessão</p>
+            </div>
+          </div>
+            <div>
+              <label>
+                Nome do Treino
+              </label>
+              <input
+                type="text"
+                value="Meu Treino Upper Body"
+                readOnly
+              />
+            </div>
             <main>
                 <div className={styles.buscar}>
                     <a className={styles.lupa}>🔍</a>
@@ -89,7 +106,7 @@ export default function TreinoLivre(){
                     </div>
                 </div>
                 <div className={styles.iniciar}>
-                    <Link to="/treino">▶️ Iniciar Treino (3 exercícios)</Link>
+                    <Link to="/treino"><span>💾</span>  Salvar Treino Personalizado (3 exercícios)</Link>
                 </div>
             </main>
         </>

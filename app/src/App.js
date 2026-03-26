@@ -11,6 +11,7 @@ import TreinoLivre from './pages/treino-livre';
 import Exercicio from './pages/exercicio';
 import Progresso from './pages/progresso/Progresso';
 import Selecttreino from './pages/select-treino';
+import BibliotecaTreino from './pages/biblioteca-treino';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/progresso" element={<Progresso/>}></Route>
         <Route path='/exercicio/:id' element={<Exercicio/>}></Route>
         <Route path='/select-treino' element={<Selecttreino/>}></Route>
+        <Route path='/biblioteca-treino' element={<BibliotecaTreino></BibliotecaTreino>}></Route>
       </Routes>
       <Menu></Menu>
     </>

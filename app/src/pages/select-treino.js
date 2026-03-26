@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from "./select-treino.module.css";
+import { Link } from 'react-router-dom';
 
 export default function Selecttreino() {
     return (
@@ -67,8 +68,8 @@ export default function Selecttreino() {
                 <div className={styles.divider}>
                     <span>OU</span>
                 </div>
-
-                <div className={`${styles.card} ${styles['card-purple']}`} onClick={() => {}}>
+                
+                <Link to='/treino-livre' className={`${styles.card} ${styles['card-purple']}`} onClick={() => {}}>
                     <div className={styles['card-header-flex']}>
                         <span className={styles['badge-title']}>✨ PERSONALIZE</span>
                         <span className={styles.arrow}>➔</span>
@@ -76,7 +77,7 @@ export default function Selecttreino() {
                     <h2>Treino Livre</h2>
                     <p className={styles.subtitle}>Monte sua própria sessão</p>
                     <p className={styles['small-text']}>Escolha os exercícios que você quer fazer hoje</p>
-                </div>
+                </Link>
             </main>
         </div>
     );

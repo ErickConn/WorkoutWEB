@@ -33,9 +33,17 @@ export default function Treino(){
                     <div className={styles.progress}></div>
                 </div>
             </Link>
-            <div className={styles['treino-livre']}>
-                <Link to="/treino-livre"><strong>🌟 Iniciar Treino Livre</strong></Link>
-            </div>
+             <Link to='/biblioteca-treino'>
+              <div>
+                <div>
+                  <p>Plano Ativo</p>
+                  <p>ABC Intermediário</p>
+                </div>
+                <div>
+                  Modelo
+                </div>
+              </div>
+            </Link>
             <TreinoCard treino={treino}></TreinoCard>
         </main>
     )
