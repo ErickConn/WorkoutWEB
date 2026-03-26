@@ -1,0 +1,46 @@
+.cardHeader{
+    display: flex;
+    background-color: white;
+    padding: 20px;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.arrow{
+    font-size: x-large ;
+    cursor: pointer;
+}
+
+.textHeader{
+    gap: 0;
+}
+
+.title{
+    margin: 5px;
+    font-size: 1.2rem;
+}
+
+.subtitle{
+    margin: 5px;
+    color: gray;
+    font-size: 0.9rem;
+}
+
+.buscar{
+    margin-top: 20px;
+    position: relative;
+    .lupa{
+        position: absolute;
+        font-size: 20px;
+        top: 4px;
+        left: 2px;
+    }
+    input{
+        padding: 10px;
+        border-radius: 10px;
+        border: 0;
+        width: 80%;
+        box-shadow: 2px 2px 2px rgb(120, 119, 119);
+        padding-left: 35px;
+    }
+}

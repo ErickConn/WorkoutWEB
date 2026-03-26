@@ -1,8 +1,10 @@
 import React from "react";
 import styles from './treino-livre.module.css';
 import { Link } from "react-router-dom";
+import Filtro from "../../components/Filtro";
 
 export default function TreinoLivre(){
+    const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
     return(
         <>
           <div>
@@ -27,20 +29,7 @@ export default function TreinoLivre(){
                     <a className={styles.lupa}>🔍</a>
                     <input type="text" placeholder="Buscar exercícios..."/>
                 </div>
-                <div className={styles.filtro}>
-                    <h3>FILTRAR POR GRUPO MUSCULAR</h3>
-                    <div className={styles.filtros}>
-                        <div className={`${styles.selecionado} ${styles.tipo}`}>
-                            <a>Todos</a>
-                        </div>
-                        <div className={styles.tipo}><a>Peito</a></div>
-                        <div className={styles.tipo}><a>Costas</a></div>
-                        <div className={styles.tipo}><a>Pernas</a></div>
-                        <div className={styles.tipo}><a>Ombros</a></div>
-                        <div className={styles.tipo}><a>Bíceps</a></div>
-                        <div className={styles.tipo}><a>Tríceps</a></div>
-                    </div>
-                </div>
+                <Filtro filtros={filtros}></Filtro>
                 <div className={styles.selecionados}>
                     <a className={styles.title}>🗓️ Exercícios Selecionados</a>
                     <a className={styles.quantidade}>3 exercícios</a>

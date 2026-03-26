@@ -1,54 +1,28 @@
 import React from "react";
+import styles from './index.module.css';
+import Filtro from "../../components/Filtro";
 
 export default function BibliotecaTreino(){
+    const filtros = ["Todos", "Iniciante", "Intermediário", "Avançado"];
     return(
         <>
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden print:rounded-none print:shadow-none page-break">
-
-          {/* Header */}
-          <div className="bg-white border-b border-gray-100 px-4 py-4 flex items-center gap-3">
-            <div className="text-2xl">←</div>
-            <div className="flex-1">
-              <h1 className="text-xl font-bold text-gray-900">Biblioteca de Treinos</h1>
-              <p className="text-sm text-gray-600">Planos modelo disponíveis</p>
+        <div>
+          <div className={styles.cardHeader}>
+            <div className={styles.arrow}>←</div>
+            <div className={styles.textHeader}>
+              <h1 className={styles.title}>Biblioteca de Treinos</h1>
+              <p className={styles.subtitle}>Planos modelo disponíveis</p>
             </div>
           </div>
 
-          {/* Content */}
-          <div className="p-4 space-y-4 bg-gray-50 min-h-[800px]">
-            {/* Barra de Busca */}
-            <div className="bg-white rounded-xl shadow-sm p-3">
-              <div className="flex items-center gap-3">
-                <span className="text-xl">🔍</span>
-                <input
-                  type="text"
-                  placeholder="Buscar treinos..."
-                  className="flex-1 bg-transparent text-sm outline-none"
-                  readOnly
-                />
-              </div>
+          <div>
+            <div className={styles.buscar}>
+                <a className={styles.lupa}>🔍</a>
+                <input type="text" placeholder="Buscar exercícios..."/>
             </div>
 
-            {/* Filtros */}
-            <div className="bg-white rounded-xl shadow-sm p-4">
-              <h3 className="text-xs font-bold text-gray-700 uppercase tracking-wide mb-3">
-                Filtrar por Nível
-              </h3>
-              <div className="flex gap-2">
-                <button className="px-4 py-2 rounded-lg text-sm font-bold bg-blue-500 text-white shadow-sm">
-                  Todos
-                </button>
-                <button className="px-4 py-2 rounded-lg text-sm font-bold bg-gray-100 text-gray-700">
-                  Iniciante
-                </button>
-                <button className="px-4 py-2 rounded-lg text-sm font-bold bg-gray-100 text-gray-700">
-                  Intermediário
-                </button>
-                <button className="px-4 py-2 rounded-lg text-sm font-bold bg-gray-100 text-gray-700">
-                  Avançado
-                </button>
-              </div>
-            </div>
+            <Filtro filtros={filtros}></Filtro>
+
 
             {/* Recomendado para Você */}
             <div className="space-y-2">
