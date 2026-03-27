@@ -211,6 +211,7 @@
 .card-purple {
     background-color: #a832fa;
     color: white;
+    display: block;
     text-decoration: none;
 }
 
