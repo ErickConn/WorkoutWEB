@@ -15,90 +15,123 @@ main{
     z-index: 10;
 }
 
-.card-treino{
-    text-decoration: none;
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    color: white;
-    margin-top: 20px;
-    gap: 0px;
-    padding-left: 20px;
-    background-color: dodgerblue;
-    border-radius: 15px;
-    box-shadow: 2px 2px 2px rgba(192, 185, 185, 0.886);
-    padding-bottom: 10px;
-    cursor: pointer;
-    margin-bottom: 15px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-    .treino-atual{
-        font-size: small;
-        margin-bottom: 5px;
-    }
-
-    .treino-atual-num{
-        position: absolute;
-        right: 30px;
-        top: 10px;
-        background-color: rgb(6, 164, 255);
-        padding: 10px;
-        padding-left: 15px;
-        padding-right: 15px;
-        border-radius: 20px;
-    }
-
-    p{
-        gap: 0px;
-        font-size: large;
-        margin: 5px;
-        margin-left: 0px;
-        margin-top: 15px;
-    }
-
-    .progress-bar{
-        width: 95%;
-        background-color: #f3f3f3;
-        border-radius: 5px;
-        overflow: hidden;
-        height: 18px;
-    }
-
-    .progress{
-        height: 18px;
-        background-color: blue;
-        width: 0;
-        margin: 0;
-        transition: width 0.4s ease;
-    }
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
 }
 
-.card-treino:hover{
+.progressCard {
+  display: block;
+  text-decoration: none;
+  background: linear-gradient(to bottom right, #3b82f6, #2563eb);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.progressCard:hover{
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-.treino-livre{
-    padding: 10px;
-    width: 95%;
-    margin: auto;
-    cursor: pointer;
-    background-color: #a832fa;
-    border-radius: 20px;
-    box-shadow: 2px 2px 2px rgba(192, 185, 185, 0.886);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.treino{
+    padding-bottom: 120px;
+}
 
-    a{
-        justify-content: center;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: white;
-    }
-    .treino-livre:hover{
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    }
+.progressCard:active {
+  transform: scale(0.98);
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.progressTitle {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.progressSubtitle {
+  font-size: 0.875rem;
+  color: #dbeafe;
+  margin-top: 0.25rem;
+}
+
+.progressBadge {
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+}
+
+.badgeText {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.progressBarBg {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  height: 0.625rem;
+}
+
+.progressBarFill {
+  background-color: white;
+  height: 100%;
+  border-radius: 9999px;
+  width: 40%; 
+}
+
+.planCard {
+  display: block;
+  text-decoration: none;
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.planCard:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.planContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.planLabel {
+  font-size: 0.75rem;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+.planName {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #111827; 
+  margin: 0;
+}
+
+.planTag {
+  font-size: 0.75rem;
+  background-color: #dcfce7; 
+  color: #15803d; 
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: bold;
 }
 
 .grupo-muscular{
@@ -118,6 +151,7 @@ main{
 }
 
 .box-exercicio:hover{
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }

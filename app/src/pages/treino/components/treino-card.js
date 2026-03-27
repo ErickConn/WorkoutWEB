@@ -9,7 +9,7 @@ export default function TreinoCard( { treino } ){
 
     return(
         <>
-        <div id="treino">
+        <div id="treino" className={styles.treino}>
             {treino.gruposMusculares.map((grupo, index) => (
                 <div key={index} className={styles['grupo-muscular']}>
                     <h3>{grupo.nome}</h3>
