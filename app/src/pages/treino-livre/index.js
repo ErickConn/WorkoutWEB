@@ -2,7 +2,7 @@ import React from "react";
 import styles from './treino-livre.module.css';
 import Filtro from "../../components/Filtro";
 import HeaderBack from "../../components/HeaderBack";
-import { Link } from "react-router-dom";
+import FooterButton from "../../components/FooterButton";
 
 export default function TreinoLivre() {
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
@@ -81,11 +81,7 @@ export default function TreinoLivre() {
               </div>
             </section>
       </div>
-      <Link to={-1} className={styles.footer}>
-            <button className={styles.btnSave}>
-                <span>💾</span> Salvar Treino Personalizado
-            </button>
-      </Link>
+      <FooterButton title="Salvar Treino Personalizado" link={-1}></FooterButton>
     </div>
   );
 }

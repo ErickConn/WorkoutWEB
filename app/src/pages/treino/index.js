@@ -2,6 +2,7 @@ import React from "react";
 import styles from './treino.module.css';
 import { Link } from "react-router-dom";
 import Header from '../../components/Header';
+import Menu from '../../components/Menu';
 import TreinoCard from "./components/treino-card";
 
 export default function Treino() {
@@ -57,6 +58,7 @@ export default function Treino() {
       </Link>
 
       <TreinoCard treino={treino} />
+      <Menu></Menu>
     </main>
     </>
   );

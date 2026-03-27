@@ -3,6 +3,7 @@ import styles from './index.module.css';
 import Filtro from "../../components/Filtro";
 import { Link } from 'react-router-dom';
 import HeaderBack from "../../components/HeaderBack";
+import FooterButton from "../../components/FooterButton";
 
 export default function BibliotecaTreino() {
   const filtros = ["Todos", "Iniciante", "Intermediário", "Avançado"];
@@ -101,11 +102,7 @@ export default function BibliotecaTreino() {
         </div>
       </div>
 
-      <div className={styles.footerAction}>
-        <Link to='/treino-livre' className={styles.btnCreate}>
-          <span>+</span> Criar Novo Treino Personalizado
-        </Link>
-      </div>
+      <FooterButton title="Criar Novo Treino Personalizado" link="/treino-livre"></FooterButton>
     </div>
   );
 }

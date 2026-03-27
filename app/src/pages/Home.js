@@ -1,6 +1,7 @@
 import React from "react"
 import styles from './home.module.css'
 import Header from "../components/Header"
+import Menu from '../components/Menu';
 
 export default function Home(){
     return(
@@ -84,6 +85,7 @@ export default function Home(){
             </div>
             
         </div>
+        <Menu></Menu>
     </div>
 </>
 )

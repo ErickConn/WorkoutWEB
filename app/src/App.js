@@ -3,7 +3,6 @@ import {
   Routes,
   Route
  } from 'react-router-dom';
-import Menu from './components/Menu';
 import Treino from './pages/treino'
 import Home from './pages/Home';
 import TreinoLivre from './pages/treino-livre';
@@ -24,7 +23,6 @@ function App() {
         <Route path='/select-treino' element={<Selecttreino/>}></Route>
         <Route path='/biblioteca-treino' element={<BibliotecaTreino></BibliotecaTreino>}></Route>
       </Routes>
-      <Menu></Menu>
     </>
   );
 }

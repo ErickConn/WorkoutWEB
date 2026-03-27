@@ -3,6 +3,7 @@ import styles from "./progresso.module.css";
 import ProgressChart from "./components/progress-chart";
 import ProgressReport from "./components/progress-report";
 import ProgressCard from "./components/progress-card";
+import Menu from '../../components/Menu';
 
 export default function Progresso() {
   // Simulação de dados vindos do backend
@@ -80,6 +81,7 @@ export default function Progresso() {
               ➕ Adicionar nova semana
             </button>
         </div>
+        <Menu></Menu>
     </main>
     </>
   )

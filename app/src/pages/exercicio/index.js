@@ -105,12 +105,12 @@ export default function Exercicio() {
         </div>
       </div>
 
-      <footer className={styles.footer}>
+      <div className={styles.footer}>
         <div className={styles.footerContent}>
+           <Link to='/treino' className={styles.btnComplete}>Concluir</Link>
           <button className={styles.btnReplace}>Trocar Exercício</button>
-          <button className={styles.btnComplete}>Concluir e Próximo</button>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
