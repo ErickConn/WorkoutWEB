@@ -5,7 +5,6 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-bottom: 120px;
 }
 
 
@@ -17,9 +16,11 @@
 
 
 .card {
+    text-decoration: none;
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 16px;
+    display: block;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -211,7 +212,6 @@
 .card-purple {
     background-color: #a832fa;
     color: white;
-    display: block;
     text-decoration: none;
 }
 

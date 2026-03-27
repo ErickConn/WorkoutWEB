@@ -11,15 +11,15 @@ export default function Selecttreino() {
                     <p>Selecione o treino de hoje</p>
                 </div>
 
-                <div className={`${styles.card} ${styles['card-last-workout']}`}>
+                <Link to='/treino' className={`${styles.card} ${styles['card-last-workout']}`}>
                     <div className={styles['card-header-small']}>
                         <span>📅 ÚLTIMO TREINO</span>
                     </div>
                     <h3>Treino A - Peito e Tríceps</h3>
                     <p className={styles['text-muted']}>Realizado há 2 dias</p>
-                </div>
+                </Link>
 
-                <div className={`${styles.card} ${styles['card-green']}`} onClick={() => {}}>
+                <Link to='/treino' className={`${styles.card} ${styles['card-green']}`} onClick={() => {}}>
                     <div className={styles['card-header-flex']}>
                         <span className={styles['badge-title']}>✨ RECOMENDADO HOJE</span>
                         <span className={styles.arrow}>➔</span>
@@ -29,9 +29,9 @@ export default function Selecttreino() {
                     <div className={styles['card-stats']}>
                         <span>6 exercícios</span> • <span>~50 min</span>
                     </div>
-                </div>
+                </Link>
 
-                <div className={`${styles.card} ${styles['card-white']}`} onClick={() => {}}>
+                <Link to='/treino' className={`${styles.card} ${styles['card-white']}`} onClick={() => {}}>
                     <div className={styles['card-body-flex']}>
                         <div className={`${styles['icon-letter']} ${styles['bg-blue-light']}`}>A</div>
                         <div className={styles['workout-info']}>
@@ -46,9 +46,9 @@ export default function Selecttreino() {
                     <div className={styles['card-footer-stats']}>
                         <span>5 exercícios</span> • <span>~45 min</span>
                     </div>
-                </div>
+                </Link>
 
-                <div className={`${styles.card} ${styles['card-white']}`} onClick={() => {}}>
+                <Link to='/treino' className={`${styles.card} ${styles['card-white']}`} onClick={() => {}}>
                     <div className={styles['card-body-flex']}>
                         <div className={`${styles['icon-letter']} ${styles['bg-purple-light']}`}>C</div>
                         <div className={styles['workout-info']}>
@@ -63,7 +63,7 @@ export default function Selecttreino() {
                     <div className={styles['card-footer-stats']}>
                         <span>7 exercícios</span> • <span>~60 min</span>
                     </div>
-                </div>
+                </Link>
 
                 <div className={styles.divider}>
                     <span>OU</span>
