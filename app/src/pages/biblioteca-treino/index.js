@@ -1,186 +1,111 @@
 import React from "react";
 import styles from './index.module.css';
 import Filtro from "../../components/Filtro";
+import { Link } from 'react-router-dom';
+import HeaderBack from "../../components/HeaderBack";
 
-export default function BibliotecaTreino(){
-    const filtros = ["Todos", "Iniciante", "Intermediário", "Avançado"];
-    return(
-        <>
-        <div>
-          <div className={styles.cardHeader}>
-            <div className={styles.arrow}>←</div>
-            <div className={styles.textHeader}>
-              <h1 className={styles.title}>Biblioteca de Treinos</h1>
-              <p className={styles.subtitle}>Planos modelo disponíveis</p>
-            </div>
-          </div>
+export default function BibliotecaTreino() {
+  const filtros = ["Todos", "Iniciante", "Intermediário", "Avançado"];
 
-          <div>
-            <div className={styles.buscar}>
-                <a className={styles.lupa}>🔍</a>
-                <input type="text" placeholder="Buscar exercícios..."/>
-            </div>
+  return (
+    <div className={styles.container}>
+      <HeaderBack title="Biblioteca de Treinos" subtitle="Planos modelo disponíveis"></HeaderBack>
 
-            <Filtro filtros={filtros}></Filtro>
+      <div className={styles.content}>
+        <div className={styles.buscar}>
+          <span className={styles.lupa}>🔍</span>
+          <input type="text" placeholder="Buscar treinos..." className={styles.inputBusca} />
+        </div>
 
+        <Filtro tipo="NÍVEL" filtros={filtros} />
 
-            {/* Recomendado para Você */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide px-2">
-                ✨ Recomendados para Você
-              </h3>
-
-              <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-xl p-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white font-bold text-xl">
-                    ABC
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-bold text-gray-900">ABC Intermediário</h3>
-                      <span className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full font-bold">
-                        Recomendado
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600 mb-2">3 treinos • 5-6 exercícios cada</p>
-                    <div className="flex gap-2">
-                      <span className="text-xs bg-white px-2 py-1 rounded-lg font-medium text-gray-700">
-                        Hipertrofia
-                      </span>
-                      <span className="text-xs bg-white px-2 py-1 rounded-lg font-medium text-gray-700">
-                        4x/semana
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-2xl text-gray-400">›</div>
+        <div className={styles.secaoRecomendados}>
+          <h3 className={styles.sessaoTitle}>✨ RECOMENDADOS PARA VOCÊ</h3>
+          <div className={styles.cardRecomendado}>
+            <div className={styles.cardMainInfo}>
+              <div className={`${styles.badgeIcon} ${styles.bgGreen}`}>ABC</div>
+              <div className={styles.cardTextContent}>
+                <div className={styles.cardTitleRow}>
+                  <h3 className={styles.cardName}>ABC Intermediário</h3>
+                  <span className={styles.tagRecomendado}>Recomendado</span>
                 </div>
-                <p className="text-xs text-gray-700 leading-relaxed">
-                  Treino A (Peito/Tríceps), B (Costas/Bíceps), C (Pernas/Ombros)
-                </p>
-              </div>
-            </div>
-
-            {/* Treinos Disponíveis */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide px-2">
-                Todos os Planos Modelo
-              </h3>
-
-              {/* Full Body Iniciante */}
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-bold text-lg">
-                    FB
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-bold text-gray-900">Full Body Iniciante</h3>
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-bold">
-                        Iniciante
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600 mb-2">1 treino • 8-10 exercícios</p>
-                    <div className="flex gap-2">
-                      <span className="text-xs bg-gray-50 px-2 py-1 rounded-lg font-medium text-gray-700">
-                        Corpo Inteiro
-                      </span>
-                      <span className="text-xs bg-gray-50 px-2 py-1 rounded-lg font-medium text-gray-700">
-                        3x/semana
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-2xl text-gray-400">›</div>
+                <p className={styles.cardDetails}>3 treinos • 5-6 exercícios cada</p>
+                <div className={styles.tagContainer}>
+                  <span className={styles.tag}>Hipertrofia</span>
+                  <span className={styles.tag}>4x/semana</span>
                 </div>
               </div>
-
-              {/* AB Intermediário */}
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-bold text-lg">
-                    AB
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-bold text-gray-900">AB Intermediário</h3>
-                      <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">
-                        Intermediário
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600 mb-2">2 treinos • 6-7 exercícios cada</p>
-                    <div className="flex gap-2">
-                      <span className="text-xs bg-gray-50 px-2 py-1 rounded-lg font-medium text-gray-700">
-                        Push/Pull
-                      </span>
-                      <span className="text-xs bg-gray-50 px-2 py-1 rounded-lg font-medium text-gray-700">
-                        4x/semana
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-2xl text-gray-400">›</div>
-                </div>
-              </div>
-
-              {/* ABC Avançado */}
-              <div className="bg-white rounded-xl shadow-sm p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 font-bold text-lg">
-                    ABC
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-bold text-gray-900">ABC Avançado</h3>
-                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">
-                        Avançado
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600 mb-2">3 treinos • 7-8 exercícios cada</p>
-                    <div className="flex gap-2">
-                      <span className="text-xs bg-gray-50 px-2 py-1 rounded-lg font-medium text-gray-700">
-                        Volume Alto
-                      </span>
-                      <span className="text-xs bg-gray-50 px-2 py-1 rounded-lg font-medium text-gray-700">
-                        5-6x/semana
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-2xl text-gray-400">›</div>
-                </div>
-              </div>
+              <div className={styles.seta}>›</div>
             </div>
-
-            {/* Meus Treinos Personalizados */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide px-2">
-                💜 Meus Treinos Personalizados
-              </h3>
-
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300 rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center text-white font-bold text-xl">
-                    ⚡
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-base font-bold text-gray-900 mb-1">Treino Upper Body Custom</h3>
-                    <p className="text-xs text-gray-600 mb-2">Criado por você • 8 exercícios</p>
-                    <div className="flex gap-2">
-                      <span className="text-xs bg-white px-2 py-1 rounded-lg font-medium text-gray-700">
-                        Personalizado
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-2xl text-gray-400">›</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Botão Fixo */}
-          <div className="bg-white border-t border-gray-200 p-4">
-            <button className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-4 rounded-xl font-bold shadow-lg flex items-center justify-center gap-2">
-              <span>+</span> Criar Novo Treino Personalizado
-            </button>
+            <p className={styles.cardFooterText}>
+              Treino A (Peito/Tríceps), B (Costas/Bíceps), C (Pernas/Ombros)
+            </p>
           </div>
         </div>
-        </>
-    )
+
+        <div className={styles.listaTreinos}>
+          <h3 className={styles.sessaoTitle}>Todos os Planos Modelo</h3>
+
+          <div className={styles.cardTreino}>
+            <div className={styles.cardMainInfo}>
+              <div className={`${styles.badgeIcon} ${styles.bgOrange}`}>FB</div>
+              <div className={styles.cardTextContent}>
+                <div className={styles.cardTitleRow}>
+                  <h3 className={styles.cardName}>Full Body Iniciante</h3>
+                  <span className={styles.tagNivel}>Iniciante</span>
+                </div>
+                <p className={styles.cardDetails}>1 treino • 8-10 exercícios</p>
+                <div className={styles.tagContainer}>
+                  <span className={styles.tag}>Corpo Inteiro</span>
+                  <span className={styles.tag}>3x/semana</span>
+                </div>
+              </div>
+              <div className={styles.seta}>›</div>
+            </div>
+          </div>
+
+          <div className={styles.cardTreino}>
+            <div className={styles.cardMainInfo}>
+              <div className={`${styles.badgeIcon} ${styles.bgBlue}`}>AB</div>
+              <div className={styles.cardTextContent}>
+                <div className={styles.cardTitleRow}>
+                  <h3 className={styles.cardName}>AB Intermediário</h3>
+                  <span className={`${styles.tagNivel} ${styles.textGreen}`}>Intermediário</span>
+                </div>
+                <p className={styles.cardDetails}>2 treinos • 6-7 exercícios cada</p>
+                <div className={styles.tagContainer}>
+                  <span className={styles.tag}>Push/Pull</span>
+                  <span className={styles.tag}>4x/semana</span>
+                </div>
+              </div>
+              <div className={styles.seta}>›</div>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.listaTreinos}>
+          <h3 className={styles.sessaoTitle}>💜 Meus Treinos Personalizados</h3>
+          <div className={`${styles.cardTreino} ${styles.cardCustom}`}>
+            <div className={styles.cardMainInfo}>
+              <div className={`${styles.badgeIcon} ${styles.bgPurple}`}>⚡</div>
+              <div className={styles.cardTextContent}>
+                <h3 className={styles.cardName}>Treino Upper Body Custom</h3>
+                <p className={styles.cardDetails}>Criado por você • 8 exercícios</p>
+                <div className={styles.tagContainer}>
+                  <span className={styles.tag}>Personalizado</span>
+                </div>
+              </div>
+              <div className={styles.seta}>›</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.footerAction}>
+        <Link to='/treino-livre' className={styles.btnCreate}>
+          <span>+</span> Criar Novo Treino Personalizado
+        </Link>
+      </div>
+    </div>
+  );
 }

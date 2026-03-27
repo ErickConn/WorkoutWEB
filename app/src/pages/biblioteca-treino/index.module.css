@@ -1,46 +1,216 @@
-.cardHeader{
-    display: flex;
-    background-color: white;
-    padding: 20px;
-    gap: 10px;
-    margin-bottom: 20px;
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding-bottom: 120px;
 }
 
-.arrow{
-    font-size: x-large ;
-    cursor: pointer;
+.cardHeader {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  gap: 1rem;
 }
 
-.textHeader{
-    gap: 0;
+.arrow {
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #374151;
 }
 
-.title{
-    margin: 5px;
-    font-size: 1.2rem;
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #111827;
+  margin: 0;
 }
 
-.subtitle{
-    margin: 5px;
-    color: gray;
-    font-size: 0.9rem;
+.subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
 }
 
-.buscar{
-    margin-top: 20px;
-    position: relative;
-    .lupa{
-        position: absolute;
-        font-size: 20px;
-        top: 4px;
-        left: 2px;
-    }
-    input{
-        padding: 10px;
-        border-radius: 10px;
-        border: 0;
-        width: 80%;
-        box-shadow: 2px 2px 2px rgb(120, 119, 119);
-        padding-left: 35px;
-    }
+.content {
+  padding: 1rem;
+  flex: 1;
+}
+
+.buscar {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.inputBusca {
+  border: none;
+  outline: none;
+  width: 100%;
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.secaoRecomendados {
+  margin: 1.5rem 0;
+}
+
+.sessaoTitle {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardRecomendado {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cardMainInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.badgeIcon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.125rem;
+  color: white;
+}
+
+.bgGreen { background-color: #22c55e; }
+.bgOrange { background-color: #ffedd5; color: #ea580c; }
+.bgBlue { background-color: #dbeafe; color: #2563eb; }
+.bgPurple { background-color: #a855f7; }
+
+.cardTextContent {
+  flex: 1;
+}
+
+.cardTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.cardName {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #111827;
+  margin: 0;
+}
+
+.tagRecomendado {
+  background-color: #22c55e;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: bold;
+}
+
+.cardDetails {
+  font-size: 0.75rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.tagContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.seta {
+  font-size: 1.5rem;
+  color: #9ca3af;
+}
+
+.cardFooterText {
+  font-size: 0.75rem;
+  color: #374151;
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+
+.listaTreinos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.cardTreino {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.tagNivel {
+  font-size: 0.75rem;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: bold;
+}
+
+.textGreen { color: #15803d; background-color: #dcfce7; }
+
+.cardCustom {
+  background: linear-gradient(to bottom right, #faf5ff, #f3e8ff);
+  border: 2px solid #d8b4fe;
+}
+
+.footerAction {
+  padding: 1rem;
+  background-color: white;
+  border-top: 1px solid #e5e7eb;
+  position: sticky;
+  bottom: 0;
+}
+
+.btnCreate {
+  width: 100%;
+  background: linear-gradient(to right, #9333ea, #7e22ce);
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  gap: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
