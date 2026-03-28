@@ -1,23 +1,22 @@
 import React from "react";
 import styles from './filtro.module.css';
-import { useState } from "react";
 
-export default function Filtro(properties){
-    const [isSelected, setIsSelected] = useState(null);
-    return(
-        <div className={styles.filtro}>
-            <h3>FILTRAR POR {properties.tipo}</h3>
-            <div className={styles.filtros}>
-            {properties.filtros.map((filtro, index)=>{
-                return(
-                    <div key={index} className={isSelected === index? `${styles.selecionado} ${styles.tipo}`: `${styles.tipo}`} onClick={(e)=>{
-                        setIsSelected(index);
-                    }}>
-                        <a>{filtro}</a>
-                    </div>
-                )
-            })}
-            </div>
-        </div>
-    )
+export default function Filtro({ tipo, filtros, ativo, onSelect }) {
+  return (
+    <section className={styles.filtro}>
+      <h3>{tipo}</h3>
+      <div className={styles.filtros}>
+        {filtros.map((f) => (
+          <div
+            key={f}
+            // Verifica se o filtro atual é o que está ativo
+            className={`${styles.tipo} ${ativo === f ? styles.selecionado : ""}`}
+            onClick={() => onSelect(f)}
+          >
+            {f}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }
