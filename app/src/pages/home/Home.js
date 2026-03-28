@@ -8,16 +8,7 @@ export default function Home() {
   return (
    <div className={styles.pageWrapper}>
       <div className={styles.container}>
-        
-        {/* Status Bar (Apenas Mobile) */}
-        <div className={styles.statusBar}>
-          <span>9:41</span>
-          <div className={styles.statusIcons}>
-            <span>📶</span>
-            <span>📡</span>
-            <span>🔋</span>
-          </div>
-        </div>
+
 
         {/* Header */}
         <div className={styles.header}>
@@ -85,12 +76,12 @@ export default function Home() {
                   Isso significa que você tem experiência com treinos regulares e pode realizar exercícios mais complexos.
                 </p>
               </div>
-            </div>
-            
-            <div className={styles.levelTabs}>
-              <div className={styles.tabInactive}>Iniciante</div>
-              <div className={styles.tabActive}>Intermediário</div>
-              <div className={styles.tabInactive}>Avançado</div>
+              
+              <div className={styles.levelTabs}>
+                <div className={styles.tabInactive}>Iniciante</div>
+                <div className={styles.tabActive}>Intermediário</div>
+                <div className={styles.tabInactive}>Avançado</div>
+              </div>
             </div>
           </div>
 
