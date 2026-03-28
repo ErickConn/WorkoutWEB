@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="perfil.css">
+    <title>Champion's Body - Meu Perfil</title>
+</head>
+<body>
+
+    <header class="cabecalho-topo">
+        <h1>Champion's Body</h1>
+        <p>Meu Perfil</p>
+    </header>
+
+    <main class="container-perfil">
+
+        <section class="cartao cartao-usuario">
+            <div class="avatar">
+                <label for="uploadFoto" style="cursor: pointer;">
+                    <div class="avatar-placeholder" id="fotoUsuario">RC</div>
+                </label>
+                <input type="file" id="uploadFoto" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="informacoes-usuario">
+                <h2 id="nomeUsuario" class="nome">Roberto Carlos</h2>
+                <p id="emailUsuario" class="email">roberto.carlos@email.com</p>
+                <div class="badge-aluno">
+                    <span class="icone">👤</span> Aluno
+                </div>
+            </div>
+        </section>
+
+        <section class="cartao cartao-biometria">
+            <h3 class="titulo-sessao">📊 Dados Biométricos</h3>
+            
+            <div class="grid-dados">
+                <div class="dado-item">
+                    <span class="dado-label">Peso Atual</span>
+                    <p class="dado-valor">78.5 <span class="dado-unidade">kg</span></p>
+                </div>
+                
+                <div class="dado-item">
+                    <span class="dado-label">Altura</span>
+                    <p class="dado-valor">175 <span class="dado-unidade">cm</span></p>
+                </div>
+                
+                <div class="dado-item">
+                    <span class="dado-label">Idade</span>
+                    <p class="dado-valor">28 <span class="dado-unidade">anos</span></p>
+                </div>
+                
+                <div class="dado-item">
+                    <span class="dado-label">TMB</span>
+                    <p class="dado-valor">1845 <span class="dado-unidade">kcal</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cartao cartao-experiencia">
+            <div class="icone-experiencia">
+                <span>⭐</span>
+            </div>
+            <div class="texto-experiencia">
+                <span class="label">Nível de Experiência</span>
+                <p class="valor">Intermediário</p>
+                <p class="descricao">Baseado em seu perfil biométrico e histórico de treinos</p>
+            </div>
+        </section>
+
+        <section class="cartao cartao-plano">
+            <div class="plano-item">
+                <span class="label">OBJETIVO</span>
+                <p class="valor">Hipertrofia Muscular</p>
+            </div>
+            
+            <div class="plano-item">
+                <span class="label">NÍVEL DE ATIVIDADE</span>
+                <p class="valor">Moderado (3-5x/semana)</p>
+            </div>
+            
+            <div class="plano-item">
+                <span class="label">PLANO ATUAL</span>
+                <p class="valor-destaque">ABC - Intermediário</p>
+            </div>
+        </section>
+
+        <button class="btn-editar">Editar Perfil</button>
+
+    </main>
+
+</body>
+</html>

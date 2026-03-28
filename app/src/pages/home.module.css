@@ -1,175 +1,295 @@
-.page-wrapper {
-            width: 100%;
-            padding-bottom: 120px;
-        }
+/* Dashboard.module.css */
 
-        .layout-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 32px;
-        }
+/* --- ESTRUTURA GERAL --- */
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+}
 
-        @media (min-width: 768px) {
-            .layout-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 48px;
-                align-items: flex-start; /* Evita que a coluna da direita estique para igualar a da esquerda */
-            }
-        }
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
 
-        h1 {
-            font-size: 20px;
-            margin-top: 0;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+/* --- ADAPTAÇÃO PARA PC (DESKTOP VERDADEIRO) --- */
+@media (min-width: 768px) {
+  .pageWrapper {
+    padding: 3rem 1rem;
+  }
+  
+  .container {
+    max-width: 900px; /* Largura de um site normal, não de celular */
+    margin: 0 auto; /* Centraliza na tela */
+    min-height: auto;
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
 
-        .form-section {
-            background-color: #ffffff;
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        }
+  .statusBar {
+    display: none !important;
+  }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
+  /* No PC, os 4 inputs viram uma grade 2x2 para aproveitar a largura */
+  .inputGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem !important;
+  }
 
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 8px;
-        }
+  /* No PC, os resultados ficam lado a lado */
+  .resultRowGroup {
+    flex-direction: row !important;
+    gap: 1.5rem !important;
+  }
 
-        .input-group input, 
-        .input-group select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            background-color: #fafafa;
-            font-size: 15px;
-            color: #333;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
+  .resultBox {
+    flex: 1; /* Faz as duas caixas terem o mesmo tamanho */
+    align-items: flex-start !important;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 1.25rem !important;
+    border-radius: 0.75rem;
+  }
 
-        .input-group input:focus, 
-        .input-group select:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
+  /* No PC, as abas de nível não precisam ser tão compridas */
+  .levelTabs {
+    max-width: 500px;
+  }
+}
 
-        .input-group select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 12px;
-            padding-right: 40px;
-        }
+/* --- ESTILOS INTERNOS --- */
 
-        .result-section {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
+.statusBar {
+  background-color: #111827;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
 
-        .meta-card {
-            background-color: #e8f7f0;
-            border-radius: 16px;
-            padding: 24px;
-        }
+.statusIcons {
+  display: flex;
+  gap: 0.25rem;
+}
 
-        .meta-card h2 {
-            font-size: 16px;
-            color: #2d3748;
-            margin-top: 0;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+.header {
+  background: linear-gradient(to right, #4f46e5, #4338ca);
+  padding: 2rem 2rem;
+}
 
-        .meta-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: #4a5568;
-            margin-bottom: 12px;
-        }
+.headerTitle {
+  color: white;
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin: 0;
+}
 
-        .meta-row span:last-child {
-            font-weight: 700;
-            color: #1a202c;
-            font-size: 15px;
-        }
+.headerSubtitle {
+  color: #e0e7ff;
+  font-size: 1rem;
+  margin: 0.5rem 0 0 0;
+}
 
-        .divider {
-            height: 1px;
-            background-color: #c6e6d6;
-            margin: 20px 0;
-        }
+.content {
+  padding: 2rem;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 
-        .macros-header {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 16px;
-            display: block;
-        }
+/* Calculadora TMB */
+.calcCard {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
-        .macros-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #111827;
+  margin: 0 0 1.5rem 0;
+}
 
-        .macro-col {
-            background: rgba(255, 255, 255, 0.6);
-            padding: 12px 8px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
 
-        .macro-val {
-            font-size: 18px;
-            font-weight: bold;
-            color: #1a202c;
-        }
+.inputWrapper label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
 
-        .macro-lbl {
-            font-size: 12px;
-            color: #718096;
-            margin-top: 4px;
-        }
+.inputWrapper input,
+.inputWrapper select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  background-color: white;
+  box-sizing: border-box;
+  color: #111827;
+}
 
-        button[type="submit"] {
-            width: 100%;
-            background-color: #2563eb;
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            padding: 18px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
+.inputWrapper input:focus,
+.inputWrapper select:focus {
+  border-color: #4f46e5;
+  outline: none;
+}
 
-        button[type="submit"]:hover {
-            background-color: #1d4ed8;
-        }
-        
-        button[type="submit"]:active {
-            transform: scale(0.98);
-        }
+/* Card Resultados */
+.resultCard {
+  background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+  border: 2px solid #93c5fd;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.resultTitle {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin: 0 0 1.5rem 0;
+}
+
+.resultRowGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.resultBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resultLabel {
+  font-size: 0.875rem;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.resultValue {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+/* Card Nível Detectado */
+.levelCard {
+  background: linear-gradient(to bottom right, #f0fdf4, #dcfce7);
+  border: 2px solid #86efac;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.levelHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.levelIcon {
+  background-color: #22c55e;
+  min-width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: white;
+}
+
+.levelTextContainer {
+  flex: 1;
+}
+
+.levelSubtitle {
+  font-weight: bold;
+  color: #14532d;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.levelTitle {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #14532d;
+  margin: 0.25rem 0;
+}
+
+.levelDesc {
+  font-size: 0.875rem;
+  color: #15803d;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.levelTabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.tabInactive {
+  text-align: center;
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #15803d;
+  opacity: 0.6;
+}
+
+.tabActive {
+  text-align: center;
+  padding: 0.75rem;
+  background-color: white;
+  border: 2px solid #22c55e;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #14532d;
+  box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.1);
+}
+
+/* Botão Ação */
+.actionBtn {
+  width: 100%;
+  background: linear-gradient(to right, #4f46e5, #4338ca);
+  color: white;
+  padding: 1.25rem;
+  border: none;
+  border-radius: 1rem;
+  font-weight: bold;
+  font-size: 1.125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.actionBtn:hover {
+  transform: translateY(-2px);
+}
