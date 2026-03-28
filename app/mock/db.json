@@ -1,0 +1,124 @@
+{
+  "planos": [
+    {
+      "id": "p1",
+      "titulo": "ABC Intermediário",
+      "nivel": "Intermediário",
+      "categoria": "recomendado",
+      "badge": "ABC",
+      "badgeColor": "bgGreen",
+      "subtitulo": "3 treinos • Foco em Hipertrofia",
+      "tags": ["4x/semana", "60min"],
+      "rotina": [
+        {
+          "dia": "A",
+          "foco": "Peito e Tríceps",
+          "exercicios": [
+            { 
+              "id": 101, 
+              "nome": "Supino Reto", 
+              "seriesPadrao": 4, 
+              "repsPadrao": 10,
+              "dicas": "Mantenha as escápulas retraídas e os pés firmes no chão.",
+              "substitutos": [105, 106] 
+            },
+            { 
+              "id": 102, 
+              "nome": "Tríceps Corda", 
+              "seriesPadrao": 3, 
+              "repsPadrao": 12,
+              "dicas": "Abra a corda ao final do movimento para contração máxima.",
+              "substitutos": [107]
+            }
+          ]
+        },
+        {
+          "dia": "B",
+          "foco": "Costas e Bíceps",
+          "exercicios": [
+            { 
+              "id": 201, 
+              "nome": "Puxada Frontal", 
+              "seriesPadrao": 4, 
+              "repsPadrao": 10,
+              "dicas": "Puxe o peso em direção ao peito, não atrás da nuca.",
+              "substitutos": [203]
+            },
+            { 
+              "id": 202, 
+              "nome": "Rosca Direta", 
+              "seriesPadrao": 3, 
+              "repsPadrao": 10,
+              "dicas": "Evite balançar o tronco. Controle a descida.",
+              "substitutos": [204]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "titulo": "Full Body Iniciante",
+      "nivel": "Iniciante",
+      "categoria": "modelo",
+      "badge": "FB",
+      "badgeColor": "bgOrange",
+      "subtitulo": "1 treino • Adaptação Neural",
+      "tags": ["3x/semana", "45min"],
+      "rotina": [
+        {
+          "dia": "Único",
+          "foco": "Corpo Inteiro",
+          "exercicios": [
+            { 
+              "id": 301, 
+              "nome": "Leg Press", 
+              "seriesPadrao": 3, 
+              "repsPadrao": 15,
+              "dicas": "Não trave os joelhos na extensão máxima.",
+              "substitutos": [303]
+            },
+            { 
+              "id": 302, 
+              "nome": "Puxada Alta", 
+              "seriesPadrao": 3, 
+              "repsPadrao": 12,
+              "dicas": "Mantenha o peito aberto durante todo o movimento.",
+              "substitutos": [201]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "biblioteca_exercicios": [
+    { "id": 101, "nome": "Supino Reto", "grupo": "Peito", "equipamento": "Barra" },
+    { "id": 102, "nome": "Tríceps Corda", "grupo": "Tríceps", "equipamento": "Polia" },
+    { "id": 105, "nome": "Supino com Halteres", "grupo": "Peito", "equipamento": "Halteres" },
+    { "id": 106, "nome": "Flexão de Braços", "grupo": "Peito", "equipamento": "Peso Corporal" },
+    { "id": 107, "nome": "Tríceps Pulley Barra", "grupo": "Tríceps", "equipamento": "Polia" },
+    { "id": 201, "nome": "Puxada Frontal", "grupo": "Costas", "equipamento": "Máquina" },
+    { "id": 203, "nome": "Remada Curvada", "grupo": "Costas", "equipamento": "Barra" },
+    { "id": 204, "nome": "Rosca com Halteres", "grupo": "Bíceps", "equipamento": "Halteres" },
+    { "id": 301, "nome": "Leg Press 45°", "grupo": "Pernas", "equipamento": "Máquina" },
+    { "id": 303, "nome": "Agachamento Livre", "grupo": "Pernas", "equipamento": "Barra" }
+  ],
+  "sessoes_realizadas": [
+    {
+      "id": "sessao_2026_01",
+      "planoId": "p1",
+      "diaTreinado": "A",
+      "data": "2026-03-28T15:00:00Z",
+      "duracao": "00:55:00",
+      "exercicios": [
+        {
+          "exercicioId": 101,
+          "series": [
+            { "num": 1, "carga": "20kg", "reps": 10, "concluida": true },
+            { "num": 2, "carga": "22kg", "reps": 8, "concluida": true }
+          ]
+        }
+      ]
+    }
+  ]
+}
