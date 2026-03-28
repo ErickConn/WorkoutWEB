@@ -4,7 +4,7 @@ import {
   Route
  } from 'react-router-dom';
 import Treino from './pages/treino'
-import Home from './pages/Home';
+import Home from './pages/home/Home';
 import TreinoLivre from './pages/treino-livre';
 import Exercicio from './pages/exercicio';
 import Progresso from './pages/progresso/Progresso';
@@ -31,7 +31,7 @@ function App() {
         <Route path='/exercicio/:id' element={<Exercicio/>}></Route>
         <Route path='/select-treino' element={<Selecttreino/>}></Route>
         <Route path='/biblioteca-treino' element={<BibliotecaTreino></BibliotecaTreino>}></Route>
-        <Route path='/Home' element={<Home></Home>}></Route>
+        <Route path='/home' element={<Home></Home>}></Route>
       </Routes>
     </>
   );
