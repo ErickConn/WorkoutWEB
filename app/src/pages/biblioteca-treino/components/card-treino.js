@@ -20,13 +20,13 @@ export default function CardTreino({
         <div className={styles.cardTextContent}>
           <div className={styles.cardTitleRow}>
             <h3 className={styles.cardName}>{titulo}</h3>
-            {recomendado && <span className={styles.tagRecomendado}>Recomendado</span>}
             {nivel && <span className={`${styles.tagNivel} ${nivel === 'Intermediário' ? styles.textGreen : ''}`}>{nivel}</span>}
           </div>
           
           <p className={styles.cardDetails}>{subtitulo}</p>
           
           <div className={styles.tagContainer}>
+            {recomendado && <span className={styles.tagRecomendado}>Recomendado</span>}
             {tags.map((tag, index) => (
               <span key={index} className={styles.tag}>{tag}</span>
             ))}

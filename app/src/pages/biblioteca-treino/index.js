@@ -79,6 +79,7 @@ export default function BibliotecaTreino() {
 
   const recomendados = treinosFiltrados.filter(t => t.categoria === "recomendado");
   const modelos = treinosFiltrados.filter(t => t.categoria === "modelo");
+  const personalizados = treinosFiltrados.filter(t => t.categoria === "personalizado");
 
   return (
     <div className={styles.container}>
@@ -100,6 +101,7 @@ export default function BibliotecaTreino() {
 
         <ListaTreinos titulo="✨ RECOMENDADOS" dados={recomendados} />
         <ListaTreinos titulo="Todos os Planos Modelo" dados={modelos} />
+        <ListaTreinos titulo="Seus Treinos" dados={personalizados} />
 
         {treinosFiltrados.length === 0 && (
           <div className={styles.emptyState}>
