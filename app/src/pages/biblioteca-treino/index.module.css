@@ -3,6 +3,13 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: #f9fafb;
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+.containerLista{
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .cardHeader {
@@ -85,6 +92,7 @@
 .badgeIcon {
   width: 3rem;
   height: 3rem;
+  min-width: 3rem;
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
@@ -133,7 +141,7 @@
 }
 
 .tagContainer {
-  display: flex;
+  display: block;
   gap: 0.5rem;
 }
 
@@ -166,6 +174,7 @@
 }
 
 .cardTreino {
+  min-width: 350px;
   background-color: white;
   border-radius: 0.75rem;
   padding: 1rem;
@@ -192,8 +201,10 @@
   padding: 1rem;
   background-color: white;
   border-top: 1px solid #e5e7eb;
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 .btnCreate {

@@ -12,19 +12,29 @@ export default function TreinoLivre() {
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   const [nomeTreino, setNomeTreino] = useState("");
 
-  const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
-
-  const biblioteca = [
+  const [biblioteca, setBiblioteca] = useState([
     { id: 101, nome: "Crucifixo com Halteres", grupo: "Peito", equipamento: "Halteres" },
     { id: 102, nome: "Puxada Frontal", grupo: "Costas", equipamento: "Máquina" },
     { id: 103, nome: "Leg Press 45°", grupo: "Pernas", equipamento: "Máquina" },
     { id: 104, nome: "Rosca Direta", grupo: "Bíceps", equipamento: "Barra" },
-  ];
+    { id: 105, nome: "Supino Reto", grupo: "Peito", detalhes: "4x 8-10" },
+    { id: 106, nome: "Remada Curvada", grupo: "Costas", detalhes: "4x 10-12" },
+  ]);
 
-  const selecionados = [
-    { id: 1, nome: "Supino Reto", grupo: "Peito", detalhes: "4x 8-10" },
-    { id: 2, nome: "Remada Curvada", grupo: "Costas", detalhes: "4x 10-12" },
-  ];
+  const [selecionados, setSelecionados] = useState([]);
+
+  const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
+
+  const adicionarExercicio = (exercicio) => {
+    setBiblioteca(biblioteca.filter(ex => ex.id !== exercicio.id));
+    setSelecionados([...selecionados, exercicio]);
+  };
+
+  const removerExercicio = (id) => {
+    const exercicioParaVoltar = selecionados.find(ex => ex.id === id);
+    setSelecionados(selecionados.filter(ex => ex.id !== id));
+    setBiblioteca([...biblioteca, exercicioParaVoltar]);
+  };
 
   const bibliotecaFiltrada = biblioteca.filter((ex) => {
     const bateBusca = ex.nome.toLowerCase().includes(busca.toLowerCase());
@@ -69,11 +79,11 @@ export default function TreinoLivre() {
                 <ExercicioItem 
                   key={ex.id} 
                   exercicio={ex} 
-                  onAdd={(e) => console.log('Adicionar', e)} 
+                  onAdd={() => adicionarExercicio(ex)} 
                 />
               ))
             ) : (
-              <p className={styles.noResults}>Nenhum exercício encontrado.</p>
+              <p className={styles.noResults}>Nenhum exercício disponível nesta categoria.</p>
             )}
           </div>
         </section>
@@ -85,13 +95,17 @@ export default function TreinoLivre() {
           </div>
 
           <div className={styles.listaSelecionados}>
-            {selecionados.map(ex => (
-              <ExercicioSelecionado 
-                key={ex.id} 
-                exercicio={ex} 
-                onRemove={(id) => console.log('Remover', id)} 
-              />
-            ))}
+            {selecionados.length > 0 ? (
+                selecionados.map(ex => (
+                    <ExercicioSelecionado 
+                      key={ex.id} 
+                      exercicio={ex} 
+                      onRemove={() => removerExercicio(ex.id)} 
+                    />
+                  ))
+            ) : (
+                <p className={styles.emptySelection}>Nenhum exercício selecionado ainda.</p>
+            )}
           </div>
         </section>
       </div>
