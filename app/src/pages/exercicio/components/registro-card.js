@@ -1,26 +1,32 @@
 import React from "react";
 import styles from '../exercicio.module.css';
 
-export default function RegistroCard(){
-    return(
-        <div className={styles.registro}>
-                    <div className={styles.desempenho}>
-                        <h3>⚡Registro de Desempenho</h3>
-                        <div className={styles.carga}>
-                            <p className={styles['carga-ant']}>CARGA ANTERIOR</p>
-                            <p className={styles.peso}><strong>20</strong> kg</p>
-                        </div>
-                        <div className={styles['carga-hoje']}>
-                            <label>Carga de Hoje</label>
-                            <div className={styles['input-container']}>
-                                <input type="number" min="0" step="0.01" placeholder="22"/>
-                                <a>kg</a>
-                            </div>
-                        </div>
-                    </div>
-                        <div className={styles.progresso}>
-                            <p><strong>+2.0kg de progresso! 🟢</strong></p>
-                        </div>
-                    </div>
-    )
+export default function RegistroCard({ numSeries, carga }) {
+  return (
+    <section className={styles.whiteCard}>
+      <h2 className={styles.sectionTitle}>⚡ Registro de Hoje</h2>
+      
+      <div className={styles.registrationList}>
+        {Array.from({ length: numSeries }).map((a, index) => (
+          <div key={index} className={`${styles.regBox} ${index === 0 ? styles.active : ''}`}>
+            <div className={styles.regHeader}>
+              <span className={styles.regNumber}>{index + 1}</span>
+              <span className={styles.regTitle}>Série #{index + 1}</span>
+            </div>
+            
+            <div className={styles.inputGroup}>
+              <div className={styles.inputField}>
+                <label>Peso (kg)</label>
+                <input type="number" placeholder={carga?.replace('kg', '')} />
+              </div>
+              <div className={styles.inputField}>
+                <label>Reps Realizadas</label>
+                <input type="number" placeholder="0" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }
