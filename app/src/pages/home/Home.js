@@ -26,22 +26,22 @@ export default function Home() {
             <div className={styles.inputGroup}>
               <div className={styles.inputWrapper}>
                 <label>Peso Atual (kg)</label>
-                <input type="text" value="78.5" readOnly />
+                <input type="number" step="0.1" min="0" placeholder='78.5' />
               </div>
               <div className={styles.inputWrapper}>
                 <label>Altura (cm)</label>
-                <input type="text" value="175" readOnly />
+                <input type="number" step="0.1" min="0" placeholder='175'/>
               </div>
               <div className={styles.inputWrapper}>
                 <label>Idade</label>
-                <input type="text" value="28" readOnly />
+                <input type="number" min="0" placeholder='28' />
               </div>
               <div className={styles.inputWrapper}>
                 <label>Nível de Atividade</label>
-                <select value="moderado" disabled>
+                <select >
                   <option value="sedentario">Sedentário</option>
                   <option value="leve">Leve (1-3x/semana)</option>
-                  <option value="moderado">Moderado (3-5x/semana)</option>
+                  <option selected value="moderado">Moderado (3-5x/semana)</option>
                   <option value="intenso">Intenso (6-7x/semana)</option>
                 </select>
               </div>
