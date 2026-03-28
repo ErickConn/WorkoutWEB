@@ -273,6 +273,7 @@
 
 /* Botão Ação */
 .actionBtn {
+  text-decoration: none;
   width: 100%;
   background: linear-gradient(to right, #4f46e5, #4338ca);
   color: white;
