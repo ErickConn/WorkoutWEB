@@ -9,10 +9,18 @@ import TreinoLivre from './pages/treino-livre';
 import Exercicio from './pages/exercicio';
 import Progresso from './pages/progresso/Progresso';
 import Selecttreino from './pages/select-treino';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import BibliotecaTreino from './pages/biblioteca-treino';
+import { buscarPlanos } from './redux/treino/actions';
 import Perfil from './pages/perfil/Perfil';  
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(buscarPlanos());
+},[dispatch]);
   return (
     <>
       <Routes>

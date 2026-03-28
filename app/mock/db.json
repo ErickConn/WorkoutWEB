@@ -17,18 +17,42 @@
             { 
               "id": 101, 
               "nome": "Supino Reto", 
+              "grupo": "Peito",
               "seriesPadrao": 4, 
               "repsPadrao": 10,
+              "cargaSugerida": 20,
               "dicas": "Mantenha as escápulas retraídas e os pés firmes no chão.",
               "substitutos": [105, 106] 
             },
             { 
               "id": 102, 
-              "nome": "Tríceps Corda", 
+              "nome": "Crucifixo Inclinado", 
+              "grupo": "Peito",
               "seriesPadrao": 3, 
               "repsPadrao": 12,
+              "cargaSugerida": 12,
+              "dicas": "Sinta o alongamento do peitoral, sem descer demais os halteres.",
+              "substitutos": [108] 
+            },
+            { 
+              "id": 103, 
+              "nome": "Tríceps Corda", 
+              "grupo": "Tríceps",
+              "seriesPadrao": 3, 
+              "repsPadrao": 12,
+              "cargaSugerida": 15,
               "dicas": "Abra a corda ao final do movimento para contração máxima.",
               "substitutos": [107]
+            },
+            { 
+              "id": 104, 
+              "nome": "Tríceps Testa", 
+              "grupo": "Tríceps",
+              "seriesPadrao": 3, 
+              "repsPadrao": 10,
+              "cargaSugerida": 8,
+              "dicas": "Mantenha os cotovelos fechados e apontados para o teto.",
+              "substitutos": [109]
             }
           ]
         },
@@ -39,16 +63,20 @@
             { 
               "id": 201, 
               "nome": "Puxada Frontal", 
+              "grupo": "Costas",
               "seriesPadrao": 4, 
               "repsPadrao": 10,
+              "cargaSugerida": 45,
               "dicas": "Puxe o peso em direção ao peito, não atrás da nuca.",
               "substitutos": [203]
             },
             { 
               "id": 202, 
               "nome": "Rosca Direta", 
+              "grupo": "Bíceps",
               "seriesPadrao": 3, 
               "repsPadrao": 10,
+              "cargaSugerida": 10,
               "dicas": "Evite balançar o tronco. Controle a descida.",
               "substitutos": [204]
             }
@@ -73,18 +101,12 @@
             { 
               "id": 301, 
               "nome": "Leg Press", 
+              "grupo": "Pernas",
               "seriesPadrao": 3, 
               "repsPadrao": 15,
+              "cargaSugerida": 80,
               "dicas": "Não trave os joelhos na extensão máxima.",
               "substitutos": [303]
-            },
-            { 
-              "id": 302, 
-              "nome": "Puxada Alta", 
-              "seriesPadrao": 3, 
-              "repsPadrao": 12,
-              "dicas": "Mantenha o peito aberto durante todo o movimento.",
-              "substitutos": [201]
             }
           ]
         }
@@ -93,32 +115,9 @@
   ],
   "biblioteca_exercicios": [
     { "id": 101, "nome": "Supino Reto", "grupo": "Peito", "equipamento": "Barra" },
-    { "id": 102, "nome": "Tríceps Corda", "grupo": "Tríceps", "equipamento": "Polia" },
-    { "id": 105, "nome": "Supino com Halteres", "grupo": "Peito", "equipamento": "Halteres" },
-    { "id": 106, "nome": "Flexão de Braços", "grupo": "Peito", "equipamento": "Peso Corporal" },
-    { "id": 107, "nome": "Tríceps Pulley Barra", "grupo": "Tríceps", "equipamento": "Polia" },
-    { "id": 201, "nome": "Puxada Frontal", "grupo": "Costas", "equipamento": "Máquina" },
-    { "id": 203, "nome": "Remada Curvada", "grupo": "Costas", "equipamento": "Barra" },
-    { "id": 204, "nome": "Rosca com Halteres", "grupo": "Bíceps", "equipamento": "Halteres" },
-    { "id": 301, "nome": "Leg Press 45°", "grupo": "Pernas", "equipamento": "Máquina" },
-    { "id": 303, "nome": "Agachamento Livre", "grupo": "Pernas", "equipamento": "Barra" }
+    { "id": 102, "nome": "Crucifixo Inclinado", "grupo": "Peito", "equipamento": "Halteres" },
+    { "id": 103, "nome": "Tríceps Corda", "grupo": "Tríceps", "equipamento": "Polia" },
+    { "id": 104, "nome": "Tríceps Testa", "grupo": "Tríceps", "equipamento": "Halteres" }
   ],
-  "sessoes_realizadas": [
-    {
-      "id": "sessao_2026_01",
-      "planoId": "p1",
-      "diaTreinado": "A",
-      "data": "2026-03-28T15:00:00Z",
-      "duracao": "00:55:00",
-      "exercicios": [
-        {
-          "exercicioId": 101,
-          "series": [
-            { "num": 1, "carga": "20kg", "reps": 10, "concluida": true },
-            { "num": 2, "carga": "22kg", "reps": 8, "concluida": true }
-          ]
-        }
-      ]
-    }
-  ]
+  "sessoes_realizadas": []
 }

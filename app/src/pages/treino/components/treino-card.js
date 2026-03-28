@@ -2,29 +2,47 @@ import React from "react";
 import styles from '../treino.module.css';
 import ExerciseCard from "./exercise-card";
 
-export default function TreinoCard( { treino } ){
+export default function TreinoCard({ rotina }) {
+  if (!rotina || !rotina.exercicios) return null;
 
-    if (!treino) return <p>Carregando treino...</p>;
+  const exerciciosPeito = rotina.exercicios.filter(ex => ex.grupo === "Peito");
+  const exerciciosTriceps = rotina.exercicios.filter(ex => ex.grupo === "Tríceps");
 
-    return(
-        <>
-        <div id="treino" className={styles.treino}>
-            {treino.gruposMusculares.map((grupo, index) => (
-                <div key={index} className={styles['grupo-muscular']}>
-                    <h3>{grupo.nome}</h3>
-                    {grupo.exercicios.map((exercicio, indexE) => (
-                        <ExerciseCard 
-                            key={indexE}
-                            id={exercicio.id}
-                            nome={exercicio.nome}
-                            numSeries={`${exercicio.configuracao.numSeries} x`}
-                            numReps={exercicio.configuracao.repsAlvo}
-                            carga={`${exercicio.configuracao.cargaSugerida} kg`}
-                        />
-                    ))}
-                </div>
-            ))}
+  return (
+    <div className={styles.treino}>
+      
+      {exerciciosPeito.length > 0 && (
+        <div className={styles['grupo-muscular']}>
+          <h3>Peito</h3>
+          {exerciciosPeito.map((ex) => (
+            <ExerciseCard 
+              key={ex.id}
+              id={ex.id}
+              nome={ex.nome}
+              series={ex.seriesPadrao}
+              reps={ex.repsPadrao}
+              carga={ex.cargaSugerida || "--"}
+            />
+          ))}
         </div>
-        </>
-    )
+      )}
+
+      {exerciciosTriceps.length > 0 && (
+        <div className={styles['grupo-muscular']}>
+          <h3>Tríceps</h3>
+          {exerciciosTriceps.map((ex) => (
+            <ExerciseCard 
+              key={ex.id}
+              id={ex.id}
+              nome={ex.nome}
+              series={ex.seriesPadrao}
+              reps={ex.repsPadrao}
+              carga={ex.cargaSugerida || "--"}
+            />
+          ))}
+        </div>
+      )}
+
+    </div>
+  );
 }
