@@ -39,19 +39,6 @@
   outline: none;
 }
 
-.searchBar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.searchInput {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 0.9rem;
-}
-
 .sectionTitle {
   font-size: 0.875rem;
   font-weight: 800;

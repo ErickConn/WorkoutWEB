@@ -3,6 +3,9 @@ import styles from './treino-livre.module.css';
 import Filtro from "../../components/Filtro";
 import HeaderBack from "../../components/HeaderBack";
 import FooterButton from "../../components/FooterButton";
+import SearchBar from "../../components/SearchBar";
+import ExercicioItem from "./components/exercicio-item";
+import ExercicioSelecionado from "./components/exercicio-selecionado";
 
 export default function TreinoLivre() {
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
@@ -21,67 +24,42 @@ export default function TreinoLivre() {
 
   return (
     <div className={styles.container}>
-      <HeaderBack title="Criar Treino Personalizado" subtitle="Monte sua sessão"></HeaderBack>
+      <HeaderBack title="Criar Treino Personalizado" subtitle="Monte sua sessão" />
 
       <div className={styles.content}>
-            <section className={styles.card}>
-              <label className={styles.label}>Nome do Treino</label>
-              <input
-                type="text"
-                placeholder="Ex: Meu Treino A"
-                className={styles.inputNome}
-              />
-            </section>
+        <section className={styles.card}>
+          <label className={styles.label}>Nome do Treino</label>
+          <input type="text" placeholder="Ex: Meu Treino A" className={styles.inputNome} />
+        </section>
 
-            <section className={styles.card}>
-              <div className={styles.searchBar}>
-                <span className={styles.searchIcon}>🔍</span>
-                <input
-                  type="text"
-                  placeholder="Buscar exercícios para adicionar..."
-                  className={styles.searchInput}
-                />
-              </div>
-            </section>
+        <SearchBar placeholder="Buscar exercícios para adicionar..." />
 
-            <Filtro tipo="GRUPO MUSCULAR" filtros={filtros} />
+        <Filtro tipo="GRUPO MUSCULAR" filtros={filtros} />
 
-            <section className={styles.bibliotecaSection}>
-              <h3 className={styles.sectionTitle}>Biblioteca de Exercícios</h3>
-              <div className={styles.listaBiblioteca}>
-                {biblioteca.map(ex => (
-                  <div key={ex.id} className={styles.itemBiblioteca}>
-                    <button className={styles.btnAdd}>+</button>
-                    <div className={styles.itemInfo}>
-                      <h4 className={styles.itemName}>{ex.nome}</h4>
-                      <p className={styles.itemMeta}>{ex.grupo} • {ex.equipamento}</p>
-                    </div>
-                    <span className={styles.itemArrow}>›</span>
-                  </div>
-                ))}
-              </div>
-            </section>
+        <section className={styles.bibliotecaSection}>
+          <h3 className={styles.sectionTitle}>Biblioteca de Exercícios</h3>
+          <div className={styles.listaBiblioteca}>
+            {biblioteca.map(ex => (
+              <ExercicioItem key={ex.id} exercicio={ex} onAdd={(e) => console.log('Adicionar', e)} />
+            ))}
+          </div>
+        </section>
 
-            <section className={styles.selecionadosCard}>
-              <div className={styles.selecionadosHeader}>
-                <h3 className={styles.selecionadosTitle}>📋 Selecionados</h3>
-                <span className={styles.countBadge}>{selecionados.length} exercícios</span>
-              </div>
+        <section className={styles.selecionadosCard}>
+          <div className={styles.selecionadosHeader}>
+            <h3 className={styles.selecionadosTitle}>📋 Selecionados</h3>
+            <span className={styles.countBadge}>{selecionados.length} exercícios</span>
+          </div>
 
-              <div className={styles.listaSelecionados}>
-                {selecionados.map(ex => (
-                  <div key={ex.id} className={styles.cardSelecionado}>
-                    <div className={styles.info}>
-                      <p className={styles.nomeEx}>{ex.nome}</p>
-                      <p className={styles.detalheEx}>{ex.grupo} • {ex.detalhes}</p>
-                    </div>
-                    <button className={styles.btnRemove}>×</button>
-                  </div>
-                ))}
-              </div>
-            </section>
+          <div className={styles.listaSelecionados}>
+            {selecionados.map(ex => (
+              <ExercicioSelecionado key={ex.id} exercicio={ex} onRemove={(id) => console.log('Remover', id)} />
+            ))}
+          </div>
+        </section>
       </div>
-      <FooterButton title="Salvar Treino Personalizado" link={-1}></FooterButton>
+
+      <FooterButton title="Salvar Treino Personalizado" link={-1} />
     </div>
   );
 }
