@@ -3,7 +3,6 @@ import styles from '../treino.module.css';
 import ExerciseCard from "./exercise-card";
 
 export default function TreinoCard( { treino } ){
-    console.log(treino)
 
     if (!treino) return <p>Carregando treino...</p>;
 

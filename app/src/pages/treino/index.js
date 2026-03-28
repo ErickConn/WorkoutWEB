@@ -1,34 +1,33 @@
-import React from "react";
 import styles from './treino.module.css';
 import { Link } from "react-router-dom";
 import Header from '../../components/Header';
 import Menu from '../../components/Menu';
 import TreinoCard from "./components/treino-card";
+import { useSelector, useDispatch } from "react-redux";
+import { useState, React } from "react"
 
 export default function Treino() {
-  const treino = {
-    nome: "Treino A - Peito e Tríceps",
-    gruposMusculares: [
-      {
-        nome: "Peito",
-        exercicios: [
-          { id: 0, nome: "Supino Reto", numSeries: "4x", numReps: "8-10", carga: "80kg" },
-          { id: 1, nome: "Supino Inclinado", numSeries: "4x", numReps: "8-10", carga: "80kg" }
-        ]
-      },
-      {
-        nome: "Tríceps",
-        exercicios: [
-          { id: 2, nome: "Tríceps Corda", numSeries: "4x", numReps: "8-10", carga: "80kg" },
-          { id: 3, nome: "Tríceps Barra", numSeries: "4x", numReps: "8-10", carga: "80kg" }
-        ]
+  const [teste, setTeste] = useState(false);
+  const treino  = useSelector(rootReducer => rootReducer.treinoReducer);
+
+  const dispatch = useDispatch();
+
+  console.log(treino);
+
+  const handleTeste = () => {
+    dispatch({
+      type: "treino/teste",
+      payload: {
+        mensagem: "isso é um teste",
+        status: 200,
       }
-    ]
-  };
+    })
+  }
 
   return (
     <>
     <Header></Header>
+    <button onClick={handleTeste}>TESTE</button>
     <main className={styles.mainContainer}>
       <Link to='/select-treino' className={styles.progressCard}>
         <div className={styles.progressHeader}>
@@ -57,7 +56,7 @@ export default function Treino() {
         </div>
       </Link>
 
-      <TreinoCard treino={treino} />
+      <TreinoCard treino={treino.currentTreino} />
       <Menu></Menu>
     </main>
     </>
