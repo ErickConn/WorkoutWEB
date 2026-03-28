@@ -2,7 +2,6 @@
 
 * {
     margin: 0;
-    padding-bottom: 120px;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -28,6 +27,7 @@
     max-width: 800px; 
     margin: 20px auto 20px auto; 
     padding: 0 15px;
+    padding-bottom: 120px;
     display: flex;
     flex-direction: column;
     gap: 15px; 
