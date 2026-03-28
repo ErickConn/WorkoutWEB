@@ -23,7 +23,7 @@ function App() {
         <Route path='/exercicio/:id' element={<Exercicio/>}></Route>
         <Route path='/select-treino' element={<Selecttreino/>}></Route>
         <Route path='/biblioteca-treino' element={<BibliotecaTreino></BibliotecaTreino>}></Route>
-    
+        <Route path='/Home' element={<Home></Home>}></Route>
       </Routes>
     </>
   );

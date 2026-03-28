@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './perfil.module.css';
 import Header from '../../components/Header';
+import Menu from '../../components/Menu';
 
 
 export default function Perfil() {
@@ -108,8 +110,8 @@ export default function Perfil() {
                     </div>
                 </section>
 
-                <button className={styles.btnEditar}>Editar Perfil</button>
-
+                <Link to= '/Home' className={styles.btnEditar}> Editar Perfil</Link>
+                <Menu paginaAtual="perfil" />
             </main>
         </>
     );
