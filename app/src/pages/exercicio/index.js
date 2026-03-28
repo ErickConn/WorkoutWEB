@@ -7,30 +7,23 @@ export default function Exercicio() {
   const { id } = useParams();
 
   const exercicios = [
-    { 
-      id: "supino-reto",
-      nome: "Supino Reto", 
-      numSeries: 3, 
-      numReps: "8-12", 
-      cargaAtual: "30kg", 
-      dica: "Mantenha os pés firmes no chão e escápulas contraídas no banco. Não tire a lombar do banco durante a subida.", 
-      historico: [
-        { serie: 1, valor: "12 reps × 30kg" },
-        { serie: 2, valor: "10 reps × 30kg" },
-        { serie: 3, valor: "8 reps × 30kg" }
-      ],
-      substitutos: [
-        { nome: "Supino com Halteres", equipamento: "Halteres" },
-        { nome: "Supino Máquina", equipamento: "Máquina" }
-      ]
-    }
-  ];
+              {
+                "id": 0,
+                "nome": "Supino Reto",
+                "numSeries": 3,
+                "numReps": "8-12",
+                "carga": "30kg",
+                "dica": "Mantenha os pés firmes no chão e escápulas contraídas no banco.",
+                "historico": [{ "serie": 1, "valor": "12 reps × 30kg" }],
+                "substitutos": [{ "nome": "Supino com Halteres", "equipamento": "Halteres" }]
+              },
+    ]
 
   const exercicioAtual = exercicios.find(ex => ex.id === id) || exercicios[0];
 
   return (
     <div className={styles.container}>
-      <HeaderBack title={exercicios[0].nome} subtitle={`${exercicios[0].numSeries}x ${exercicios[0].numReps} reps`}></HeaderBack>
+      <HeaderBack title={exercicios[0].nome} subtitle={`${exercicios[0].numSeries} ${exercicios[0].numReps} reps`}></HeaderBack>
 
       <div className={styles.content}>
         <div className={styles.mainGrid}>
@@ -75,7 +68,7 @@ export default function Exercicio() {
                     <div className={styles.inputGroup}>
                       <div className={styles.inputField}>
                         <label>Peso (kg)</label>
-                        <input type="number" placeholder={exercicioAtual.cargaAtual.replace('kg', '')} />
+                        <input type="number" placeholder={exercicioAtual.carga.replace('kg', '')} />
                       </div>
                       <div className={styles.inputField}>
                         <label>Reps Realizadas</label>

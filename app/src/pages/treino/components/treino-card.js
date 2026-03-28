@@ -17,9 +17,9 @@ export default function TreinoCard( { treino } ){
                             key={indexE}
                             id={exercicio.id}
                             nome={exercicio.nome}
-                            numSeries={exercicio.numSeries}
-                            numReps={exercicio.numReps}
-                            carga={exercicio.carga}
+                            numSeries={`${exercicio.configuracao.numSeries} x`}
+                            numReps={exercicio.configuracao.repsAlvo}
+                            carga={`${exercicio.configuracao.cargaSugerida} kg`}
                         />
                     ))}
                 </div>
