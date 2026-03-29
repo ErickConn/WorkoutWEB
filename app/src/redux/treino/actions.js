@@ -1,20 +1,56 @@
+import { GET_TREINO_LIST, MAKE_REQUEST, FAIL_REQUEST, GET_EXERCICIO_LIST } from "./actionType";
+import axios from 'axios';
+
 const API_URL = "https://curly-carnival-954pjq4xr5727jx6-3001.app.github.dev";
 
-export const buscarPlanos = () => {
-  return async (dispatch) => {
-    try {
-      const resposta = await fetch(`${API_URL}/planos`);
-      
-      if (!resposta.ok) {
-        throw new Error(`Erro HTTP! status: ${resposta.status}`);
-      }
+export const makeRequest=()=>{
+  return{
+    type: MAKE_REQUEST,
+  }
+}
 
-      const dados = await resposta.json();
-      
-      dispatch({ type: "SET_PLANOS", payload: dados });
-      
-    } catch (erro) {
-      console.error("Erro ao buscar planos:", erro);
-    }
-  };
-};
+export const failRequest = ()=>{
+  return{
+    type: FAIL_REQUEST,
+  }
+}
+
+export const getTreinoList = (data)=>{
+  return{
+    type: GET_TREINO_LIST,
+    payload: data,
+  }
+}
+
+export const getExercicioList = (data)=>{
+  return{
+    type: GET_EXERCICIO_LIST,
+    payload: data,
+  }
+}
+
+export const fetchTreinoList = ()=>{
+  return (dispatch) => {
+    dispatch(makeRequest());
+    axios.get(API_URL+'/planos')
+    .then((res)=>{
+      const treinoList = res.data;
+      dispatch(getTreinoList(treinoList));
+    }).catch(err=>{
+      dispatch(failRequest(err.message));
+    })
+  }
+}
+
+export const fetchExercicioList = ()=>{
+  return (dispatch) => {
+    dispatch(makeRequest());
+    axios.get(API_URL+'/biblioteca_exercicios')
+    .then((res)=>{
+      const exercicioList = res.data;
+      dispatch(getExercicioList(exercicioList));
+    }).catch(err=>{
+      dispatch(failRequest(err.message));
+    })
+  }
+}

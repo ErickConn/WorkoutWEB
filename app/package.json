@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "axios": "^1.14.0",
     "concurrently": "^9.2.1"
   }
 }

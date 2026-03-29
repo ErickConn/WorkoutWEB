@@ -5,16 +5,14 @@ import Header from '../../components/Header';
 import Menu from '../../components/Menu';
 import TreinoCard from "./components/treino-card";
 import { useSelector, useDispatch } from "react-redux";
-import { buscarPlanos } from "../../redux/treino/actions";
+import { fetchTreinoList } from "../../redux/treino/actions";
 
 export default function Treino() {
   const dispatch = useDispatch();
   const planos = useSelector(state => state.treinoReducer.planos);
 
-  console.log(planos)
-
   useEffect(() => {
-    dispatch(buscarPlanos());
+    dispatch(fetchTreinoList());
   }, [dispatch]);
 
   if (!planos || planos.length === 0) {

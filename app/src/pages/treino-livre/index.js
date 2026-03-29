@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from './treino-livre.module.css';
 import Filtro from "../../components/Filtro";
 import HeaderBack from "../../components/HeaderBack";
@@ -6,40 +6,42 @@ import FooterButton from "../../components/FooterButton";
 import SearchBar from "../../components/SearchBar";
 import ExercicioItem from "./components/exercicio-item";
 import ExercicioSelecionado from "./components/exercicio-selecionado";
+import { fetchExercicioList } from "../../redux/treino/actions";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function TreinoLivre() {
   const [busca, setBusca] = useState("");
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   const [nomeTreino, setNomeTreino] = useState("");
-
-  const [biblioteca, setBiblioteca] = useState([
-    { id: 101, nome: "Crucifixo com Halteres", grupo: "Peito", equipamento: "Halteres" },
-    { id: 102, nome: "Puxada Frontal", grupo: "Costas", equipamento: "Máquina" },
-    { id: 103, nome: "Leg Press 45°", grupo: "Pernas", equipamento: "Máquina" },
-    { id: 104, nome: "Rosca Direta", grupo: "Bíceps", equipamento: "Barra" },
-    { id: 105, nome: "Supino Reto", grupo: "Peito", detalhes: "4x 8-10" },
-    { id: 106, nome: "Remada Curvada", grupo: "Costas", detalhes: "4x 10-12" },
-  ]);
-
   const [selecionados, setSelecionados] = useState([]);
+  
+  const dispatch = useDispatch();
+
+  const { exercicios } = useSelector(rootReducer => rootReducer.treinoReducer);
+
+
+  useEffect(() => {
+    dispatch(fetchExercicioList());
+  }, [dispatch]);
 
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
   const adicionarExercicio = (exercicio) => {
-    setBiblioteca(biblioteca.filter(ex => ex.id !== exercicio.id));
-    setSelecionados([...selecionados, exercicio]);
+    if (!selecionados.find(ex => ex.id === exercicio.id)) {
+      setSelecionados([...selecionados, exercicio]);
+    }
   };
 
   const removerExercicio = (id) => {
-    const exercicioParaVoltar = selecionados.find(ex => ex.id === id);
     setSelecionados(selecionados.filter(ex => ex.id !== id));
-    setBiblioteca([...biblioteca, exercicioParaVoltar]);
   };
 
-  const bibliotecaFiltrada = biblioteca.filter((ex) => {
+  const bibliotecaFiltrada = exercicios.filter((ex) => {
+    const jaSelecionado = selecionados.some(sel => sel.id === ex.id);
     const bateBusca = ex.nome.toLowerCase().includes(busca.toLowerCase());
     const bateGrupo = grupoAtivo === "Todos" || ex.grupo === grupoAtivo;
-    return bateBusca && bateGrupo;
+    
+    return !jaSelecionado && bateBusca && bateGrupo;
   });
 
   return (
