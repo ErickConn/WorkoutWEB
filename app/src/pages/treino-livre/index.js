@@ -110,7 +110,7 @@ export default function TreinoLivre() {
         </section>
       </div>
 
-      <FooterButton title="Salvar Treino Personalizado" link={-1} />
+      <FooterButton title="Salvar Treino Personalizado" link='/treino' />
     </div>
   );
 }

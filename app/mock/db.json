@@ -1,58 +1,50 @@
 {
   "planos": [
     {
-      "id": "p1",
+      "id": 1,
       "titulo": "ABC Intermediário",
       "nivel": "Intermediário",
       "categoria": "recomendado",
       "badge": "ABC",
       "badgeColor": "bgGreen",
       "subtitulo": "3 treinos • Foco em Hipertrofia",
-      "tags": ["4x/semana", "60min"],
+      "recomendado": true,
+      "tags": [
+        "4x/semana",
+        "60min"
+      ],
       "rotina": [
         {
           "dia": "A",
           "foco": "Peito e Tríceps",
           "exercicios": [
-            { 
-              "id": 101, 
-              "nome": "Supino Reto", 
+            {
+              "id": 101,
+              "nome": "Supino Reto",
               "grupo": "Peito",
-              "seriesPadrao": 4, 
-              "repsPadrao": 10,
-              "cargaSugerida": 20,
-              "dicas": "Mantenha as escápulas retraídas e os pés firmes no chão.",
-              "substitutos": [105, 106] 
+              "seriesPadrao": 4,
+              "repsPadrao": 10
             },
-            { 
-              "id": 102, 
-              "nome": "Crucifixo Inclinado", 
+            {
+              "id": 102,
+              "nome": "Crucifixo Inclinado",
               "grupo": "Peito",
-              "seriesPadrao": 3, 
-              "repsPadrao": 12,
-              "cargaSugerida": 12,
-              "dicas": "Sinta o alongamento do peitoral, sem descer demais os halteres.",
-              "substitutos": [108] 
+              "seriesPadrao": 3,
+              "repsPadrao": 12
             },
-            { 
-              "id": 103, 
-              "nome": "Tríceps Corda", 
+            {
+              "id": 103,
+              "nome": "Tríceps Corda",
               "grupo": "Tríceps",
-              "seriesPadrao": 3, 
-              "repsPadrao": 12,
-              "cargaSugerida": 15,
-              "dicas": "Abra a corda ao final do movimento para contração máxima.",
-              "substitutos": [107]
+              "seriesPadrao": 3,
+              "repsPadrao": 12
             },
-            { 
-              "id": 104, 
-              "nome": "Tríceps Testa", 
+            {
+              "id": 104,
+              "nome": "Tríceps Testa",
               "grupo": "Tríceps",
-              "seriesPadrao": 3, 
-              "repsPadrao": 10,
-              "cargaSugerida": 8,
-              "dicas": "Mantenha os cotovelos fechados e apontados para o teto.",
-              "substitutos": [109]
+              "seriesPadrao": 3,
+              "repsPadrao": 10
             }
           ]
         },
@@ -60,53 +52,109 @@
           "dia": "B",
           "foco": "Costas e Bíceps",
           "exercicios": [
-            { 
-              "id": 201, 
-              "nome": "Puxada Frontal", 
+            {
+              "id": 201,
+              "nome": "Puxada Frontal",
               "grupo": "Costas",
-              "seriesPadrao": 4, 
-              "repsPadrao": 10,
-              "cargaSugerida": 45,
-              "dicas": "Puxe o peso em direção ao peito, não atrás da nuca.",
-              "substitutos": [203]
+              "seriesPadrao": 4,
+              "repsPadrao": 10
             },
-            { 
-              "id": 202, 
-              "nome": "Rosca Direta", 
+            {
+              "id": 202,
+              "nome": "Remada Curvada",
+              "grupo": "Costas",
+              "seriesPadrao": 4,
+              "repsPadrao": 10
+            },
+            {
+              "id": 203,
+              "nome": "Rosca Direta",
               "grupo": "Bíceps",
-              "seriesPadrao": 3, 
-              "repsPadrao": 10,
-              "cargaSugerida": 10,
-              "dicas": "Evite balançar o tronco. Controle a descida.",
-              "substitutos": [204]
+              "seriesPadrao": 3,
+              "repsPadrao": 10
+            },
+            {
+              "id": 204,
+              "nome": "Rosca Martelo",
+              "grupo": "Bíceps",
+              "seriesPadrao": 3,
+              "repsPadrao": 12
+            }
+          ]
+        },
+        {
+          "dia": "C",
+          "foco": "Pernas e Ombros",
+          "exercicios": [
+            {
+              "id": 301,
+              "nome": "Agachamento Livre",
+              "grupo": "Pernas",
+              "seriesPadrao": 4,
+              "repsPadrao": 10
+            },
+            {
+              "id": 302,
+              "nome": "Leg Press 45°",
+              "grupo": "Pernas",
+              "seriesPadrao": 4,
+              "repsPadrao": 12
+            },
+            {
+              "id": 303,
+              "nome": "Desenvolvimento",
+              "grupo": "Ombros",
+              "seriesPadrao": 4,
+              "repsPadrao": 10
+            },
+            {
+              "id": 304,
+              "nome": "Elevação Lateral",
+              "grupo": "Ombros",
+              "seriesPadrao": 3,
+              "repsPadrao": 15
             }
           ]
         }
       ]
     },
     {
-      "id": "p2",
+      "id": 2,
       "titulo": "Full Body Iniciante",
       "nivel": "Iniciante",
       "categoria": "modelo",
       "badge": "FB",
       "badgeColor": "bgOrange",
       "subtitulo": "1 treino • Adaptação Neural",
-      "tags": ["3x/semana", "45min"],
+      "tags": [
+        "3x/semana",
+        "45min"
+      ],
       "rotina": [
         {
           "dia": "Único",
           "foco": "Corpo Inteiro",
           "exercicios": [
-            { 
-              "id": 301, 
-              "nome": "Leg Press", 
+            {
+              "id": 301,
+              "nome": "Leg Press",
               "grupo": "Pernas",
-              "seriesPadrao": 3, 
-              "repsPadrao": 15,
-              "cargaSugerida": 80,
-              "dicas": "Não trave os joelhos na extensão máxima.",
-              "substitutos": [303]
+              "seriesPadrao": 3,
+              "repsPadrao": 15
+            },
+            {
+              "id": 101,
+              "nome": "Supino Reto",
+              "grupo": "Peito",
+              "seriesPadrao": 3,
+              "repsPadrao": 12
+            },
+            {
+              "id": 201,
+              "nome": "Puxada Frontal",
+              "grupo": "Costas",
+              "seriesPadrao": 3,
+              "repsPadrao": 12
             }
           ]
         }
@@ -114,10 +162,29 @@
     }
   ],
   "biblioteca_exercicios": [
-    { "id": 101, "nome": "Supino Reto", "grupo": "Peito", "equipamento": "Barra" },
-    { "id": 102, "nome": "Crucifixo Inclinado", "grupo": "Peito", "equipamento": "Halteres" },
-    { "id": 103, "nome": "Tríceps Corda", "grupo": "Tríceps", "equipamento": "Polia" },
-    { "id": 104, "nome": "Tríceps Testa", "grupo": "Tríceps", "equipamento": "Halteres" }
-  ],
-  "sessoes_realizadas": []
+    {
+      "id": 101,
+      "nome": "Supino Reto",
+      "grupo": "Peito",
+      "equipamento": "Barra"
+    },
+    {
+      "id": 102,
+      "nome": "Crucifixo Inclinado",
+      "grupo": "Peito",
+      "equipamento": "Halteres"
+    },
+    {
+      "id": 103,
+      "nome": "Tríceps Corda",
+      "grupo": "Tríceps",
+      "equipamento": "Polia"
+    },
+    {
+      "id": 201,
+      "nome": "Puxada Frontal",
+      "grupo": "Costas",
+      "equipamento": "Máquina"
+    }
+  ]
 }

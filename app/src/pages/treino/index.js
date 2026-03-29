@@ -11,6 +11,8 @@ export default function Treino() {
   const dispatch = useDispatch();
   const planos = useSelector(state => state.treinoReducer.planos);
 
+  console.log(planos)
+
   useEffect(() => {
     dispatch(buscarPlanos());
   }, [dispatch]);

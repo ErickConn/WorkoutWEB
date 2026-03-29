@@ -224,3 +224,130 @@
   cursor: pointer;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
+
+.cardTreino {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.seta {
+  transition: transform 0.3s ease;
+  font-size: 1.5rem;
+  color: #9ca3af;
+}
+
+.setaAtiva {
+  transform: rotate(90deg);
+  color: #111827;
+}
+
+.containerExpansivel {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.itemRotina {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+}
+
+.headerRotina {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.miniBadge {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.focoRotina {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0;
+}
+
+.qtdEx {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.listaExerciciosPreview {
+  padding-left: 0.25rem;
+}
+
+.linhaExercicio {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #4b5563;
+}
+
+.bullet { color: #d1d5db; }
+.nomeEx { flex: 1; }
+.metaEx { color: #9ca3af; font-weight: 500; }
+
+.verMais {
+  font-size: 0.7rem;
+  color: #3b82f6;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+
+.verMaisBtn {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: #3b82f6;
+  font-weight: 700;
+  margin-top: 8px;
+  cursor: pointer;
+  padding: 0;
+  display: block;
+  text-align: left;
+  transition: opacity 0.2s;
+}
+
+.verMaisBtn:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.listaExerciciosPreview {
+  transition: all 0.3s ease-in-out;
+}
+
+.btnIniciar {
+  margin-top: 0.5rem;
+  background: #111827;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  font-size: 0.875rem;
+  width: 300px;
+}
