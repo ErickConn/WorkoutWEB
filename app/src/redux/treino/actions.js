@@ -1,7 +1,7 @@
 import { GET_TREINO_LIST, MAKE_REQUEST, FAIL_REQUEST, GET_EXERCICIO_LIST } from "./actionType";
 import axios from 'axios';
 
-const API_URL = "https://curly-carnival-954pjq4xr5727jx6-3001.app.github.dev";
+const API_URL = "https://json-server-wweb.onrender.com";
 
 export const makeRequest=()=>{
   return{
