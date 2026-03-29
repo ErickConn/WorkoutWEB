@@ -1,9 +1,11 @@
 import React from "react";
 import styles from "../progresso.module.css";
+import { calcularRelatorio } from "../utils/calcularRelatorio";
 
-export default function ProgressReport({ cargaInicial, cargaAtual, pesoInicial, pesoAtual, semanas }) {
+export default function ProgressReport({ dadosUsuario }) {
+    const relatorio = calcularRelatorio(dadosUsuario);
     // Se só existe uma semana, não há dados suficientes para comparação
-    if (semanas <= 1) {
+    if (!relatorio.suficiente) {
         return (
         <div className={styles.report}>
             <h3>📊 Relatório de Evolução</h3>
@@ -12,18 +14,14 @@ export default function ProgressReport({ cargaInicial, cargaAtual, pesoInicial, 
         );
     }
 
-    const variacaoForca = (cargaAtual - cargaInicial).toFixed(1);
-    const variacaoPercForca = (variacaoForca / cargaInicial * 100).toFixed(1);
-    const variacaoPeso = (pesoAtual - pesoInicial).toFixed(1);
-    const mediaProgresso = ((cargaAtual - cargaInicial) / semanas).toFixed(1);
-
     return (
         <div className={styles.report}>
         <h3>📊 Relatório de Evolução</h3>
         <ul>
-            <li>Força {variacaoForca > 0 ? "aumentou" : "diminuiu"} {variacaoPercForca}% em {semanas} semanas.</li>
-            <li>{variacaoPeso > 0 ? "Ganho" : "Perda"} de {Math.abs(variacaoPeso)}kg de peso corporal.</li>
-            <li>Progressão média de {mediaProgresso}kg/semana.</li>
+            <li>Força {relatorio.variacaoForca > 0 ? "aumentou" : "diminuiu"} <strong>{relatorio.variacaoPercForca}%</strong> em {relatorio.semanas} semanas.</li>
+            <li>{relatorio.variacaoPeso > 0 ? "Ganho" : "Perda"} de <strong>{Math.abs(relatorio.variacaoPeso)}kg</strong> de peso corporal.</li>
+            <li>Progressão média de <strong>{relatorio.mediaProgresso}kg/semana</strong>.</li>
+            <li>Consistência de treino: <strong>Em desenvolvimento</strong></li>
         </ul>
         </div>
     );
