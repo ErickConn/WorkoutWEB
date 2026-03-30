@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './perfil.module.css';
 import Header from '../../components/Header';
 import Menu from '../../components/Menu';
+import { fetchBiometriaList } from '../../redux/Biometria/actions';
+import { useDispatch,useSelector } from 'react-redux';
 
 
 export default function Perfil() {
-   
     const [fotoUsuario, setFotoUsuario] = useState(null);
-
+    const dispatch = useDispatch();
+    const biometria = useSelector(state => state.biometriaReducer.biometria);
+  console.log('Dados biométricos:', biometria);
+  useEffect(() => {
+      dispatch(fetchBiometriaList());
+    }, [dispatch]);
+    if (!biometria || biometria.length === 0) {
+    return (
+      <div className={styles.container}>
+        <p>Carregando dados biométricos...</p>
+      </div>
+    );
+  }
+   
     const handleUploadFoto = (event) => {
         const arquivo = event.target.files[0];
         if (arquivo) {
@@ -45,7 +59,7 @@ export default function Perfil() {
                     </div>
 
                     <div className={styles.informacoesUsuario}>
-                        <h2 id="nomeUsuario" className={styles.nome}>Roberto Carlos</h2>
+                        <h2 id="nomeUsuario" className={styles.nome}>{biometria[0]?.usuario.nome}</h2>
                         <p id="emailUsuario" className={styles.email}>roberto.carlos@email.com</p>
                         <div className={styles.badgeAluno}>
                             <span className={styles.icone}>👤</span> Aluno
@@ -60,22 +74,22 @@ export default function Perfil() {
                     <div className={styles.gridDados}>
                         <div className={styles.dadoItem}>
                             <span className={styles.dadoLabel}>Peso Atual</span>
-                            <p className={styles.dadoValor}>78.5 <span className={styles.dadoUnidade}>kg</span></p>
+                            <p className={styles.dadoValor}>{biometria[0]?.usuario.perfil_biometrico.peso_kg}<span className={styles.dadoUnidade}>kg</span></p>
                         </div>
                         
                         <div className={styles.dadoItem}>
                             <span className={styles.dadoLabel}>Altura</span>
-                            <p className={styles.dadoValor}>175 <span className={styles.dadoUnidade}>cm</span></p>
+                            <p className={styles.dadoValor}>{biometria[0]?.usuario.perfil_biometrico.altura_cm} <span className={styles.dadoUnidade}>cm</span></p>
                         </div>
                         
                         <div className={styles.dadoItem}>
                             <span className={styles.dadoLabel}>Idade</span>
-                            <p className={styles.dadoValor}>28 <span className={styles.dadoUnidade}>anos</span></p>
+                            <p className={styles.dadoValor}>{biometria[0]?.usuario.perfil_biometrico.idade} <span className={styles.dadoUnidade}>anos</span></p>
                         </div>
                         
                         <div className={styles.dadoItem}>
                             <span className={styles.dadoLabel}>TMB</span>
-                            <p className={styles.dadoValor}>1845 <span className={styles.dadoUnidade}>kcal</span></p>
+                            <p className={styles.dadoValor}>{biometria[0]?.usuario.analise_metabolica.tmb_kcal}<span className={styles.dadoUnidade}>kcal</span></p>
                         </div>
                     </div>
                 </section>
