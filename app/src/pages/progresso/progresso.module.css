@@ -48,7 +48,7 @@ footer {
 .cards {
   display: flex;
   gap: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   margin-top: 20px;
   flex-wrap: wrap; /* permite quebrar linha em telas menores */
   flex-direction: row;
@@ -58,8 +58,8 @@ footer {
     padding: 15px;
     border-radius: 8px;
     flex: 1;
-    min-width: 150px; /* largura mínima para não ficar muito pequeno */
-    min-height: 100px; /* altura mínima para não ficar muito pequeno */
+    min-width: 110px; /* largura mínima para não ficar muito pequeno */
+    min-height: 90px; /* altura mínima para não ficar muito pequeno */
     text-align: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
@@ -139,6 +139,13 @@ footer {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
+}
+
+.report li {
+  margin-bottom: 8px;
+  font-size: 15px;      
+  line-height: 1.4;     
+
 }
 
 /* Media queries para telas menores */
