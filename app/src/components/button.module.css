@@ -1,0 +1,40 @@
+.button {
+    padding: 10px 20px;
+    background-color: #f9fafb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #267acc;
+}
+
+.button.danger {
+    background-color: #ff7070;
+}
+
+.button.danger:hover {
+    background-color: #cc5656;
+}
+
+.button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Estilos adicionais para a biblioteca de exercícios */
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #eee;   
+}
+
+.item button {
+  margin-left: 10px;
+}
