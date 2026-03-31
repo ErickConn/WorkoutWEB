@@ -8,7 +8,7 @@ import Home from './pages/home/Home';
 import TreinoLivre from './pages/treino-livre';
 import Exercicio from './pages/exercicio';
 import Progresso from './pages/progresso/Progresso';
-import Selecttreino from './pages/select-treino';
+import Selecttreino from './pages/select-treino/select-treino';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import BibliotecaTreino from './pages/biblioteca-treino';
