@@ -80,7 +80,7 @@ export default function TreinoLivre() {
             <Button 
               title="📚 Ver Biblioteca Completa" 
               link="/biblioteca-exercicio"
-              className={styles.bibliotecaLink}
+              variant="primary"
             />
           </div>          
           <div className={styles.listaBiblioteca}>
