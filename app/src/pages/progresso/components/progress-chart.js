@@ -55,11 +55,13 @@ export default function ProgressChart({datas, cargas, pesos}) {
           Evolução do Peso
         </button>
       </div>
-      {tipoGrafico === "forca" ? (
-        <Bar data={dadosForca} options={opcoesForca} />
-      ) : (
-        <Line data={dadosPeso} />
-      )}
+      <div className={styles['chart-area.canvas']}>
+        {tipoGrafico === "forca" ? (
+          <Bar data={dadosForca} options={opcoesForca} />
+        ) : (
+          <Line data={dadosPeso} />
+        )}
+      </div>
     </div>
   );
 }

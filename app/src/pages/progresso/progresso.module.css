@@ -7,20 +7,13 @@ body {
   background: #f5f6f8;
   color:#333;
   margin: 0;
-  padding: 24px 16px;
+  padding: 0;
 }
 
-footer {
-  position: fixed;
-  bottom : 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  border-top: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-  margin-top: 40px;
-  color: #777;
+main {
+  flex: 1;
+  padding: 24px 16px;
+  padding-bottom: 120px; /* espaço reservado para o menu-navegacao fixo */
 }
 
 .app-header {
@@ -58,7 +51,7 @@ footer {
     padding: 15px;
     border-radius: 8px;
     flex: 1;
-    min-width: 110px; /* largura mínima para não ficar muito pequeno */
+    min-width: 100px; /* largura mínima para não ficar muito pequeno */
     min-height: 90px; /* altura mínima para não ficar muito pequeno */
     text-align: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -132,6 +125,13 @@ footer {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
+  /*height: 350px;          /* altura fixa para o gráfico */
+}
+
+.chart-area canvas {
+  max-width: 80%;
+  height: 250px;             /* altura fixa para o canvas do gráfico */
+  overflow-y: auto;       /* scroll interno se necessário */
 }
 
 /* Relatório */
@@ -143,8 +143,8 @@ footer {
 
 .report li {
   margin-bottom: 8px;
-  font-size: 15px;      
-  line-height: 1.4;     
+  font-size: 14px;      
+  line-height: 1;     
 
 }
 
