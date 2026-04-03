@@ -19,9 +19,8 @@ export default function Treino() {
   if (!planos || planos.length === 0) {
     return (
       <div className={styles.mainContainer}>
-        <Header />
-        <p>Carregando treino...</p>
-        <Menu />
+        <OffCanvasNavBar></OffCanvasNavBar>
+        <p>Carregando Treino...</p>
       </div>
     );
   }

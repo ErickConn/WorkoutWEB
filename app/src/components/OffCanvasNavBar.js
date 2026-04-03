@@ -6,6 +6,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import { NavLink } from "react-router-dom";
+import "./OffCanvas.css";
 
 export default function OffCanvasNavBar(){
     const expand = "true";
@@ -26,18 +28,26 @@ export default function OffCanvasNavBar(){
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="/">Perfil</Nav.Link>
-                  <Nav.Link href="/treino">Treino</Nav.Link>
-                  <Nav.Link href= "/progresso">Progresso</Nav.Link>
+                  <NavLink className={({ isActive }) => isActive ? "Link active" : "Link"} to='/'>
+                    Perfil
+                  </NavLink>
+                  <NavLink className={({ isActive }) => isActive ? "Link active" : "Link"} to='/treino'>
+                    Treino
+                  </NavLink>
+                  <NavLink className={({ isActive }) => isActive ? "Link active" : "Link"} to='/progresso'>
+                    Progresso
+                  </NavLink>
                   <NavDropdown
                     title="Bibliotecas"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
-                    <NavDropdown.Item href="/biblioteca-treino">Biblioteca de Treino</NavDropdown.Item>
+                    <NavLink className="Link Item" to='/biblioteca-treino'>
+                    Biblioteca de Treino
+                    </NavLink>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="/biblioteca-exercício">
-                      Biblioteca de Exercício
-                    </NavDropdown.Item>
+                     <NavLink className="Link Item" to='/biblioteca-exercicio'>
+                        Biblioteca de Exercício
+                    </NavLink>
                   </NavDropdown>
                 </Nav>
               </Offcanvas.Body>

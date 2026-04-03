@@ -5,6 +5,7 @@ import Header from '../../components/Header';
 import Menu from '../../components/Menu';
 import { fetchBiometriaList } from '../../redux/Biometria/actions';
 import { useDispatch,useSelector } from 'react-redux';
+import OffCanvasNavBar from '../../components/OffCanvasNavBar';
 
 
 export default function Perfil() {
@@ -32,10 +33,8 @@ export default function Perfil() {
 
     return (
         <>
-            <Header titulo="Champion's Body" subtitulo="Meu Perfil" /> 
+            <OffCanvasNavBar></OffCanvasNavBar>
             <main className={styles.containerPerfil}>
-
-               
                 <section className={`${styles.cartao} ${styles.cartaoUsuario}`}>
                     <div className={styles.avatar}>
                         <label htmlFor="uploadFoto" style={{ cursor: 'pointer' }}>
@@ -125,7 +124,6 @@ export default function Perfil() {
                 </section>
 
                 <Link to= '/Home' className={styles.btnEditar}> Editar Perfil</Link>
-                <Menu paginaAtual="perfil" />
             </main>
         </>
     );

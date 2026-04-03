@@ -5,6 +5,7 @@ import ProgressChart from "./components/progress-chart";
 import ProgressReport from "./components/progress-report";
 import ProgressCard from "./components/progress-card";
 import Menu from '../../components/Menu';
+import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 
 export default function Progresso() {
   // Simulação de dados vindos do backend => zerar valores para dps substituir por chamada real
@@ -53,9 +54,7 @@ export default function Progresso() {
 
   return (
     <>
-    <header className={styles['app-header']}>
-        <h2>Champion's Body - DashBoard de Progresso</h2>
-    </header>
+    <OffCanvasNavBar></OffCanvasNavBar>
     <main> 
         <div className={styles.dashboard}>
             {/* Cards */}
@@ -69,7 +68,6 @@ export default function Progresso() {
             {/* Relatório */}
             <ProgressReport dadosUsuario={dadosUsuario}></ProgressReport>
         </div>
-        <Menu></Menu>
     </main>
     </>
   )

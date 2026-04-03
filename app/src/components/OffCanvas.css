@@ -1,0 +1,19 @@
+.Link{
+    text-decoration: none;
+    margin-top: 5px;
+    color: black;
+}
+
+.Item{
+    margin: 10px;
+    width: 100%;
+    padding: 5px;
+}
+
+.Item:hover{
+    background-color: rgb(233, 233, 233);
+}
+
+.active{
+    color: blue;
+}
