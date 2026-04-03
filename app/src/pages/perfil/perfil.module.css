@@ -17,7 +17,6 @@
 .containerPerfil {
     margin: 20px auto 20px auto; 
     padding: 0 15px;
-    padding-bottom: 120px;
     display: flex;
     flex-direction: column;
     gap: 15px; 
