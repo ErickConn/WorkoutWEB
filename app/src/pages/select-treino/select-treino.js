@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "./select-treino.module.css";
 import { Link } from 'react-router-dom';
+import { useDispatch,useSelector } from 'react-redux';
+import { fetchTreinoList } from '../../redux/treino/actions';
+
 
 export default function Selecttreino() {
+    const dispatch = useDispatch();
+    const treino = useSelector(state => state.treinoReducer.planos[0]);
+    console.log('Dados dos treinos:', treino);
+    useEffect(() => {
+        dispatch(fetchTreinoList());
+    }, [dispatch]);
     return (
         <div className={styles['app-container']}>
             <main className={styles.content}>
@@ -15,7 +24,7 @@ export default function Selecttreino() {
                     <div className={styles['card-header-small']}>
                         <span>📅 ÚLTIMO TREINO</span>
                     </div>
-                    <h3>Treino A - Peito e Tríceps</h3>
+                    <h3>{`${treino?.rotina[0]?.dia} - ${treino?.rotina[0]?.foco}`}</h3>
                     <p className={styles['text-muted']}>Realizado há 2 dias</p>
                 </Link>
 
@@ -24,8 +33,8 @@ export default function Selecttreino() {
                         <span className={styles['badge-title']}>✨ RECOMENDADO HOJE</span>
                         <span className={styles.arrow}>➔</span>
                     </div>
-                    <h2>Treino B</h2>
-                    <p className={styles.subtitle}>Costas e Bíceps</p>
+                    <h2>Treino {treino?.rotina[1]?.dia}</h2>
+                    <p className={styles.subtitle}>{treino?.rotina[1]?.foco}</p>
                     <div className={styles['card-stats']}>
                         <span>6 exercícios</span> • <span>~50 min</span>
                     </div>
@@ -35,8 +44,8 @@ export default function Selecttreino() {
                     <div className={styles['card-body-flex']}>
                         <div className={`${styles['icon-letter']} ${styles['bg-blue-light']}`}>A</div>
                         <div className={styles['workout-info']}>
-                            <h3>Treino A</h3>
-                            <p className={styles['text-muted']}>Peito e Tríceps</p>
+                            <h3>Treino {treino?.rotina[0]?.dia}</h3>
+                            <p className={styles['text-muted']}>{treino?.rotina[0]?.foco}</p>
                         </div>
                         <div className={styles['workout-time']}>
                             <span className={styles['time-label']}>Última vez</span>
@@ -52,8 +61,8 @@ export default function Selecttreino() {
                     <div className={styles['card-body-flex']}>
                         <div className={`${styles['icon-letter']} ${styles['bg-purple-light']}`}>C</div>
                         <div className={styles['workout-info']}>
-                            <h3>Treino C</h3>
-                            <p className={styles['text-muted']}>Pernas e Ombros</p>
+                            <h3>Treino {treino?.rotina[2]?.dia}</h3>
+                            <p className={styles['text-muted']}>{treino?.rotina[2]?.foco}</p>
                         </div>
                         <div className={styles['workout-time']}>
                             <span className={styles['time-label']}>Última vez</span>

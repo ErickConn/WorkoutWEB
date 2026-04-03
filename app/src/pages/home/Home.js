@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './home.module.css';
 import { Link } from 'react-router-dom';
+import { fetchBiometriaList } from '../../redux/Biometria/actions';
+import { useDispatch,useSelector } from 'react-redux';
 
 export default function Home() {
-
-
+  const dispatch = useDispatch();
+  const biometria = useSelector(state => state.biometriaReducer.biometria);
+  console.log('Dados biométricos:', biometria);
+  useEffect(() => {
+      dispatch(fetchBiometriaList());
+    }, [dispatch]);
+    if (!biometria || biometria.length === 0) {
+    return (
+      <div className={styles.container}>
+        <p>Carregando dados biométricos...</p>
+      </div>
+    );
+  }
   return (
    <div className={styles.pageWrapper}>
       <div className={styles.container}>
@@ -26,15 +39,15 @@ export default function Home() {
             <div className={styles.inputGroup}>
               <div className={styles.inputWrapper}>
                 <label>Peso Atual (kg)</label>
-                <input type="number" step="0.1" min="0" placeholder='78.5' />
+                <input type="number" step="0.1" min="0" placeholder={biometria[0]?.usuario.perfil_biometrico.peso_kg} />
               </div>
               <div className={styles.inputWrapper}>
                 <label>Altura (cm)</label>
-                <input type="number" step="0.1" min="0" placeholder='175'/>
+                <input type="number" step="0.1" min="0" placeholder={biometria[0]?.usuario.perfil_biometrico.altura_cm} />
               </div>
               <div className={styles.inputWrapper}>
                 <label>Idade</label>
-                <input type="number" min="0" placeholder='28' />
+                <input type="number" min="0" placeholder={biometria[0]?.usuario.perfil_biometrico.idade} />
               </div>
               <div className={styles.inputWrapper}>
                 <label>Nível de Atividade</label>
@@ -58,8 +71,8 @@ export default function Home() {
                 <span className={styles.resultValue}>1,845 kcal</span>
               </div>
               <div className={styles.resultBox}>
-                <span className={styles.resultLabel}>Gasto Energético Total</span>
-                <span className={styles.resultValue}>2,490 kcal</span>
+                <span className={styles.resultLabel}>{biometria[0]?.usuario.analise_metabolica.tmb_kcal} Kcal</span>
+                <span className={styles.resultValue}>{biometria[0]?.usuario.analise_metabolica.gasto_energetico_total_kcal} Kcal</span>
               </div>
             </div>
           </div>

@@ -8,6 +8,7 @@ import ExercicioItem from "./components/exercicio-item";
 import ExercicioSelecionado from "./components/exercicio-selecionado";
 import { fetchExercicioList } from "../../redux/treino/actions";
 import { useSelector, useDispatch } from "react-redux";
+import Button from "../../components/Button";
 
 export default function TreinoLivre() {
   const [busca, setBusca] = useState("");
@@ -75,6 +76,13 @@ export default function TreinoLivre() {
 
         <section className={styles.bibliotecaSection}>
           <h3 className={styles.sectionTitle}>Biblioteca de Exercícios</h3>
+          <div>
+            <Button 
+              title="📚 Ver Biblioteca Completa" 
+              link="/biblioteca-exercicio"
+              variant="primary"
+            />
+          </div>          
           <div className={styles.listaBiblioteca}>
             {bibliotecaFiltrada.length > 0 ? (
               bibliotecaFiltrada.map(ex => (

@@ -1,0 +1,118 @@
+/* Container principal da biblioteca */
+.biblioteca {
+  padding: 20px;
+  background-color: #fff;
+  min-height: 100vh;
+  padding-top: 80px; /* ajuste conforme a altura do HeaderBack */
+
+}
+
+/* Barra de busca */
+.search {
+  width: 100%;
+  padding: 10px;
+  margin: 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* Filtro de grupos musculares */
+.filtro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filtro button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.filtro button.active {
+  background-color: #3399ff;
+  color: #fff;
+}
+
+/* Lista de exercícios */
+.lista {
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  background: #f5f6f8;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.item input {
+  display: block;
+  margin-bottom: 8px;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.item button {
+  margin-right: 5px;
+  background: #3399ff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.item button:last-child {
+  background: #ff7070;
+}
+
+/* Dica técnica */
+.dica {
+  font-size: 14px;
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Estado vazio */
+.emptyState {
+  margin-top: 20px;
+  text-align: center;
+  color: #777;
+}
+
+/* Link para biblioteca (se usado em outra página) */
+.bibliotecaLink {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0f4f8;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.bibliotecaLink p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Botão da biblioteca */
+.bibliotecaButton {
+  padding: 10px 20px;
+  background-color: #3399ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.bibliotecaButton:hover {
+  background-color: #267acc;
+}

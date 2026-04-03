@@ -1,0 +1,58 @@
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+
+}
+
+/* Variantes de botão */
+.primary {
+  background-color: #3399ff;
+  color: #fff;
+}
+
+.primary:hover {
+  background-color: #267acc;
+}
+
+.danger {
+  background-color: #ff7070;
+  color: #fff;
+}
+
+.danger:hover {
+  background-color: #cc5656;
+}
+
+.secondary {
+  background-color: #f9fafb;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.secondary:hover {
+  background-color: #e6e6e6;
+}
+
+/* Estado desabilitado */
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Estilos adicionais para a biblioteca de exercícios */
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #eee;   
+}
+
+.item button {
+  margin-left: 10px;
+}
