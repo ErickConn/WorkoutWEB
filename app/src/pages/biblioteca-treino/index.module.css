@@ -9,6 +9,7 @@
 .containerLista{
   margin-top: 20px;
   margin-bottom: 20px;
+  padding: 20px;
 }
 
 .cardHeader {
@@ -346,4 +347,54 @@
   font-weight: bold;
   font-size: 0.875rem;
   width: 300px;
+}
+
+.headerRotina {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.btnEliminarPlanoCompleto {
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 4px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btnX {
+  background: #ffeded;
+  color: #ff4d4d;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto; /* Empurra para o final da linha no headerRotina */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.btnX:hover {
+  background: #ff4d4d;
+  color: white;
+}
+
+.headerRotina {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }

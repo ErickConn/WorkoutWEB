@@ -6,7 +6,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "./OffCanvas.css";
 
 export default function OffCanvasNavBar(){
@@ -14,7 +14,7 @@ export default function OffCanvasNavBar(){
        return(
         <Navbar expand={expand} className="bg-body-tertiary mb-3">
           <Container fluid>
-            <Navbar.Brand href="#">🏆 Champions's Body</Navbar.Brand>
+            <Link to="/treino" className="Link">🏆 Champions's Body</Link>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}

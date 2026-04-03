@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from "react";
+import { Modal, Button as BootstrapButton } from 'react-bootstrap';
 import styles from './treino-livre.module.css';
 import Filtro from "../../components/Filtro";
-import HeaderBack from "../../components/HeaderBack";
-import FooterButton from "../../components/FooterButton";
 import SearchBar from "../../components/SearchBar";
 import ExercicioItem from "./components/exercicio-item";
 import ExercicioSelecionado from "./components/exercicio-selecionado";
 import { fetchExercicioList } from "../../redux/treino/actions";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
+import FooterButton from "../../components/FooterButton";
+import { adicionarTreinoNaRotina } from "../../redux/treino/actions";
 
-export default function TreinoLivre() {
+export default function TreinoLivreModal({ show, handleClose }) {
   const [busca, setBusca] = useState("");
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   const [nomeTreino, setNomeTreino] = useState("");
   const [selecionados, setSelecionados] = useState([]);
   
   const dispatch = useDispatch();
-
-  const { exercicios } = useSelector(rootReducer => rootReducer.treinoReducer);
-
+  const exercicios = useSelector(state => state.treinoReducer.exercicios);
+  const { rotina } = useSelector(state => state.treinoReducer.planoEmEdicao);
 
   useEffect(() => {
+  if (show && exercicios.length === 0) {
     dispatch(fetchExercicioList());
-  }, [dispatch]);
+  }
+}, [show, exercicios.length, dispatch]);
 
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
@@ -41,15 +43,26 @@ export default function TreinoLivre() {
     const jaSelecionado = selecionados.some(sel => sel.id === ex.id);
     const bateBusca = ex.nome.toLowerCase().includes(busca.toLowerCase());
     const bateGrupo = grupoAtivo === "Todos" || ex.grupo === grupoAtivo;
-    
     return !jaSelecionado && bateBusca && bateGrupo;
   });
 
-  return (
-    <div className={styles.container}>
-      <HeaderBack title="Criar Treino Personalizado" subtitle="Monte sua sessão" />
+  const handleSalvar = () => {
+  const letras = ["A", "B", "C", "D", "E", "F", "G"];
+  const letraAtual = letras[rotina.length] || "?";
 
-      <div className={styles.content}>
+  dispatch(adicionarTreinoNaRotina(nomeTreino, selecionados, letraAtual));
+
+  handleClose();
+  setSelecionados([]);
+  setNomeTreino("");
+};
+
+  return (
+    <Modal show={show} onHide={handleClose} size="lg" scrollable centered>
+      <Modal.Header closeButton className={styles.modalHeader}>
+      </Modal.Header>
+
+      <Modal.Body className={styles.modalBody}>
         <section className={styles.card}>
           <label className={styles.label}>Nome do Treino</label>
           <input 
@@ -62,7 +75,7 @@ export default function TreinoLivre() {
         </section>
 
         <SearchBar 
-          placeholder="Buscar exercícios para adicionar..." 
+          placeholder="Buscar exercícios..." 
           value={busca}
           onChange={setBusca}
         />
@@ -75,10 +88,10 @@ export default function TreinoLivre() {
         />
 
         <section className={styles.bibliotecaSection}>
-          <h3 className={styles.sectionTitle}>Biblioteca de Exercícios</h3>
-          <div>
+          <div className={styles.headerFlex}>
+            <h3 className={styles.sectionTitle}>Biblioteca</h3>
             <Button 
-              title="📚 Ver Biblioteca Completa" 
+              title="Ver Tudo" 
               link="/biblioteca-exercicio"
               variant="primary"
             />
@@ -93,15 +106,14 @@ export default function TreinoLivre() {
                 />
               ))
             ) : (
-              <p className={styles.noResults}>Nenhum exercício disponível nesta categoria.</p>
+              <p className={styles.noResults}>Nenhum exercício encontrado.</p>
             )}
           </div>
         </section>
 
         <section className={styles.selecionadosCard}>
           <div className={styles.selecionadosHeader}>
-            <h3 className={styles.selecionadosTitle}>📋 Selecionados</h3>
-            <span className={styles.countBadge}>{selecionados.length} exercícios</span>
+            <h3 className={styles.selecionadosTitle}>📋 Selecionados ({selecionados.length})</h3>
           </div>
 
           <div className={styles.listaSelecionados}>
@@ -114,13 +126,15 @@ export default function TreinoLivre() {
                     />
                   ))
             ) : (
-                <p className={styles.emptySelection}>Nenhum exercício selecionado ainda.</p>
+                <p className={styles.emptySelection}>Selecione exercícios acima.</p>
             )}
           </div>
         </section>
-      </div>
+      </Modal.Body>
 
-      <FooterButton title="Salvar Treino Personalizado" link='/treino' />
-    </div>
+      <Modal.Footer>
+        <FooterButton title="Salvar Treino" onClick={()=>handleSalvar()}></FooterButton>
+      </Modal.Footer>
+    </Modal>
   );
 }

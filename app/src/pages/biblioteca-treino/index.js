@@ -56,7 +56,7 @@ export default function BibliotecaTreino() {
             <p>Nenhum treino de nível <strong>{nivelAtivo}</strong> encontrado para <strong>"{busca}"</strong>.</p>
           </div>
         )}
-        <FooterButton title="Criar Novo Treino" link="/treino-livre"></FooterButton>
+        <FooterButton title="Criar Novo Plano" link="/plano"></FooterButton>
       </div>
     </div>
   );

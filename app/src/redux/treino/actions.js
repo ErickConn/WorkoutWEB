@@ -54,3 +54,57 @@ export const fetchExercicioList = ()=>{
     })
   }
 }
+
+export const adicionarTreinoNaRotina = (nomeTreino, exerciciosSelecionados, letra) => {
+  return {
+    type: 'ADICIONAR_TREINO_NA_ROTINA',
+    payload: {
+      dia: letra,
+      foco: nomeTreino || `Treino ${letra}`,
+      exercicios: exerciciosSelecionados.map(ex => ({
+        ...ex,
+        seriesPadrao: 3,
+        repsPadrao: 12
+      }))
+    }
+  };
+};
+
+export const salvarPlanoCompleto = (plano) => {
+  return (dispatch) => {
+    dispatch(makeRequest());
+    return axios.post(`${API_URL}/planos`, plano)
+      .then((res) => {
+        dispatch({ type: "SALVAR_PLANO_COMPLETO", payload: res.data });
+        return res.data; 
+      })
+      .catch((err) => {
+        dispatch(failRequest(err.message));
+        throw err;
+      });
+  };
+};
+
+
+export const removerPlano = (id) => {
+  return (dispatch) => {
+    dispatch(makeRequest());
+    axios.delete(`${API_URL}/planos/${id}`)
+      .then(() => {
+        dispatch({
+          type: "ELIMINAR_PLANO_SUCCESS",
+          payload: id
+        });
+      })
+      .catch(err => {
+        dispatch(failRequest(err.message));
+      });
+  };
+};
+
+export const removerTreinoDaRotina = (dia) => {
+  return {
+    type: 'REMOVER_TREINO_DA_ROTINA',
+    payload: dia
+  };
+};
