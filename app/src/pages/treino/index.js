@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from './treino.module.css';
 import { Link } from "react-router-dom";
 import Header from '../../components/Header';
 import Menu from '../../components/Menu';
 import TreinoCard from "./components/treino-card";
 import { useSelector, useDispatch } from "react-redux";
+import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 import { fetchTreinoList } from "../../redux/treino/actions";
 
 export default function Treino() {
@@ -30,7 +31,7 @@ export default function Treino() {
 
   return (
     <>
-      <Header className={styles['app-header']} />
+      <OffCanvasNavBar/>
       <main className={styles.mainContainer}>
         <Link to='/select-treino' className={styles.progressCard}>
           <div className={styles.progressHeader}>
@@ -60,8 +61,7 @@ export default function Treino() {
         </Link>
 
         {rotinaHoje && <TreinoCard rotina={rotinaHoje} />}
-        
-        <Menu />
+      
       </main>
     </>
   );
