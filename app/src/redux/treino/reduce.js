@@ -35,13 +35,28 @@ const treinoReducer = (state = initialState, action) => {
       };
 
     case 'REMOVER_TREINO_DA_ROTINA':
+      const { id, dia } = action.payload;
+      if (!id) {
+        return {
+          ...state,
+          planoEmEdicao: {
+            ...state.planoEmEdicao,
+            rotina: state.planoEmEdicao.rotina.filter(item => item.dia !== dia)
+          }
+        };
+      }
       return {
         ...state,
-        planoEmEdicao: {
-          ...state.planoEmEdicao,
-          rotina: state.planoEmEdicao.rotina.filter(treino => treino.dia !== action.payload)
-        }
-      };
+        planos: state.planos.map(plano => 
+          String(plano.id) === String(action.payload.id) 
+            ? { 
+                ...plano, 
+                rotina: plano.rotina.filter(item => item.dia !== action.payload.dia) 
+              }
+            : plano
+        )
+      }
+    
 
     case 'SALVAR_PLANO_COMPLETO':
       return {

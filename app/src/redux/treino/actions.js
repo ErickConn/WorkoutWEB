@@ -102,9 +102,38 @@ export const removerPlano = (id) => {
   };
 };
 
-export const removerTreinoDaRotina = (dia) => {
+export const removerTreinoDaRotinaEdicao = (dia) => {
   return {
     type: 'REMOVER_TREINO_DA_ROTINA',
-    payload: dia
+    payload: { id: null, dia: dia }
+  };
+};
+
+
+export const removerTreinoDaAPI = (idPlano, diaParaRemover, rotinaAtual) => {
+  return (dispatch) => {
+
+    if (rotinaAtual.length <= 1) {
+      if (window.confirm("Este é o último treino deste plano. Deseja excluir o plano completo?")) {
+        return dispatch(removerPlano(idPlano));
+      }
+      return;
+    }
+
+    const novaRotina = rotinaAtual.filter(item => item.dia !== diaParaRemover);
+
+    dispatch(makeRequest());
+
+    axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina })
+      .then(() => {
+        dispatch({
+          type: 'REMOVER_TREINO_DA_ROTINA',
+          payload: { id: idPlano, dia: diaParaRemover }
+        });
+      })
+      .catch(err => {
+        dispatch(failRequest(err.message));
+        alert("Erro ao remover treino. Tente novamente.");
+      });
   };
 };

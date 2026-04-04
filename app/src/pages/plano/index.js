@@ -67,7 +67,7 @@ export default function PaginaPlano() {
 
       {planoEmEdicao.rotina.length > 0 && (
         <div className={styles.previewSection}>
-          <ListaTreinos titulo="Novo Plano" dados={cardTemporario} />
+          <ListaTreinos dados={cardTemporario} />
           
          <FooterButton title="Salvar Plano Personalizado" onClick={salvarPlanoFinal}></FooterButton>
         </div>

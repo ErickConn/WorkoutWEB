@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 import styles from '../index.module.css';
 import { Link } from 'react-router-dom';
-import { removerPlano, removerTreinoDaRotina } from '../../../redux/treino/actions'; 
+import { removerPlano, removerTreinoDaRotinaEdicao, removerTreinoDaAPI } from '../../../redux/treino/actions'; 
 import { useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
+import EditModal from '../../../components/EditModal';
 
 export default function CardTreino({ 
   id,
   titulo, 
-  subtitulo, 
-  badge, 
   isPreview = false,
-  badgeColor,
-  nivel, 
+  nivel = "Iniciante", 
   recomendado = false, 
-  tags = [], 
   isCustom,
   rotina = []
 }) {
   const dispatch = useDispatch();
   const [aberto, setAberto] = useState(false);
   const [diasExpandidos, setDiasExpandidos] = useState({});
+  const [show, setShow] = useState(false);
+  const [length, setLength] = useState(0);
+
+  const handleShow = (e) =>{
+    e.stopPropagation();
+    setShow(true);
+  }
+
+  const handleClose = (e) =>{
+    e.stopPropagation();
+    setShow(false);
+  }
 
   const toggleVerMais = (e, dia) => {
     e.stopPropagation();
@@ -33,29 +43,50 @@ export default function CardTreino({
     }
   };
 
-  const handleRemoverTreinoUnico = (e, dia) => {
-    e.stopPropagation();
-    dispatch(removerTreinoDaRotina(dia));
-  };
+ const handleRemoverTreinoUnico = (e, id, dia) => {
+  e.stopPropagation();
+
+  if (window.confirm(`Remover treino de ${dia}?`)) {
+    if (isPreview) {
+      dispatch(removerTreinoDaRotinaEdicao(dia));
+    } else {
+      dispatch(removerTreinoDaAPI(id, dia, rotina));
+    }
+  }
+};
 
   return (
     <div 
       className={`${styles.cardTreino} ${isCustom ? styles.cardCustom : ''} ${aberto ? styles.cardAberto : ''}`}
       onClick={() => setAberto(!aberto)}
     >
+      <div onClick={(e) => e.stopPropagation()}>
+        <EditModal show={show} handleClose={handleClose} />
+      </div>
       <div className={styles.cardMainInfo}>
-        <div className={`${styles.badgeIcon} ${styles[badgeColor] || styles.bgGreen}`}>{badge}</div>
+        <div className={`${styles.badgeIcon} ${styles["green"] || styles.bgGreen}`}>💪</div>
         
         <div className={styles.cardTextContent}>
           <div className={styles.cardTitleRow}>
             <h3 className={styles.cardName}>{titulo || "Novo Plano"}</h3>
           </div>
-          <p className={styles.cardDetails}>{subtitulo}</p>
-          
+          <p className={styles.cardDetails}>{rotina.length} treinos * {nivel}</p>
+
           {!isPreview && (
-            <button onClick={handleRemoverPlanoCompleto} className={styles.btnEliminarPlanoCompleto}>
-              🗑️ Remover Plano
-            </button>
+            <div>
+            <Button 
+            variant="primary" 
+            onClick={(e) => {
+              e.stopPropagation();
+              setShow(true);
+            }}
+          >
+          Editar
+          </Button>
+            <Button onClick={handleRemoverPlanoCompleto} className={styles.btnEliminarPlanoCompleto}>
+              🗑️ Remover
+            </Button>
+            </div>
           )}
         </div>
         <div className={`${styles.seta} ${aberto ? styles.setaAtiva : ''}`}>›</div>
@@ -70,15 +101,15 @@ export default function CardTreino({
             return (
               <div key={idx} className={styles.itemRotina}>
                 <div className={styles.headerRotina}>
-                  <div className={`${styles.miniBadge} ${styles[badgeColor] || styles.bgGreen}`}>{item.dia}</div>
+                  <div className={`${styles.miniBadge} ${styles.bgGreen}`}>{item.dia}</div>
                   <div className={styles.infoRotina}>
                     <p className={styles.focoRotina}>Treino {item.dia} - {item.foco}</p>
                   </div>
 
-                  {isPreview && (
+                  {(
                     <button 
                       className={styles.btnX} 
-                      onClick={(e) => handleRemoverTreinoUnico(e, item.dia)}
+                      onClick={(e) => handleRemoverTreinoUnico(e, id, item.dia)}
                       title="Remover este dia"
                     >
                       ✕
