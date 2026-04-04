@@ -8,9 +8,7 @@ import ResultCard from './components/ResultCard';
 import LevelCard from './components/LevelCard';
 
 export default function Home() {
-  const usuario = biometria[0]?.usuario;
-  const perfil = usuario?.perfil_biometrico;
-  const analise = usuario?.analise_metabolica;
+  
   const dispatch = useDispatch();
   const biometria = useSelector(state => state.biometriaReducer.biometria);
   console.log('Dados biométricos:', biometria);
@@ -23,7 +21,11 @@ export default function Home() {
         <p>Carregando dados biométricos...</p>
       </div>
     );
+    
   }
+    const usuario = biometria[0]?.usuario;
+    const perfil = usuario?.perfil_biometrico;
+    const analise = usuario?.analise_metabolica;
   return (
    <div className={styles.pageWrapper}>
             <div className={styles.container}>
