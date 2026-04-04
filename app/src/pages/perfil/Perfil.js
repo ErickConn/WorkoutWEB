@@ -9,7 +9,7 @@ import BiometricsCard from './components/biometriccard.js';
 import PlanDetailsCard from './components/plandetailscard.js';
 import ExperienceCard from './components/experiencecard.js';
 import UserProfileCard from './components/userprofilecard.js';
-import Home from '/workspaces/WorkoutWEB/app/src/pages/home/Home.js'; 
+import Home from '../home/Home.js'; 
 
 export default function Perfil() {
     const [fotoUsuario, setFotoUsuario] = useState(null);
