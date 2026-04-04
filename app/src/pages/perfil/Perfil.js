@@ -6,6 +6,10 @@ import Menu from '../../components/Menu';
 import { fetchBiometriaList } from '../../redux/Biometria/actions';
 import { useDispatch,useSelector } from 'react-redux';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';
+import BiometricsCard from './components/biometriccard.js';
+import PlanDetailsCard from './components/plandetailscard.js';
+import ExperienceCard from './components/experiencecard.js';
+import UserProfileCard from './components/userprofilecard.js';
 
 
 export default function Perfil() {
@@ -30,100 +34,45 @@ export default function Perfil() {
             setFotoUsuario(URL.createObjectURL(arquivo));
         }
     };
+    const usuario = biometria[0]?.usuario;
+    const perfilBiometrico = usuario?.perfil_biometrico;
 
     return (
-        <>
-            <OffCanvasNavBar></OffCanvasNavBar>
+       <>
+            <OffCanvasNavBar />
+            
             <main className={styles.containerPerfil}>
-                <section className={`${styles.cartao} ${styles.cartaoUsuario}`}>
-                    <div className={styles.avatar}>
-                        <label htmlFor="uploadFoto" style={{ cursor: 'pointer' }}>
-                            {fotoUsuario ? (
-                                <img 
-                                    src={fotoUsuario} 
-                                    alt="Avatar do Usuário" 
-                                    style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} 
-                                />
-                            ) : (
-                                <div className={styles.avatarPlaceholder} id="fotoUsuario">RC</div>
-                            )}
-                        </label>
-                        <input 
-                            type="file" 
-                            id="uploadFoto" 
-                            accept="image/*" 
-                            style={{ display: 'none' }} 
-                            onChange={handleUploadFoto}
-                        />
-                    </div>
-
-                    <div className={styles.informacoesUsuario}>
-                        <h2 id="nomeUsuario" className={styles.nome}>{biometria[0]?.usuario.nome}</h2>
-                        <p id="emailUsuario" className={styles.email}>roberto.carlos@email.com</p>
-                        <div className={styles.badgeAluno}>
-                            <span className={styles.icone}>👤</span> Aluno
-                        </div>
-                    </div>
-                </section>
-
                 
-                <section className={`${styles.cartao} ${styles.cartaoBiometria}`}>
-                    <h3 className={styles.tituloSessao}>📊 Dados Biométricos</h3>
-                    
-                    <div className={styles.gridDados}>
-                        <div className={styles.dadoItem}>
-                            <span className={styles.dadoLabel}>Peso Atual</span>
-                            <p className={styles.dadoValor}>{biometria[0]?.usuario.perfil_biometrico.peso_kg}<span className={styles.dadoUnidade}>kg</span></p>
-                        </div>
-                        
-                        <div className={styles.dadoItem}>
-                            <span className={styles.dadoLabel}>Altura</span>
-                            <p className={styles.dadoValor}>{biometria[0]?.usuario.perfil_biometrico.altura_cm} <span className={styles.dadoUnidade}>cm</span></p>
-                        </div>
-                        
-                        <div className={styles.dadoItem}>
-                            <span className={styles.dadoLabel}>Idade</span>
-                            <p className={styles.dadoValor}>{biometria[0]?.usuario.perfil_biometrico.idade} <span className={styles.dadoUnidade}>anos</span></p>
-                        </div>
-                        
-                        <div className={styles.dadoItem}>
-                            <span className={styles.dadoLabel}>TMB</span>
-                            <p className={styles.dadoValor}>{biometria[0]?.usuario.analise_metabolica.tmb_kcal}<span className={styles.dadoUnidade}>kcal</span></p>
-                        </div>
-                    </div>
-                </section>
+                <UserProfileCard 
+                    fotoUsuario={fotoUsuario}
+                    handleUploadFoto={handleUploadFoto}
+                    nome={usuario?.nome}
+                    email="roberto.carlos@email.com" 
+                    iniciais="RC" 
+                />
 
-                
-                <section className={`${styles.cartao} ${styles.cartaoExperiencia}`}>
-                    <div className={styles.iconeExperiencia}>
-                        <span>⭐</span>
-                    </div>
-                    <div className={styles.textoExperiencia}>
-                        <span className={styles.label}>Nível de Experiência</span>
-                        <p className={styles.valor}>Intermediário</p>
-                        <p className={styles.descricao}>Baseado em seu perfil biométrico e histórico de treinos</p>
-                    </div>
-                </section>
+                <BiometricsCard 
+                    peso={perfilBiometrico?.peso_kg}
+                    altura={perfilBiometrico?.altura_cm}
+                    idade={perfilBiometrico?.idade}
+                    tmb={usuario?.analise_metabolica?.tmb_kcal}
+                />
 
-                
-                <section className={`${styles.cartao} ${styles.cartaoPlano}`}>
-                    <div className={styles.planoItem}>
-                        <span className={styles.label}>OBJETIVO</span>
-                        <p className={styles.valor}>Hipertrofia Muscular</p>
-                    </div>
-                    
-                    <div className={styles.planoItem}>
-                        <span className={styles.label}>NÍVEL DE ATIVIDADE</span>
-                        <p className={styles.valor}>Moderado (3-5x/semana)</p>
-                    </div>
-                    
-                    <div className={styles.planoItem}>
-                        <span className={styles.label}>PLANO ATUAL</span>
-                        <p className={styles.valorDestaque}>ABC - Intermediário</p>
-                    </div>
-                </section>
+                <ExperienceCard 
+                    nivel="Intermediário" 
+                    descricao="Baseado em seu perfil biométrico e histórico de treinos"
+                />
 
-                <Link to= '/Home' className={styles.btnEditar}> Editar Perfil</Link>
+                <PlanDetailsCard 
+                    objetivo="Hipertrofia Muscular"
+                    nivelAtividade="Moderado (3-5x/semana)"
+                    planoAtual="ABC - Intermediário"
+                />
+
+                <Link to='/Home' className={styles.btnEditar}>
+                    Editar Perfil
+                </Link>
+
             </main>
         </>
     );

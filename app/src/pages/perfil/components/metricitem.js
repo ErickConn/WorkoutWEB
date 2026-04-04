@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './perfil.module.css';
+import styles from '/workspaces/WorkoutWEB/app/src/pages/perfil/perfil.module.css';
 
 const MetricItem = ({ label, valor, unidade }) => {
     return (
