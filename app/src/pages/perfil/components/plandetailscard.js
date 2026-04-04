@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '/workspaces/WorkoutWEB/app/src/pages/perfil/perfil.module.css';
+import styles from './perfil.module.css';
 import PlanItem from './planitem.js';
 
 const PlanDetailsCard = ({ objetivo, nivelAtividade, planoAtual }) => {

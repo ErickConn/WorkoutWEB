@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from "./select-treino.module.css";
+import styles from "./components/select-treino.module.css";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTreinoList } from '../../redux/treino/actions';

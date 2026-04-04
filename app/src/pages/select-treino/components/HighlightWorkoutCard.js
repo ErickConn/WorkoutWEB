@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "/workspaces/WorkoutWEB/app/src/pages/select-treino/select-treino.module.css";
+import styles from "./select-treino.module.css";
 
 const HighlightWorkoutCard = ({ variant,badgeText,title,subtitle,footerText,linkTo}) => {
     const colorClass = variant === 'green' ? styles['card-green'] : styles['card-purple'];

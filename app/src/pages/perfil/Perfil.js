@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './perfil.module.css';
+import styles from './components/perfil.module.css';
 import Header from '../../components/Header';
 import Menu from '../../components/Menu';
 import { fetchBiometriaList } from '../../redux/Biometria/actions';
