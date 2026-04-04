@@ -379,11 +379,16 @@
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
-  margin-left: auto; /* Empurra para o final da linha no headerRotina */
+  margin-left: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: 0.2s;
+}
+
+.btnEditar{
+  position: absolute;
+  right: 40px;
 }
 
 .btnX:hover {

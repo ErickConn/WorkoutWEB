@@ -12,6 +12,8 @@ export default function Treino() {
   const dispatch = useDispatch();
   const planos = useSelector(state => state.treinoReducer.planos);
 
+  const planoAtivo = planos.find(p => p.ativo) || planos[0];
+
   useEffect(() => {
     dispatch(fetchTreinoList());
   }, [dispatch]);
@@ -25,7 +27,6 @@ export default function Treino() {
     );
   }
 
-  const planoAtivo = planos[0];
   const rotinaHoje = planoAtivo.rotina ? planoAtivo.rotina[0] : null;
 
   return (

@@ -74,6 +74,16 @@ const treinoReducer = (state = initialState, action) => {
         planos: state.planos.filter(plano => plano.id !== action.payload),
       };
 
+    case 'SET_PLANO_ATIVO':
+      return {
+        ...state,
+        planos: state.planos.map((plano) =>
+          plano.idPlano === action.payload 
+            ? { ...plano, ativo: true } 
+            : { ...plano, ativo: false }
+        ),
+      };
+
     default:
       return state;
 } 

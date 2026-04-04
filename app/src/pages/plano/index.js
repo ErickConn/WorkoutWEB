@@ -21,6 +21,7 @@ export default function PaginaPlano() {
     titulo: nomePlano,
     rotina: planoEmEdicao.rotina,
     isPreview: true,
+    ativo: false,
     isCustom: true
 }] : [];
 

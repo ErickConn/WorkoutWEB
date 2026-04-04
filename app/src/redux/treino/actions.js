@@ -61,6 +61,7 @@ export const adicionarTreinoNaRotina = (nomeTreino, exerciciosSelecionados, letr
     payload: {
       dia: letra,
       foco: nomeTreino || `Treino ${letra}`,
+      ativo: false,
       exercicios: exerciciosSelecionados.map(ex => ({
         ...ex,
         seriesPadrao: 3,
@@ -135,5 +136,37 @@ export const removerTreinoDaAPI = (idPlano, diaParaRemover, rotinaAtual) => {
         dispatch(failRequest(err.message));
         alert("Erro ao remover treino. Tente novamente.");
       });
+  };
+};
+
+export const setPlanoAtivo = (idPlano) => {
+  return async (dispatch) => {
+    dispatch(makeRequest());
+
+    try {
+      // Buscar todos os planos para ver quem está ativo
+      const { data: planos } = await axios.get(`${API_URL}/planos`);
+
+      // Criar uma lista de promessas para desativar quem estiver ativo (exceto o atual)
+      const desativarPromises = planos
+        .filter(p => p.ativo === true && p.id !== idPlano)
+        .map(p => axios.patch(`${API_URL}/planos/${p.id}`, { ativo: false }));
+
+      // Executar todas as desativações
+      await Promise.all(desativarPromises);
+
+      // Ativar o plano desejado
+      await axios.patch(`${API_URL}/planos/${idPlano}`, { ativo: true });
+
+      // Atualizar o Redux
+      dispatch({
+        type: 'SET_PLANO_ATIVO',
+        payload: idPlano,
+      });
+
+    } catch (err) {
+      dispatch(failRequest(err.message));
+      alert("Erro ao atualizar os planos. Tente novamente.");
+    }
   };
 };
