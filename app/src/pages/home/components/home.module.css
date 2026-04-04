@@ -1,6 +1,4 @@
-/* Dashboard.module.css */
 
-/* --- ESTRUTURA GERAL --- */
 .pageWrapper {
   min-height: 100vh;
   background-color: #f3f4f6;
@@ -34,15 +32,15 @@
   }
 }
 
-/* --- ADAPTAÇÃO PARA PC (DESKTOP VERDADEIRO) --- */
+
 @media (min-width: 768px) {
   .pageWrapper {
     padding: 3rem 1rem;
   }
   
   .container {
-    max-width: 900px; /* Largura de um site normal, não de celular */
-    margin: 0 auto; /* Centraliza na tela */
+    max-width: 900px; 
+    margin: 0 auto; 
     min-height: auto;
     border-radius: 1.5rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -53,28 +51,28 @@
     display: none !important;
   }
 
-  /* No PC, os 4 inputs viram uma grade 2x2 para aproveitar a largura */
+ 
   .inputGroup {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem !important;
   }
 
-  /* No PC, os resultados ficam lado a lado */
+ 
   .resultRowGroup {
     flex-direction: row !important;
     gap: 1.5rem !important;
   }
 
   .resultBox {
-    flex: 1; /* Faz as duas caixas terem o mesmo tamanho */
+    flex: 1; 
     align-items: flex-start !important;
     background-color: rgba(255, 255, 255, 0.6);
     padding: 1.25rem !important;
     border-radius: 0.75rem;
   }
 
-  /* No PC, as abas de nível não precisam ser tão compridas */
+  
   .levelTabs {
     max-width: 500px;
   }
@@ -122,7 +120,7 @@
   gap: 2rem;
 }
 
-/* Calculadora TMB */
+
 .calcCard {
   background-color: white;
   padding: 2rem;
@@ -170,7 +168,7 @@
   outline: none;
 }
 
-/* Card Resultados */
+
 .resultCard {
   background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
   border: 2px solid #93c5fd;
@@ -209,7 +207,7 @@
   color: #1e3a8a;
 }
 
-/* Card Nível Detectado */
+
 .levelCard {
   background: linear-gradient(to bottom right, #f0fdf4, #dcfce7);
   border: 2px solid #86efac;
@@ -290,7 +288,7 @@
   box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.1);
 }
 
-/* Botão Ação */
+
 .actionBtn {
   text-decoration: none;
   width: 100%;
