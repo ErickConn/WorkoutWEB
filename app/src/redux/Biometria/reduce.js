@@ -1,4 +1,4 @@
-import { MAKE_REQUEST } from "./actionType";
+import { CREATE_BIOMETRIA, MAKE_REQUEST } from "./actionType";
 import { FAIL_REQUEST } from "./actionType";
 import { GET_BIOMETRIA_LIST } from "./actionType";
 import { UPDATE_BIOMETRIA } from "./actionType";
@@ -26,6 +26,12 @@ export const biometriaReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 biometria: action.payload
+            }
+        case CREATE_BIOMETRIA:
+            return {
+                ...state,
+                loading: false,
+                biometria: [...state.biometria, action.payload]
             }
         case UPDATE_BIOMETRIA:
             return {

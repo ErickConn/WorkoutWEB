@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './components/home.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchBiometriaList, updateBiometria } from '../../redux/Biometria/actions';
+import { createBiometria, fetchBiometriaList, updateBiometria } from '../../redux/Biometria/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,6 +20,24 @@ export default function Home({ show, handleClose }) {
     const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!biometria[0].usuario.perfil_biometrico || biometria.length === 0) {
+            const biometriaItem = {
+            ...biometria[0],
+            usuario: {
+                ...biometria[0].usuario,
+                perfil_biometrico: {
+                    idade: idade,
+                    altura_cm: altura,
+                    peso_kg: peso,
+                    nivel_atividade: nivelAtividade
+                }
+            }
+        };
+        dispatch(createBiometria(biometriaItem));
+            navigate('/');
+            handleClose();
+            return;
+    }else{
         const biometriaItem = {
             ...biometria[0],
             usuario: {
@@ -36,6 +54,7 @@ export default function Home({ show, handleClose }) {
         dispatch(updateBiometria(id, biometriaItem));
         navigate('/');
         handleClose();
+    }
     };
     const biometria = useSelector(state => state.biometriaReducer.biometria);
     console.log('Dados biométricos:', biometria);

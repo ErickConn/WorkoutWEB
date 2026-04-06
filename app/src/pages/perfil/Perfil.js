@@ -18,6 +18,7 @@ export default function Perfil() {
     const biometria = useSelector(state => state.biometriaReducer.biometria);
     console.log('Dados biométricos:', biometria);
     
+    
     useEffect(() => {
         dispatch(fetchBiometriaList());
     }, [dispatch]);
@@ -29,6 +30,7 @@ export default function Perfil() {
             </div>
         );
     }
+    
    
     const handleUploadFoto = (event) => {
         const arquivo = event.target.files[0];
@@ -40,6 +42,19 @@ export default function Perfil() {
     // 2. Crie as funções para abrir e fechar o modal
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
+    if (!biometria[0].usuario.perfil_biometrico) {
+        return (
+            <>
+            <OffCanvasNavBar />
+            <div className={styles.container}>
+                <p>Dados biométricos não encontrados. Por favor, complete seu perfil.</p>
+            </div>
+            <button onClick={handleShowModal} className={styles.btnEditar}>
+                    Editar Perfil
+                </button> 
+                </>
+        );
+    }
 
 
     return (
