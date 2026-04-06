@@ -3,6 +3,8 @@ import { FAIL_REQUEST } from "./actionType";
 import { GET_BIOMETRIA_LIST } from "./actionType";
 import { UPDATE_BIOMETRIA } from "./actionType";
 import { GET_BIOMETRIA_ITEM } from "./actionType";
+import { CREATE_BIOMETRIA } from "./actionType";
+import { DELETE_BIOMETRIA } from "./actionType";
 import axios from 'axios';
 const API_URL = "https://json-server-wweb.onrender.com";
 

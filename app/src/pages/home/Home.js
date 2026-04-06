@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './components/home.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { createBiometria, fetchBiometriaList, updateBiometria } from '../../redux/Biometria/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
@@ -20,48 +20,49 @@ export default function Home({ show, handleClose }) {
     const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!biometria[0].usuario.perfil_biometrico || biometria.length === 0) {
+        if (!biometria || biometria.length === 0) {
             const biometriaItem = {
-            ...biometria[0],
-            usuario: {
-                ...biometria[0].usuario,
-                perfil_biometrico: {
-                    idade: idade,
-                    altura_cm: altura,
-                    peso_kg: peso,
-                    nivel_atividade: nivelAtividade
+                usuario: {
+                    perfil_biometrico: {
+                        idade: Number(idade),
+                        altura_cm: Number(altura),
+                        peso_kg: Number(peso),
+                        nivel_atividade: nivelAtividade
+                    },
+                    analise_metabolica: {
+                        tmb_kcal: 1845,
+                        gasto_energetico_total_kcal: 2460
+                    },
+                    experiencia_usuario: {
+                        nivel_experiencia: "Intermediário"
+                    }
                 }
-            }
-        };
-        dispatch(createBiometria(biometriaItem));
+            };
+            dispatch(createBiometria(biometriaItem));
             navigate('/');
             handleClose();
             return;
-    }else{
-        const biometriaItem = {
-            ...biometria[0],
-            usuario: {
-                ...biometria[0].usuario,
-                perfil_biometrico: {
-                    idade: idade,
-                    altura_cm: altura,
-                    peso_kg: peso,
-                    nivel_atividade: nivelAtividade
+        } else {
+            const biometriaItem = {
+                ...biometria[0],
+                usuario: {
+                    ...biometria[0].usuario,
+                    perfil_biometrico: {
+                        idade: idade,
+                        altura_cm: altura,
+                        peso_kg: peso,
+                        nivel_atividade: nivelAtividade
+                    }
                 }
-            }
-        };
-        console.log('Dados biométricos a serem enviados:', biometriaItem);
-        dispatch(updateBiometria(id, biometriaItem));
-        navigate('/');
-        handleClose();
-    }
+            };
+            console.log('Dados biométricos a serem enviados:', biometriaItem);
+            dispatch(updateBiometria(id, biometriaItem));
+            navigate('/');
+            handleClose();
+        }
     };
     const biometria = useSelector(state => state.biometriaReducer.biometria);
     console.log('Dados biométricos:', biometria);
-
-    useEffect(() => {
-        dispatch(fetchBiometriaList());
-    }, [dispatch]);
     useEffect(() => {
         if (biometria && biometria.length > 0) {
             setId(biometria[0].id);
@@ -72,17 +73,8 @@ export default function Home({ show, handleClose }) {
         }
     }, [biometria]);
 
-    if (!biometria || biometria.length === 0) {
-        return (
-            <div className={styles.container}>
-                <p>Carregando dados biométricos...</p>
-            </div>
-        );
-    }
 
-
-
-    const analise = biometria[0]?.usuario.analise_metabolica;
+    const analise = biometria && biometria.length > 0 ? biometria[0]?.usuario.analise_metabolica : null;
 
     return (
         <Modal show={show} onHide={handleClose} size="lg" centered>
@@ -103,10 +95,10 @@ export default function Home({ show, handleClose }) {
             <Modal.Body className={styles.modalBodyCustom}>
 
                 <CalcCard
-                    peso={biometria[0]?.usuario.perfil_biometrico.peso_kg}
-                    altura={biometria[0]?.usuario.perfil_biometrico.altura_cm}
-                    idade={biometria[0]?.usuario.perfil_biometrico.idade}
-                    nivelAtividade={biometria[0]?.usuario.perfil_biometrico.nivel_atividade}
+                    peso={peso}
+                    altura={altura}
+                    idade={idade}
+                    nivelAtividade={nivelAtividade}
                     setNivelAtividade={setNivelAtividade}
                     setPeso={setPeso}
                     setAltura={setAltura}

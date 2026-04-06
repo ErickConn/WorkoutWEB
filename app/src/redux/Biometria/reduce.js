@@ -3,8 +3,9 @@ import { FAIL_REQUEST } from "./actionType";
 import { GET_BIOMETRIA_LIST } from "./actionType";
 import { UPDATE_BIOMETRIA } from "./actionType";
 import { GET_BIOMETRIA_ITEM } from "./actionType";
+import { DELETE_BIOMETRIA } from "./actionType";
 const initialState = {
-    loading: true,
+    loading: false,
     biometria: []
 };
 

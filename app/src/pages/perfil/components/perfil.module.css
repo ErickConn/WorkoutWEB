@@ -202,7 +202,23 @@
 .btnEditar:hover {
     background: #0f35cc; 
 }
-
+.btnDeletar {
+    text-decoration: none;
+    background: #ff4d4f; 
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 5px;
+    transition: background 0.3s;
+}
+.btnDeletar:hover {
+    background: #d93636; 
+}
 @media (min-width: 768px) {
     .cabecalhoTopo {
         padding-left: calc(50% - 400px + 20px); 
