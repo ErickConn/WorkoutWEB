@@ -13,13 +13,9 @@ import Home from '../home/Home.js';
 
 export default function Perfil() {
     const [fotoUsuario, setFotoUsuario] = useState(null);
-    
-    // 1. Adicione o estado para controlar a visibilidade do Modal
     const [showModal, setShowModal] = useState(false);
-
     const dispatch = useDispatch();
     const biometria = useSelector(state => state.biometriaReducer.biometria);
-    
     console.log('Dados biométricos:', biometria);
     
     useEffect(() => {
@@ -45,8 +41,6 @@ export default function Perfil() {
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
-    const usuario = biometria[0]?.usuario;
-    const perfilBiometrico = usuario?.perfil_biometrico;
 
     return (
         <>
@@ -57,16 +51,16 @@ export default function Perfil() {
                 <UserProfileCard 
                     fotoUsuario={fotoUsuario}
                     handleUploadFoto={handleUploadFoto}
-                    nome={usuario?.nome}
+                    nome={biometria[0]?.usuario.nome}
                     email="roberto.carlos@email.com" 
                     iniciais="RC" 
                 />
 
                 <BiometricsCard 
-                    peso={perfilBiometrico?.peso_kg}
-                    altura={perfilBiometrico?.altura_cm}
-                    idade={perfilBiometrico?.idade}
-                    tmb={usuario?.analise_metabolica?.tmb_kcal}
+                    peso={biometria[0]?.usuario.perfil_biometrico.peso_kg}
+                    altura={biometria[0]?.usuario.perfil_biometrico.altura_cm}
+                    idade={biometria[0]?.usuario.perfil_biometrico.idade}
+                    tmb={biometria[0]?.usuario.analise_metabolica.tmb_kcal}
                 />
 
                 <ExperienceCard 
@@ -76,7 +70,7 @@ export default function Perfil() {
 
                 <PlanDetailsCard 
                     objetivo="Hipertrofia Muscular"
-                    nivelAtividade="Moderado (3-5x/semana)"
+                    nivelAtividade={biometria[0]?.usuario.perfil_biometrico.nivel_atividade}
                     planoAtual="ABC - Intermediário"
                 />
 

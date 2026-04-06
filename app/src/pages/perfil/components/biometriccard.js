@@ -1,8 +1,11 @@
 import React from 'react';
 import styles from './perfil.module.css';
 import MetricItem from './metricitem.js';
+import { useSelector } from 'react-redux';
 
 const BiometricsCard = ({ peso, altura, idade, tmb }) => {
+    
+
     return (
         <section className={`${styles.cartao} ${styles.cartaoBiometria}`}>
             <h3 className={styles.tituloSessao}>📊 Dados Biométricos</h3>
