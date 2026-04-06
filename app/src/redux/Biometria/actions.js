@@ -85,3 +85,19 @@ export const getBiometriaItem = (id) => {
             })
     }
 }
+
+export const deleteBiometria = (id) => {
+    return (dispatch) => {
+        dispatch(makeRequest());
+        axios.delete(`${API_URL}/biometria/${id}`)
+            .then(() => {
+                console.log('Dado biométrico deletado, ID:', id);
+                dispatch({
+                    type: DELETE_BIOMETRIA,
+                    payload: id
+                });
+            }).catch(err => {
+                dispatch(failRequest(err.message));
+            })
+    }
+}

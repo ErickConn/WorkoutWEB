@@ -47,6 +47,12 @@ export const biometriaReducer = (state = initialState, action) => {
                 loading: false,
                 biometria: [action.payload] 
             }
+        case DELETE_BIOMETRIA:
+            return {
+                ...state,
+                loading: false,
+                biometria: state.biometria.filter(item => item.id !== action.payload)
+            }
         default: return state;
     }
 }
