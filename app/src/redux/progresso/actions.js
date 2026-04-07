@@ -7,7 +7,7 @@ export const fetchProgresso = () => {
   return (dispatch) => {
     dispatch({ type: FETCH_PROGRESSO_REQUEST });
     //axios.get(`${API_URL}/historico_usuario`)
-    axios.get(`${API_URL}`)
+    axios.get(`${API_URL}/historico_usuario`)
       .then((res) => {
         console.log("RES:", res.data);
         console.log("RES.HISTORICO:", res.data.historico_usuario);

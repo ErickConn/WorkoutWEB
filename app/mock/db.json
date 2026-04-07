@@ -1,4 +1,5 @@
 { 
+   
   "biometria": [
     {
        "usuario": {
@@ -90,6 +91,7 @@
   "planos": [
     {
       "id": "1",
+      "ativo": false,
       "titulo": "Foco Hipertrofia ABC",
       "nivel": "Intermediário",
       "categoria": "recomendado",
@@ -97,6 +99,7 @@
       "rotina": [
         {
           "dia": "A",
+          "ativo": false,
           "foco": "Peito e Tríceps",
           "exercicios": [
             { "id": 101, "nome": "Supino Reto", "seriesPadrao": 4, "repsPadrao": 10 },
@@ -105,6 +108,7 @@
         },
         {
           "dia": "B",
+          "ativo": false,
           "foco": "Costas e Bíceps",
           "exercicios": [
             { "id": 201, "nome": "Puxada Frontal", "seriesPadrao": 4, "repsPadrao": 10 },
@@ -116,12 +120,14 @@
     {
       "id": "1712245560",
       "titulo": "Meu Treino de Verão",
+      "ativo": false,
       "nivel": "Avançado",
       "categoria": "personalizado",
       "isCustom": true,
       "rotina": [
         {
           "dia": "Único",
+          "ativo": false,
           "foco": "Full Body",
           "exercicios": [
             { "id": 301, "nome": "Agachamento", "seriesPadrao": 4, "repsPadrao": 8 }
