@@ -32,7 +32,10 @@ export default function Progresso() {
 
   // exemplo: pegar peso e carga do histórico
   const pesos = usuario.historico_peso.map(p => p.peso_kg);
-  const datas = usuario.historico_peso.map(p => new Date(p.data).toLocaleDateString());
+  const datas = usuario.historico_peso.map(p => {
+    const [ano, mes, dia] = p.data.split("-");
+    return `${dia}/${mes}/${ano}`;
+  });
   const cargas = usuario.historico_carga.map(semana =>
     semana.treinos.reduce((total, treino) =>
       total + treino.exercicios.reduce((soma, ex) => soma + ex.carga_kg, 0), 0)
@@ -45,6 +48,12 @@ export default function Progresso() {
   // Carga inicial e atual a partir do array
   const cargaInicial = cargas[0];
   const cargaAtual = cargas[cargas.length-1];
+
+  // Quantidade de treinos realizados na última semana
+  const ultimaSemana = usuario.historico_carga[usuario.historico_carga.length - 1];
+  const numeroTreinos = ultimaSemana.treinos.length;
+  const semanaAtual = ultimaSemana.semana;
+
 
   // Relatório
   const variacaoForca = (cargaAtual - cargaInicial).toFixed(1);
@@ -59,7 +68,7 @@ export default function Progresso() {
             <div className={styles.cards}>
                 <ProgressCard emoji="🏋️" valor={cargaAtual} titulo="Carga Total (Kg)" variacao={variacaoForca} descricao="kg"></ProgressCard >
                 <ProgressCard emoji="⚖️" valor={pesoAtual} titulo="Peso Atual (Kg)" variacao={variacaoPeso} descricao="kg"></ProgressCard >
-                <ProgressCard emoji="📅" valor={`${usuario.historico_peso.length} semanas`} titulo="de acompanhamento"></ProgressCard > 
+                <ProgressCard emoji="🔥" valor={`${numeroTreinos} treinos completos`} titulo={`na semana ${semanaAtual}`}></ProgressCard > 
             </div>
             {/* Gráfico */}
             <ProgressChart datas={datas} cargas={cargas} pesos={pesos}></ProgressChart>

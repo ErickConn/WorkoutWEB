@@ -62,6 +62,10 @@ export default function ProgressChart({datas, cargas, pesos}) {
           <Line data={dadosPeso} />
         )}
       </div>
+      {/* Nota explicativa */}
+      <p className={styles.chartNote}>
+        * As datas exibidas correspondem sempre ao sábado, último dia da semana de treino. Com exceção da primeira semana, que é a data de início do acompanhamento.
+      </p>
     </div>
   );
 }

@@ -6,7 +6,6 @@ const API_URL = "https://json-server-wweb.onrender.com";
 export const fetchProgresso = () => {
   return (dispatch) => {
     dispatch({ type: FETCH_PROGRESSO_REQUEST });
-    //axios.get(`${API_URL}/historico_usuario`)
     axios.get(`${API_URL}/historico_usuario`)
       .then((res) => {
         console.log("RES:", res.data);

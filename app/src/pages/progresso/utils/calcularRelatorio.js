@@ -1,15 +1,24 @@
 import { calcularConsistencia } from "./consistenciaSemanal";
 
 export function calcularRelatorio(dadosUsuario) {
-  const { semanas, cargas, pesos, historico_carga, meta_treinos_semanais } = dadosUsuario;
+  const { historico_carga = [], nivel_atividade} = dadosUsuario;
+  console.log("dadosUsuario:", dadosUsuario);
 
+  const semanas = historico_carga ? historico_carga.length : 0;
   // Se não há dados suficientes
-  if (!semanas || semanas <= 1) {
+  if (!semanas || semanas < 2) {
     return {
       suficiente: false
     };
   }
+  // Processar dados para cálculo
+  const cargas = historico_carga.map(semana =>
+    semana.treinos.reduce((total, treino) =>
+      total + treino.exercicios.reduce((soma, ex) => soma + ex.carga_kg, 0), 0)
+  );
+  const pesos = dadosUsuario.historico_peso.map(p => p.peso_kg);
 
+  //Dados especifico para calculo de variação
   const cargaInicial = cargas[0];
   const cargaAtual = cargas[cargas.length - 1];
   const pesoInicial = pesos[0];
@@ -25,7 +34,7 @@ export function calcularRelatorio(dadosUsuario) {
     const treinosRealizados = semana.treinos.length;
     return {
       semana: semana.semana,
-      percentual: calcularConsistencia(treinosRealizados, meta_treinos_semanais)
+      percentual: calcularConsistencia(treinosRealizados, nivel_atividade)
     };
   });
   // Consistência média geral
