@@ -1,5 +1,7 @@
+import { calcularConsistencia } from "./consistenciaSemanal";
+
 export function calcularRelatorio(dadosUsuario) {
-  const { semanas, cargas, pesos } = dadosUsuario;
+  const { semanas, cargas, pesos, historico_carga, meta_treinos_semanais } = dadosUsuario;
 
   // Se não há dados suficientes
   if (!semanas || semanas <= 1) {
@@ -17,7 +19,20 @@ export function calcularRelatorio(dadosUsuario) {
   const variacaoPercForca = ((cargaAtual - cargaInicial) / cargaInicial * 100).toFixed(1);
   const variacaoPeso = (pesoAtual - pesoInicial).toFixed(1);
   const mediaProgresso = ((cargaAtual - cargaInicial) / semanas).toFixed(1);
-  const consistencia = Math.round((semanas - 1) / semanas * 100);
+
+  //Calcular consistência semanal
+  const consistenciaSemanal = historico_carga.map(semana => {
+    const treinosRealizados = semana.treinos.length;
+    return {
+      semana: semana.semana,
+      percentual: calcularConsistencia(treinosRealizados, meta_treinos_semanais)
+    };
+  });
+  // Consistência média geral
+  const consistenciaMedia = Math.round(
+    consistenciaSemanal.reduce((soma, s) => soma + s.percentual, 0) / consistenciaSemanal.length
+  );
+
 
   return {
     suficiente: true,
@@ -25,7 +40,8 @@ export function calcularRelatorio(dadosUsuario) {
     variacaoPercForca,
     variacaoPeso,
     mediaProgresso,
-    consistencia,
+    consistenciaSemanal,
+    consistenciaMedia,
     semanas
   };
 }

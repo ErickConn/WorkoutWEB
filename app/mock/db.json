@@ -22,6 +22,71 @@
   }
     }
   ],
+  "historico_usuario":[
+    {
+      "id": "12345",
+      "meta_treinos_semanais": 3,
+      "historico_peso": [
+        { "semana": 1, "data": "2026-01-01", "peso_kg": 80 },
+        { "semana": 2, "data": "2026-01-08", "peso_kg": 79 },
+        { "semana": 3, "data": "2026-01-15", "peso_kg": 78.5 }
+      ],
+      "historico_carga": [
+        {
+          "semana": 1,
+          "treinos": [
+            {
+              "data": "2026-01-01",
+              "exercicios": [
+                { "id": 301, "nome": "Agachamento", "carga_kg": 40, "series": 4, "reps": 8 },
+                { "id": 101, "nome": "Supino Reto", "carga_kg": 25, "series": 4, "reps": 10 }
+              ]
+            },
+            {
+              "data": "2026-01-03",
+              "exercicios": [
+                { "id": 201, "nome": "Puxada Frontal", "carga_kg": 30, "series": 4, "reps": 10 },
+                { "id": 103, "nome": "Tríceps Corda", "carga_kg": 15, "series": 3, "reps": 12 }
+              ]
+            }
+          ]
+        },
+        {
+          "semana": 2,
+          "treinos": [
+              {
+                "data": "2026-01-08",
+                "exercicios": [
+                  { "id": 301, "nome": "Agachamento", "carga_kg": 42, "series": 4, "reps": 8 },
+                  { "id": 101, "nome": "Supino Reto", "carga_kg": 27, "series": 4, "reps": 10 }
+                ]
+              }
+            ]
+          },
+          {
+          "semana": 3,
+          "treinos": [
+            {
+              "data": "2026-01-12",
+              "exercicios": [
+                { "id": 301, "nome": "Agachamento", "carga_kg": 45, "series": 4, "reps": 8 },
+                { "id": 101, "nome": "Supino Reto", "carga_kg": 28, "series": 4, "reps": 10 },
+                { "id": 103, "nome": "Tríceps Corda", "carga_kg": 18, "series": 3, "reps": 12 }
+              ]
+            },
+            {
+              "data": "2026-01-15",
+              "exercicios": [
+                { "id": 201, "nome": "Puxada Frontal", "carga_kg": 32, "series": 4, "reps": 10 },
+                { "id": 102, "nome": "Crucifixo Inclinado", "carga_kg": 20, "series": 3, "reps": 12 },
+                { "id": 301, "nome": "Agachamento", "carga_kg": 47, "series": 4, "reps": 8 }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "planos": [
     {
       "id": "1",
@@ -89,6 +154,18 @@
       "nome": "Puxada Frontal",
       "grupo": "Costas",
       "equipamento": "Máquina"
+    },
+    {
+      "id": 202,
+      "nome": "Rosca Direta",
+      "grupo": "Bíceps",
+      "equipamento": "Halteres"
+    },
+    {
+      "id": 301,
+      "nome": "Agachamento",
+      "grupo": "Pernas",
+      "equipamento": "Barra"
     }
   ]
 }

@@ -21,7 +21,7 @@ export default function ProgressReport({ dadosUsuario }) {
             <li>Força {relatorio.variacaoForca > 0 ? "aumentou" : "diminuiu"} <strong>{relatorio.variacaoPercForca}%</strong> em {relatorio.semanas} semanas.</li>
             <li>{relatorio.variacaoPeso > 0 ? "Ganho" : "Perda"} de <strong>{Math.abs(relatorio.variacaoPeso)}kg</strong> de peso corporal.</li>
             <li>Progressão média de <strong>{relatorio.mediaProgresso}kg/semana</strong>.</li>
-            <li>Consistência de treino: <strong>Em desenvolvimento</strong></li>
+            <li>Consistência de treino: <strong>{relatorio.consistenciaMedia}%</strong></li>
         </ul>
         </div>
     );
