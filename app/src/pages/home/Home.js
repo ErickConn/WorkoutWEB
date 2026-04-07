@@ -24,6 +24,7 @@ export default function Home({ show, handleClose }) {
             const biometriaItem = {
                 usuario: {
                     id:12345, // ID de usuário fixo para teste, substitua pelo ID real do usuário autenticado
+                    nome: "Usuário Teste",
                     perfil_biometrico: {
                         idade: Number(idade),
                         altura_cm: Number(altura),
