@@ -22,6 +22,7 @@ export default function Registro() {
                 nome: name,
                 email: email.toLowerCase(),
                 password: password,
+                role: 'aluno',
 
                 // Agora a biometria nasce VAZIA para forçar a criação depois!
                 perfil_biometrico: null,
