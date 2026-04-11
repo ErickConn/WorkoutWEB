@@ -50,12 +50,19 @@ export default function Perfil() {
     }, [biometria]); 
 
     const handleDeletePerfilBiometrico = () => {
-        if (meusDados) {
-            dispatch(deleteBiometria(meusDados.id));
-            localStorage.removeItem('usuarioLogadoEmail'); // Limpa a sessão
-            navigate('/'); // Volta pro login
+    if (meusDados) {
+        // Verifica se é admin ANTES de deletar
+        if (meusDados.usuario.role === 'admin') {
+            alert('Ação bloqueada: O perfil de Administrador Mestre não pode ser deletado.');
+            return; // Cancela a função na hora
         }
+
+        // Se não for admin, segue a vida normal:
+        dispatch(deleteBiometria(meusDados.id));
+        localStorage.removeItem('usuarioLogadoEmail'); 
+        navigate('/'); 
     }
+}
 
     const handleUploadFoto = (event) => {
         const arquivo = event.target.files[0];
