@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./biblioteca.module.css";
+import axios from "axios";
 import HeaderBack from "../../components/HeaderBack";
-import { fetchExercicioList } from '../../redux/exercicio/actions';
+import { fetchExercicioList, setExercicioList } from '../../redux/exercicio/actions';
 import ListaExercicios from "./components/lista-exercicios";
+import NovoExercicioModal from "./modals/modalNovoExercicio";
+import EditarExercicioModal from "./modals/modalEditarExercicio";
+import DeletarExercicioModal from "./modals/modalDeletarExercicio";
+
 
 export default function BibliotecaExercicios() {
   const dispatch = useDispatch();
@@ -21,10 +26,29 @@ export default function BibliotecaExercicios() {
     }
   };
 
-
   const [busca, setBusca] = useState("");
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   const [selecionados, setSelecionados] = useState([]);
+  const [showNovoModal, setShowNovoModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleDelete = (id) => {
+    const exercicio = exercicios.find(ex => ex.id === id);
+    setSelecionados(exercicio);
+    setShowDeleteModal(true);
+  };
+
+  const handleEdit = (exercicio) => {
+    setSelecionados(exercicio);
+    setShowEditModal(true);
+  };
+
+  const handleAdd = (exercicio) => {
+    // Aqui você pode adicionar ao treino livre
+    alert(`Adicionar exercício: ${exercicio.nome}`);
+  };
+
 
   useEffect(() => {
     dispatch(fetchExercicioList());
@@ -60,6 +84,15 @@ export default function BibliotecaExercicios() {
         subtitle="Várias opções para escolher"
         onBack={voltar}
       />
+      <div >
+        <button 
+        className={styles.btnAddExercicio} 
+        onClick={() => setShowNovoModal(true)}
+        >
+        + Adicionar Exercício
+        </button>
+        <NovoExercicioModal show={showNovoModal} handleClose={() => setShowNovoModal(false)} />
+      </div>
 
       <input
         className={styles.search}
@@ -84,6 +117,18 @@ export default function BibliotecaExercicios() {
         titulo="Exercícios" 
         dados={exerciciosFiltrados} 
         onAdd={adicionarExercicio} 
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+      <EditarExercicioModal 
+        show={showEditModal} 
+        handleClose={() => setShowEditModal(false)} 
+        exercicio={selecionados} 
+      />
+      <DeletarExercicioModal 
+        show={showDeleteModal} 
+        handleClose={() => setShowDeleteModal(false)} 
+        exercicio={selecionados} 
       />
 
       {exerciciosFiltrados.length === 0 && (

@@ -1,7 +1,8 @@
 import CardExercicio from "./card-exercicio";
 import styles from "../biblioteca.module.css";
+import axios from "axios";
 
-export default function ListaExercicios({ titulo, dados, onAdd }) {
+export default function ListaExercicios({ titulo, dados, onAdd, onEdit, onDelete  }) {
   if (!dados || dados.length === 0) return null;
 
   return (
@@ -12,6 +13,8 @@ export default function ListaExercicios({ titulo, dados, onAdd }) {
           key={item.id} 
           exercicio={item} 
           onAdd={onAdd} 
+          onEdit={onEdit}
+          onDelete={onDelete}
         />
       ))}
     </div>
