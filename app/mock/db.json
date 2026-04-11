@@ -172,6 +172,36 @@
       "nome": "Agachamento",
       "grupo": "Pernas",
       "equipamento": "Barra"
+    },
+    {
+      "id": 302,
+      "nome": "Desenvolvimento Militar",
+      "grupo": "Ombros",
+      "equipamento": "Barra"
+    },
+    {
+      "id": 401,
+      "nome": "Elevação Lateral",
+      "grupo": "Ombros",
+      "equipamento": "Halteres"
+    },
+    {
+      "id": 402,
+      "nome": "Afundo",
+      "grupo": "Pernas",
+      "equipamento": "Peso Corporal"
+    },
+    {
+      "id": 403,
+      "nome": "Remada Curvada",
+      "grupo": "Costas",
+      "equipamento": "Barra"
+    },
+    {
+      "id": 501,
+      "nome": "Rosca Martelo",
+      "grupo": "Bíceps",
+      "equipamento": "Halteres"
     }
   ]
 }
