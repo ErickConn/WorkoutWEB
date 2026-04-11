@@ -96,7 +96,7 @@ export default function Perfil() {
                 />
 
                 <PlanDetailsCard
-                    objetivo="Hipertrofia Muscular"
+
                     nivelAtividade={biometria[0]?.usuario?.perfil_biometrico?.nivel_atividade}
                     planoAtual="ABC - Intermediário"
                 />

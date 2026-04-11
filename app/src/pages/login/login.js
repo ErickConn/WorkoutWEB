@@ -68,8 +68,13 @@ export default function Login() {
                 Log In
               </button>
             </form>
+            <p className={styles.registerPrompt}>
+              Don't have an account?{' '}
+              <a className={styles.registerLink} href="/registro">
+                Sign Up
+              </a>
+            </p>
           </main>
-
         </div>
       </div>
 

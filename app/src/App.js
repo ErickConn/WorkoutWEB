@@ -16,6 +16,7 @@ import Perfil from './pages/perfil/Perfil';
 import Plano from './pages/plano';
 import BibliotecaExercicios from './pages/biblioteca-exercicio/biblioteca'; 
 import Login from './pages/login/login';
+import Registro from './pages/registro/registro';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path='/home' element={<Home></Home>}></Route>
         <Route path='/plano' element={<Plano></Plano>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
+        <Route path='/registro' element={<Registro></Registro>}></Route>
       </Routes>
     </>
   );
