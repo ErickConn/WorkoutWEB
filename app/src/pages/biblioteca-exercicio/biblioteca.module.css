@@ -116,3 +116,98 @@
 .bibliotecaButton:hover {
   background-color: #267acc;
 }
+
+/* Card da biblioteca */
+.itemBiblioteca {
+  background: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #e2e8f0;
+  transition: transform 0.2s;
+}
+
+.itemBiblioteca:hover {
+  transform: scale(1.02);
+}
+
+/* Botão de adicionar */
+.btnAdd {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid #e2e8f0;
+  background: none;
+  color: #3b82f6;
+  font-weight: bold;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+/* Informações do exercício */
+.itemInfo {
+  flex: 1;
+}
+
+.itemName {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.itemMeta {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+/* Seção de selecionados */
+.selecionadosCard {
+  background: linear-gradient(to bottom right, #f5f3ff, #ede9fe);
+  border: 2px solid #ddd6fe;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  margin-top: 20px;
+}
+
+.selecionadosTitle {
+  color: #4c1d95;
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+}
+
+.listaSelecionados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cardSelecionado {
+  background: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nomeEx {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btnRemove {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.emptySelection {
+  font-size: 0.85rem;
+  color: #64748b;
+}
