@@ -1,26 +1,47 @@
-import React from 'react';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
+import { fetchBiometriaList } from '../../redux/Biometria/actions';
 
 export default function Login() {
-    const[email, setEmail] = useState('');
-    const[password, setPassword] = useState('');
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const handleLogin = (e) => {
-        e.preventDefault();
-        
-        navigate('/');
-        
-    };
-    return (
-        <div className={styles.loginWrapper}>
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const biometria = useSelector(state => state.biometriaReducer.biometria);
+  const loading = useSelector(state => state.biometriaReducer.loading);
+  
+  useEffect(() => {
+    dispatch(fetchBiometriaList());
+  }, [dispatch]);
+
+  // Função de login corrigida
+  // Dentro do Login.jsx, na função handleLogin:
+const handleLogin = (e) => {
+  e.preventDefault();
+
+  const usuarioValido = biometria.find(
+    (item) => item.usuario.email === email && item.usuario.password === password
+  );
+
+  if (usuarioValido) {
+    // SALVANDO O USUÁRIO LOGADO NO NAVEGADOR
+    localStorage.setItem('usuarioLogadoEmail', usuarioValido.usuario.email); 
+    navigate('/perfil'); // Redirecione para a rota do perfil
+  } else {
+    alert('Email ou senha incorretos. Por favor, tente novamente.');
+  }
+};
+
+  return (
+    <div className={styles.loginWrapper}>
       {/* Main Layout Container */}
       <div className={styles.mainContainer}>
         <div className={styles.formWrapper}>
-          
+
           {/* Logo Section */}
           <header className={styles.header}>
             <div className={styles.logo}>
@@ -28,9 +49,10 @@ export default function Login() {
             </div>
           </header>
 
-          {/* Simplified Login Form */}
+          {/* Login Form */}
           <main>
-            <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+            {/* O evento agora fica no form */}
+            <form className={styles.form} onSubmit={handleLogin}>
               <div className={styles.formGroup}>
                 <div className={styles.labelRow}>
                   <label htmlFor="email" className={styles.label}>
@@ -42,6 +64,8 @@ export default function Login() {
                   className={styles.input}
                   placeholder="athlete@championsbody.com"
                   type="email"
+                  value={email} // Conectado ao state
+                  onChange={(e) => setEmail(e.target.value)} // Atualiza o state
                   required
                 />
               </div>
@@ -60,14 +84,22 @@ export default function Login() {
                   className={styles.input}
                   placeholder="••••••••"
                   type="password"
+                  value={password} // Conectado ao state
+                  onChange={(e) => setPassword(e.target.value)} // Atualiza o state
                   required
                 />
               </div>
 
-              <button className={styles.submitBtn} type="submit" onClick={handleLogin}>
-                Log In
+              {/* Botão desativado caso os dados do Redux ainda estejam carregando */}
+              <button 
+                className={styles.submitBtn} 
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? 'Carregando Dados...' : 'Log In'}
               </button>
             </form>
+            
             <p className={styles.registerPrompt}>
               Don't have an account?{' '}
               <a className={styles.registerLink} href="/registro">
@@ -91,5 +123,5 @@ export default function Login() {
         </div>
       </footer>
     </div>
-    );
+  );
 }

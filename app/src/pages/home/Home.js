@@ -1,136 +1,141 @@
-import React, { useState, useEffect } from 'react';
-import styles from './components/home.module.css';
-import { useNavigate } from 'react-router-dom';
-import { createBiometria, fetchBiometriaList, updateBiometria } from '../../redux/Biometria/actions';
+import React, { useState, useEffect, useMemo } from 'react'; // Adicionado useMemo
 import { useDispatch, useSelector } from 'react-redux';
+import { updateBiometria } from '../../redux/Biometria/actions';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import styles from './components/home.module.css';
+
 import CalcCard from './components/CalcCard';
 import ResultCard from './components/ResultCard';
 import LevelCard from './components/LevelCard';
-
 
 export default function Home({ show, handleClose }) {
     const [id, setId] = useState(0);
     const [idade, setIdade] = useState(0);
     const [altura, setAltura] = useState(0);
     const [peso, setPeso] = useState(0);
-    const [nivelAtividade, setNivelAtividade] = useState(null);
+    const [nivelAtividade, setNivelAtividade] = useState('sedentario');
+    const [sexo, setSexo] = useState('masculino'); 
+    const [nivelExperiencia, setNivelExperiencia] = useState('iniciante');
+    const [usuarioAtual, setUsuarioAtual] = useState(null);
+
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const biometria = useSelector(state => state.biometriaReducer.biometria);
+
+    // --- LÓGICA DE CÁLCULO AO VIVO (LIVE PREVIEW) ---
+    // Usamos useMemo para que o cálculo só ocorra quando um valor mudar
+    const calculosAoVivo = useMemo(() => {
+        const pesoNum = Number(peso) || 0;
+        const alturaNum = Number(altura) || 0;
+        const idadeNum = Number(idade) || 0;
+
+        if (pesoNum === 0 || alturaNum === 0 || idadeNum === 0) return { tmb: 0, get: 0 };
+
+        const baseTmb = (10 * pesoNum) + (6.25 * alturaNum) - (5 * idadeNum);
+        const tmb = Math.round(sexo === 'masculino' ? baseTmb + 5 : baseTmb - 161);
+
+        const multiplicadores = {
+            sedentario: 1.2,
+            leve: 1.375,
+            moderado: 1.55,
+            intenso: 1.725,
+            muito_intenso: 1.9
+        };
+        const fator = multiplicadores[nivelAtividade] || 1.2;
+        const get = Math.round(tmb * fator);
+
+        return { tmb, get };
+    }, [peso, altura, idade, sexo, nivelAtividade]);
+
+    useEffect(() => {
+        const emailLogado = localStorage.getItem('usuarioLogadoEmail');
+        if (emailLogado && biometria?.length > 0) {
+            const usuarioEncontrado = biometria.find(item => item.usuario.email === emailLogado);
+            if (usuarioEncontrado) {
+                setUsuarioAtual(usuarioEncontrado);
+                setId(usuarioEncontrado.id);
+                if (usuarioEncontrado.usuario.perfil_biometrico) {
+                    setIdade(usuarioEncontrado.usuario.perfil_biometrico.idade);
+                    setAltura(usuarioEncontrado.usuario.perfil_biometrico.altura_cm);
+                    setPeso(usuarioEncontrado.usuario.perfil_biometrico.peso_kg);
+                    setNivelAtividade(usuarioEncontrado.usuario.perfil_biometrico.nivel_atividade);
+                    setSexo(usuarioEncontrado.usuario.perfil_biometrico.sexo || 'masculino');
+                    setNivelExperiencia(usuarioEncontrado.usuario.experiencia_usuario.nivel_experiencia || 'iniciante');
+                }
+            }
+        }
+    }, [biometria, show]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!biometria || biometria.length === 0) {
-            const biometriaItem = {
+        if (usuarioAtual) {
+            const biometriaAtualizada = {
+                ...usuarioAtual,
                 usuario: {
-                    id:12345, // ID de usuário fixo para teste, substitua pelo ID real do usuário autenticado
-                    nome: "Usuário Teste",
+                    ...usuarioAtual.usuario,
                     perfil_biometrico: {
                         idade: Number(idade),
                         altura_cm: Number(altura),
                         peso_kg: Number(peso),
-                        nivel_atividade: nivelAtividade
+                        nivel_atividade: nivelAtividade,
+                        sexo: sexo
                     },
                     analise_metabolica: {
-                        tmb_kcal: 1845,
-                        gasto_energetico_total_kcal: 2460
+                        tmb_kcal: calculosAoVivo.tmb,
+                        gasto_energetico_total_kcal: calculosAoVivo.get
                     },
                     experiencia_usuario: {
-                        nivel_experiencia: "Intermediário"
+                        nivel_experiencia: nivelExperiencia
                     }
                 }
             };
-            dispatch(createBiometria(biometriaItem));
-            navigate('/');
-            handleClose();
-            return;
-        } else {
-            const biometriaItem = {
-                ...biometria[0],
-                usuario: {
-                    ...biometria[0].usuario,
-                    perfil_biometrico: {
-                        idade: idade,
-                        altura_cm: altura,
-                        peso_kg: peso,
-                        nivel_atividade: nivelAtividade
-                    }
-                }
-            };
-            console.log('Dados biométricos a serem enviados:', biometriaItem);
-            dispatch(updateBiometria(id, biometriaItem));
-            navigate('/');
-            handleClose();
+            dispatch(updateBiometria(usuarioAtual.id, biometriaAtualizada));
+            handleClose(); 
         }
     };
-    const biometria = useSelector(state => state.biometriaReducer.biometria);
-    console.log('Dados biométricos:', biometria);
-    useEffect(() => {
-        if (biometria && biometria.length > 0) {
-            setId(biometria[0].id);
-            setIdade(biometria[0].usuario.perfil_biometrico.idade);
-            setAltura(biometria[0].usuario.perfil_biometrico.altura_cm);
-            setPeso(biometria[0].usuario.perfil_biometrico.peso_kg);
-            setNivelAtividade(biometria[0].usuario.perfil_biometrico.nivel_atividade);
-        }
-    }, [biometria]);
-
-
-    const analise = biometria && biometria.length > 0 ? biometria[0]?.usuario.analise_metabolica : null;
 
     return (
         <Modal show={show} onHide={handleClose} size="lg" centered>
-
-            {/* O closeButton já adiciona automaticamente o "X" para fechar */}
             <Modal.Header closeButton>
                 <Modal.Title>
                     <h1 className={styles.headerTitle} style={{ fontSize: '1.5rem', marginBottom: 0 }}>
                         Dashboard Biométrico
                     </h1>
-                    <p className={styles.headerSubtitle} style={{ fontSize: '1rem', color: '#6c757d', marginBottom: 0 }}>
-                        Análise do seu perfil
-                    </p>
                 </Modal.Title>
             </Modal.Header>
 
-            {/* O Body substitui o seu antigo <div className={styles.content}> */}
             <Modal.Body className={styles.modalBodyCustom}>
-
                 <CalcCard
                     peso={peso}
                     altura={altura}
                     idade={idade}
+                    sexo={sexo} 
                     nivelAtividade={nivelAtividade}
+                    nivelExperiencia={nivelExperiencia}
                     setNivelAtividade={setNivelAtividade}
                     setPeso={setPeso}
                     setAltura={setAltura}
                     setIdade={setIdade}
+                    setSexo={setSexo} 
+                    setNivelExperiencia={setNivelExperiencia}
                 />
 
                 <ResultCard
-                    tmbCalculada={analise?.tmb_kcal || "1,845"}
-                    gastoEnergetico={analise?.gasto_energetico_total_kcal}
+                    tmbCalculada={calculosAoVivo.tmb} // Agora mostra o cálculo em tempo real
+                    gastoEnergetico={calculosAoVivo.get} // Agora mostra o cálculo em tempo real
                 />
 
                 <LevelCard
-                    nivelAtual="Intermediário"
-                    descricao="Com base no seu perfil, o sistema identificou que você está no nível intermediário..."
+                    nivelAtual={nivelExperiencia} // Passamos o state local para mudar o card na hora!
                 />
-
             </Modal.Body>
 
-            {/* O Footer é o lugar ideal para o botão de Salvar */}
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Cancelar
-                </Button>
-
-                {/* Você pode manter a sua classe de estilo ou usar o variant="primary" do bootstrap */}
+                <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
                 <Button variant="primary" className={styles.actionBtn} onClick={handleSubmit}>
                     <span>🎯</span> Salvar
                 </Button>
             </Modal.Footer>
-
         </Modal>
     );
 }

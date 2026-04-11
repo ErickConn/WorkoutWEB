@@ -1,27 +1,32 @@
-{ 
-   
+{
   "biometria": [
-    {
-       "usuario": {
-    "id": "12345",
-    "nome": "Usuário Exemplo",
-    "perfil_biometrico": {
-      "peso_kg": 78.5,
-      "altura_cm": 175,
-      "idade": 28,
-      "sexo": "masculino",
-      "nivel_atividade": "moderado"
-    },
-    "analise_metabolica": {
-      "tmb_kcal": 1845,
-      "gasto_energetico_total_kcal": 2490,
-      "data_calculo": "2026-03-29T21:14:00Z"
-    },
-    "experiencia": {
-      "nivel_atual": "Intermediario"
+    [
+  {
+    "id": "0CHWdT3wh2g",
+    "usuario": {
+      "id": "12345",
+      "nome": "Usuário Exemplo (Admin)",
+      "email": "admin@championsbody.com",
+      "password": "123",
+      "role": "admin", 
+      "perfil_biometrico": {
+        "peso_kg": 78.5,
+        "altura_cm": 175,
+        "idade": 28,
+        "sexo": "masculino",
+        "nivel_atividade": "moderado"
+      },
+      "analise_metabolica": {
+        "tmb_kcal": 1845,
+        "gasto_energetico_total_kcal": 2490,
+        "data_calculo": "2026-03-29T21:14:00Z"
+      },
+      "experiencia_usuario": {
+        "nivel_experiencia": "Intermediário"
+      }
     }
   }
-    }
+]
   ],
   "historico_usuario":[
     {

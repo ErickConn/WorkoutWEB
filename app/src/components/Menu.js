@@ -9,7 +9,7 @@ export default function Menu(){
         <footer>
             <div className={styles['menu-navegacao']}>
                 <div className={styles['botao-navegacao']}>
-                    <NavLink to="/" className={({isActive})=> isActive? styles.atual :styles.link}>
+                    <NavLink to="/perfil" className={({isActive})=> isActive? styles.atual :styles.link}>
                         🧎‍♀️
                         <p>Perfil</p>
                     </NavLink>
