@@ -30,7 +30,7 @@ const handleLogin = (e) => {
   if (usuarioValido) {
     // SALVANDO O USUÁRIO LOGADO NO NAVEGADOR
     localStorage.setItem('usuarioLogadoEmail', usuarioValido.usuario.email); 
-    navigate('/'); // Redirecione para a rota do perfil
+    navigate('/perfil'); // Redirecione para a rota do perfil
   } else {
     alert('Email ou senha incorretos. Por favor, tente novamente.');
   }

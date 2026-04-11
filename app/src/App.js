@@ -22,7 +22,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Perfil/>}></Route>
+        <Route path="/perfil" element={<Perfil/>}></Route>
         <Route path="/treino" element={<Treino />}></Route>
         <Route path="/progresso" element={<Progresso/>}></Route>
         <Route path='/exercicio/:id' element={<Exercicio/>}></Route>
@@ -31,7 +31,7 @@ function App() {
         <Route path='/biblioteca-exercicio' element={<BibliotecaExercicios></BibliotecaExercicios>}> </Route>
         <Route path='/home' element={<Home></Home>}></Route>
         <Route path='/plano' element={<Plano></Plano>}></Route>
-        <Route path='/login' element={<Login></Login>}></Route>
+        <Route path='/' element={<Login></Login>}></Route>
         <Route path='/registro' element={<Registro></Registro>}></Route>
       </Routes>
     </>

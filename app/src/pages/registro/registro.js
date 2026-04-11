@@ -37,7 +37,7 @@ export default function Registro() {
         localStorage.setItem('usuarioLogadoEmail', email.toLowerCase());
 
         // 3. Redireciona o usuário direto para a página de perfil (e não mais pro login)
-        navigate('/');
+        navigate('/perfil');
     };
 
     return (
