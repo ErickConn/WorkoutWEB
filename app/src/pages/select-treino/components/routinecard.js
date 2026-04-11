@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styles from "./select-treino.module.css";
 
 const RoutineCard = ({ 
@@ -9,13 +8,17 @@ const RoutineCard = ({
     foco, 
     lastDone, 
     exercises, 
-    time 
+    time,
+    onClick
 }) => {
     return (
-        <Link to='/treino' className={`${styles.card} ${styles['card-white']}`}>
+        <div 
+            onClick={onClick} 
+            className={`${styles.card} ${styles['card-white']}`}
+            style={{ cursor: 'pointer' }} 
+        >
             <div className={styles['card-body-flex']}>
                 
-                {/* O ícone com a letra (A, B, C...) e a cor dinâmica */}
                 <div className={`${styles['icon-letter']} ${colorClass}`}>
                     {letter}
                 </div>
@@ -35,7 +38,7 @@ const RoutineCard = ({
             <div className={styles['card-footer-stats']}>
                 <span>{exercises} exercícios</span> • <span>~{time} min</span>
             </div>
-        </Link>
+        </div>
     );
 };
 

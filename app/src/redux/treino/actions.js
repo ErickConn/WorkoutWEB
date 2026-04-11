@@ -117,7 +117,7 @@ export const setPlanoAtivo = (idPlano) => {
   };
 };
 
-export const setTreinoAtivo = (idTreino) => {
+export const setTreinoAtivo = (dia) => {
   return async (dispatch) => {
     dispatch(makeRequest());
 
@@ -132,6 +132,7 @@ export const setTreinoAtivo = (idTreino) => {
 
       if (!planoAtivo) {
         console.warn("Nenhum plano ativo encontrado para selecionar o treino.");
+        dispatch(failRequest("Nenhum plano ativo encontrado."));
         return;
       }
 
@@ -139,7 +140,7 @@ export const setTreinoAtivo = (idTreino) => {
       // Compara o idTreino recebido com o treino.id do seu db.json
       const novaRotina = planoAtivo.rotina.map(treino => ({
         ...treino,
-        ativo: String(treino.id) === String(idTreino)
+        ativo: String(treino.dia) === String(dia)
       }));
 
       // 4. Salva a rotina modificada de volta no objeto pai (plano)
@@ -152,7 +153,7 @@ export const setTreinoAtivo = (idTreino) => {
         type: 'SET_TREINO_ATUAL',
         payload: { 
           idPlano: planoAtivo.id, 
-          idTreino: idTreino 
+          dia: dia
         }
       });
 
@@ -160,5 +161,18 @@ export const setTreinoAtivo = (idTreino) => {
       dispatch(failRequest(err.message));
       console.error("Erro ao atualizar treino ativo no banco:", err);
     }
+  };
+};
+
+
+export const finalizarTreino = () => {
+  return async (dispatch, getState) => {
+    const { planos } = getState().treinoReducer;
+    const planoAtivo = planos.find(p => p.ativo) || planos[0];
+    if (!planoAtivo || !planoAtivo.rotina) return;
+    const currentIndex = planoAtivo.rotina.findIndex(t => t.ativo);
+    const nextIndex = (currentIndex + 1) % planoAtivo.rotina.length;
+    const proximoDia = planoAtivo.rotina[nextIndex].dia;
+    dispatch(setTreinoAtivo(proximoDia));
   };
 };

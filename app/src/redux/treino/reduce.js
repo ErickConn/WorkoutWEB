@@ -58,9 +58,9 @@ const treinoReducer = (state = initialState, action) => {
         planos: state.planos.map(plano =>
           String(plano.id) === String(id)
             ? {
-                ...plano,
-                rotina: plano.rotina.filter(item => item.dia !== dia)
-              }
+              ...plano,
+              rotina: plano.rotina.filter(item => item.dia !== dia)
+            }
             : plano
         )
       };
@@ -94,12 +94,12 @@ const treinoReducer = (state = initialState, action) => {
         planos: state.planos.map((plano) =>
           String(plano.id) === String(action.payload.idPlano)
             ? {
-                ...plano,
-                rotina: plano.rotina.map((treino) => ({
-                  ...treino,
-                  ativo: String(treino.id) === String(action.payload.idTreino)
-                }))
-              }
+              ...plano,
+              rotina: plano.rotina.map((treino) => ({
+                ...treino,
+                ativo: String(treino.dia) === String(action.payload.dia)
+              }))
+            }
             : plano
         )
       };
