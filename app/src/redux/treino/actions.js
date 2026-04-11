@@ -70,6 +70,11 @@ export const removerTreinoDaRotinaEdicao = (dia) => ({
   payload: { id: null, dia: dia }
 });
 
+export const atualizarTreinoDaRotinaEdicao = (treinoEditado) => ({
+  type: 'ATUALIZAR_TREINO_DA_ROTINA_EM_EDICAO',
+  payload: treinoEditado
+});
+
 export const removerTreinoDaAPI = (idPlano, diaParaRemover, rotinaAtual) => {
   return (dispatch) => {
     if (rotinaAtual.length <= 1) {
@@ -197,11 +202,11 @@ export const editarPlano = (idPlano, dados) => {
 export const adicionarTreinoAoPlano = (idPlano, nomeTreino, exerciciosSelecionados, rotinaAtual) => {
   return (dispatch) => {
     dispatch(makeRequest());
-    
+
     // Gera a próxima letra (A, B, C, etc.)
     const letras = ["A", "B", "C", "D", "E", "F", "G"];
     const letraAtual = letras[rotinaAtual.length] || "?";
-    
+
     // Cria o novo treino
     const novoTreino = {
       dia: letraAtual,
@@ -214,12 +219,43 @@ export const adicionarTreinoAoPlano = (idPlano, nomeTreino, exerciciosSelecionad
       id: Date.now().toString(),
       ativo: false
     };
-    
+
     // Adiciona à rotina existente
     const novaRotina = [...rotinaAtual, novoTreino];
-    
+
     // Faz o PATCH para salvar na API
     return axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina })
+      .then((res) => {
+        dispatch({
+          type: 'EDITAR_PLANO',
+          payload: res.data
+        });
+        return res.data;
+      })
+      .catch((err) => {
+        dispatch(failRequest(err.message));
+        throw err;
+      });
+  };
+};
+
+export const atualizarTreinoNoPlano = (idPlano, treinoEditado, rotinaAtual) => {
+  return (dispatch) => {
+    dispatch(makeRequest());
+
+    const rotinaAtualizada = rotinaAtual.map((item) =>
+      item.dia === treinoEditado.dia
+        ? {
+            ...item,
+            foco: treinoEditado.foco || item.foco,
+            exercicios: treinoEditado.exercicios,
+            ativo: treinoEditado.ativo ?? item.ativo,
+            id: item.id || treinoEditado.id
+          }
+        : item
+    );
+
+    return axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: rotinaAtualizada })
       .then((res) => {
         dispatch({
           type: 'EDITAR_PLANO',

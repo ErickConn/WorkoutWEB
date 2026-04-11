@@ -26,14 +26,22 @@ export default function CardTreino({
   // Estados para os Modais
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTreinoModal, setShowTreinoModal] = useState(false);
+  const [treinoEmEdicao, setTreinoEmEdicao] = useState(null);
 
   // Handlers para EditModal
   const handleOpenEdit = (e) => { e.stopPropagation(); setShowEditModal(true); };
   const handleCloseEdit = () => setShowEditModal(false);
 
   // Handlers para TreinoLivreModal
-  const handleOpenTreino = (e) => { e.stopPropagation(); setShowTreinoModal(true); };
-  const handleCloseTreino = () => setShowTreinoModal(false);
+  const handleOpenTreino = (e, treino = null) => {
+    e.stopPropagation();
+    setTreinoEmEdicao(treino);
+    setShowTreinoModal(true);
+  };
+  const handleCloseTreino = () => {
+    setShowTreinoModal(false);
+    setTreinoEmEdicao(null);
+  };
 
   const toggleVerMais = (e, dia) => {
     e.stopPropagation();
@@ -75,7 +83,13 @@ export default function CardTreino({
           handleClose={handleCloseEdit}
           plano={{ id, titulo, categoria, nivel }}
         />
-        <TreinoLivreModal show={showTreinoModal} handleClose={handleCloseTreino} rotina={rotina} idPlano={id} />
+        <TreinoLivreModal
+          show={showTreinoModal}
+          handleClose={handleCloseTreino}
+          rotina={rotina}
+          idPlano={id}
+          treinoEmEdicao={treinoEmEdicao}
+        />
       </div>
 
       <div className={styles.cardMainInfo}>
@@ -129,7 +143,7 @@ export default function CardTreino({
                       size="sm"
                       variant="light"
                       className={styles.btnEditar}
-                      onClick={handleOpenTreino}
+                      onClick={(e) => handleOpenTreino(e, item)}
                     >
                       ✏️
                     </Button>

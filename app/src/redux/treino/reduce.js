@@ -42,6 +42,17 @@ const treinoReducer = (state = initialState, action) => {
         }
       };
 
+    case 'ATUALIZAR_TREINO_DA_ROTINA_EM_EDICAO':
+      return {
+        ...state,
+        planoEmEdicao: {
+          ...state.planoEmEdicao,
+          rotina: state.planoEmEdicao.rotina.map((item) =>
+            item.dia === action.payload.dia ? { ...item, ...action.payload } : item
+          )
+        }
+      };
+
     case 'REMOVER_TREINO_DA_ROTINA':
       const { id, dia } = action.payload;
       if (!id) {

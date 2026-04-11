@@ -5,13 +5,12 @@ import Filtro from "../../components/Filtro";
 import SearchBar from "../../components/SearchBar";
 import ExercicioItem from "./components/exercicio-item";
 import ExercicioSelecionado from "./components/exercicio-selecionado";
-import { fetchExercicioList } from "../../redux/treino/actions";
+import { fetchExercicioList, adicionarTreinoNaRotina, adicionarTreinoAoPlano, atualizarTreinoNoPlano, atualizarTreinoDaRotinaEdicao } from "../../redux/treino/actions";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
 import FooterButton from "../../components/FooterButton";
-import { adicionarTreinoNaRotina, adicionarTreinoAoPlano } from "../../redux/treino/actions";
 
-export default function TreinoLivreModal({ show, handleClose, rotina = null, idPlano = null }) {
+export default function TreinoLivreModal({ show, handleClose, rotina = null, idPlano = null, treinoEmEdicao = null }) {
   const [busca, setBusca] = useState("");
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   const [nomeTreino, setNomeTreino] = useState("");
@@ -32,6 +31,22 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
       dispatch(fetchExercicioList());
     }
   }, [show, exercicios.length, dispatch]);
+
+  useEffect(() => {
+    if (!show) return;
+
+    if (treinoEmEdicao) {
+      setNomeTreino(treinoEmEdicao.foco || "");
+      setSelecionados(treinoEmEdicao.exercicios.map((ex) => ({
+        ...ex,
+        series: ex.series ?? ex.seriesPadrao ?? 3,
+        repeticoes: ex.reps ?? ex.repsPadrao ?? 12
+      })));
+    } else {
+      setNomeTreino("");
+      setSelecionados([]);
+    }
+  }, [show, treinoEmEdicao]);
 
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
@@ -76,11 +91,29 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
     const letras = ["A", "B", "C", "D", "E", "F", "G"];
     const letraAtual = letras[rotinaAtual.length] || "?";
 
+    const exerciciosFormatados = selecionados.map((ex) => ({
+      ...ex,
+      seriesPadrao: ex.series ?? ex.seriesPadrao ?? 3,
+      repsPadrao: ex.repeticoes ?? ex.repsPadrao ?? 12
+    }));
+
     if (idPlano !== null) {
-      // Adicionando treino a um plano existente (via card-treino)
-      dispatch(adicionarTreinoAoPlano(idPlano, nomeTreino, selecionados, rotinaAtual));
+      if (treinoEmEdicao) {
+        dispatch(atualizarTreinoNoPlano(idPlano, {
+          ...treinoEmEdicao,
+          foco: nomeTreino || treinoEmEdicao.foco,
+          exercicios: exerciciosFormatados
+        }, rotinaAtual));
+      } else {
+        dispatch(adicionarTreinoAoPlano(idPlano, nomeTreino, selecionados, rotinaAtual));
+      }
+    } else if (treinoEmEdicao) {
+      dispatch(atualizarTreinoDaRotinaEdicao({
+        ...treinoEmEdicao,
+        foco: nomeTreino || treinoEmEdicao.foco,
+        exercicios: exerciciosFormatados
+      }));
     } else {
-      // Adicionando treino no modo de edição (página plano)
       dispatch(adicionarTreinoNaRotina(nomeTreino, selecionados, letraAtual));
     }
 
