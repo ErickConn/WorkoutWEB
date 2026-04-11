@@ -1,22 +1,24 @@
 import {  MAKE_REQUEST_EXERCICIO, FAIL_REQUEST_EXERCICIO, GET_EXERCICIO_LIST, SET_EXERCICIO_LIST } from "./actionType";
+import axios from 'axios';
+
+const API_URL = "https://json-server-wweb.onrender.com";
 
 // Simulação de fetch inicial
-export const fetchExercicioList = () => async (dispatch) => {
-  dispatch({ type: MAKE_REQUEST_EXERCICIO });
-  try {
-    const dadosExercicio = [
-      { id: 1, nome: "Supino Reto", grupoMuscular: "Peito", dicaTecnica: "Mantenha os ombros estáveis" },
-      { id: 2, nome: "Agachamento Livre", grupoMuscular: "Pernas", dicaTecnica: "Coluna ereta durante o movimento" },
-      { id: 3, nome: "Remada Curvada", grupoMuscular: "Costas", dicaTecnica: "Evite arredondar a lombar" },
-      { id: 4, nome: "Desenvolvimento Militar", grupoMuscular: "Ombros", dicaTecnica: "Não arqueie a lombar" },
-      { id: 5, nome: "Rosca Direta", grupoMuscular: "Bíceps", dicaTecnica: "Evite balançar o corpo" },
-      { id: 6, nome: "Tríceps Testa", grupoMuscular: "Tríceps", dicaTecnica: "Mantenha os cotovelos fixos" },
-    ];
-    dispatch({ type: GET_EXERCICIO_LIST, payload: dadosExercicio });
-  } catch (err) {
-    dispatch({ type: FAIL_REQUEST_EXERCICIO, error: err });
-  }
+export const fetchExercicioList = () => {
+  return (dispatch) => {
+    dispatch({ type: MAKE_REQUEST_EXERCICIO });
+    axios.get(`${API_URL}/biblioteca_exercicios`)
+      .then((res) => {
+        console.log("RES:", res.data); // aqui já é o array
+        dispatch({ type: GET_EXERCICIO_LIST, payload: res.data }); // passa o array direto 
+      })
+      .catch((err) => {
+        console.error("ERRO:", err);
+        dispatch({ type: FAIL_REQUEST_EXERCICIO, payload: err.message });
+      });
+  };
 };
+
 
 // Atualizar lista manualmente (ex.: após criar/editar/excluir)
 export const setExercicioList = (novaLista) => ({

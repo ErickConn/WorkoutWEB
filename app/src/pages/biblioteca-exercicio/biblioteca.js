@@ -3,132 +3,104 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./biblioteca.module.css";
 import HeaderBack from "../../components/HeaderBack";
 import { fetchExercicioList } from '../../redux/exercicio/actions';
-import TreinoLivre from "../treino-livre";
+import ListaExercicios from "./components/lista-exercicios";
 
 export default function BibliotecaExercicios() {
-    const dispatch = useDispatch();
-    const { exercicios, loading, error } = useSelector(state => state.exercicioReducer);
+  const dispatch = useDispatch();
+  const { exercicios, loading, error } = useSelector(state => state.exercicioReducer);
 
-    const [busca, setBusca] = useState("");
-    const [grupoAtivo, setGrupoAtivo] = useState("Todos");
+  const [busca, setBusca] = useState("");
+  const [grupoAtivo, setGrupoAtivo] = useState("Todos");
+  const [selecionados, setSelecionados] = useState([]);
 
-    const [editandoId, setEditandoId] = useState(null);
-    const [exercicioEditado, setExercicioEditado] = useState({
-        nome: "",
-        grupoMuscular: "",
-        dicaTecnica: ""
-    });
+  useEffect(() => {
+    dispatch(fetchExercicioList());
+  }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(fetchExercicioList());
-    }, [dispatch]);
+  if (loading) return <p>Carregando página, aguarde...</p>;
+  if (error) return <p>Erro: {error}</p>;
 
-    if (loading) return <p>Carregando página, aguarde...</p>;
-    if (error) return <p>Erro: {error}</p>;
+  const grupos = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
+  const exerciciosFiltrados = exercicios.filter(ex => {
+    const nomeOuTitulo = ex.nome || ex.titulo || "";
+    const bateBusca = nomeOuTitulo.toLowerCase().includes(busca.toLowerCase());
+    const grupo = ex.grupo || "";
+    const bateGrupo = grupoAtivo === "Todos" || grupo === grupoAtivo;
+    return bateBusca && bateGrupo;
+  });
 
-    const gruposMusculares = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
+  const adicionarExercicio = (exercicio) => {
+    if (!selecionados.find(s => s.id === exercicio.id)) {
+      setSelecionados([...selecionados, exercicio]);
+    }
+  };
 
-    // Excluir exercício (simulação local)
-    const excluirExercicio = (id) => {
-        const novaLista = exercicios.filter(ex => ex.id !== id);
-        // aqui você pode usar setExercicioList(novaLista) se quiser atualizar via Redux
-    };
+  const removerExercicio = (id) => {
+    setSelecionados(selecionados.filter(s => s.id !== id));
+  };
 
-    // Iniciar edição
-    const iniciarEdicao = (ex) => {
-        setEditandoId(ex.id);
-        setExercicioEditado({ ...ex });
-    };
+  return (
+    <div className={styles.biblioteca}>
+      <HeaderBack
+        title="Biblioteca de Exercícios"
+        subtitle="Várias opções para escolher"
+        link="../treino-livre"
+      />
 
-    // Salvar edição (simulação local)
-    const salvarEdicao = () => {
-        const novaLista = exercicios.map(ex =>
-        ex.id === editandoId ? { ...exercicioEditado } : ex
-        );
-        // aqui você pode usar setExercicioList(novaLista) se quiser atualizar via Redux
-        setEditandoId(null);
-        setExercicioEditado({ nome: "", grupoMuscular: "", dicaTecnica: "" });
-    };
-    // Filtragem
-    const exerciciosFiltrados = exercicios.filter(ex => {
-        const bateBusca = ex.nome.toLowerCase().includes(busca.toLowerCase());
-        const bateGrupo = grupoAtivo === "Todos" || ex.grupoMuscular === grupoAtivo;
-        return bateBusca && bateGrupo;
-    });
+      <input
+        className={styles.search}
+        placeholder="Buscar exercício..."
+        value={busca}
+        onChange={e => setBusca(e.target.value)}
+      />
 
+      <div className={styles.filtro}>
+        {grupos.map(grupo => (
+          <button
+            key={grupo}
+            className={grupoAtivo === grupo ? styles.active : ""}
+            onClick={() => setGrupoAtivo(grupo)}
+          >
+            {grupo}
+          </button>
+        ))}
+      </div>
 
-    
-    return (
-        <div className={styles.biblioteca}>
-            <HeaderBack
-                title="Biblioteca de Exercícios"
-                subtitle="Várias opções para escolher"
-                link="../treino-livre"
-            />
-            {/* Barra de busca */}
-            <input
-                className={styles.search}
-                placeholder="Buscar exercício..."
-                value={busca}
-                onChange={e => setBusca(e.target.value)}
-            />
+      <ListaExercicios 
+        titulo="Exercícios" 
+        dados={exerciciosFiltrados} 
+        onAdd={adicionarExercicio} 
+      />
 
-            {/* Filtro por grupo muscular */}
-            <div className={styles.filtro}>
-                {gruposMusculares.map(grupo => (
-                <button
-                    key={grupo}
-                    className={grupoAtivo === grupo ? styles.active : ""}
-                    onClick={() => setGrupoAtivo(grupo)}
-                >
-                    {grupo}
-                </button>
-                ))}
-            </div>
-
-            {/* Lista de exercícios */}
-            <ul className={styles.lista}>
-                {exerciciosFiltrados.map(ex => (
-                <li key={ex.id} className={styles.item}>
-                    {editandoId === ex.id ? (
-                    <>
-                        <input
-                        value={exercicioEditado.nome}
-                        onChange={e => setExercicioEditado({ ...exercicioEditado, nome: e.target.value })}
-                        />
-                        <input
-                        value={exercicioEditado.grupoMuscular}
-                        onChange={e => setExercicioEditado({ ...exercicioEditado, grupoMuscular: e.target.value })}
-                        />
-                        <input
-                        value={exercicioEditado.dicaTecnica}
-                        onChange={e => setExercicioEditado({ ...exercicioEditado, dicaTecnica: e.target.value })}
-                        />
-                        <button onClick={salvarEdicao}>Salvar</button>
-                        <button onClick={() => setEditandoId(null)}>Cancelar</button>
-                    </>
-                    ) : (
-                    <>
-                        <strong>{ex.nome}</strong> – {ex.grupoMuscular}
-                        <p className={styles.dica}>{ex.dicaTecnica}</p>
-                        <button onClick={() => iniciarEdicao(ex)}>Editar</button>
-                        <button onClick={() => excluirExercicio(ex.id)}>Excluir</button>
-                    </>
-                    )}
-                </li>
-                ))}
-            </ul>
-
-            {/* Empty state */}
-            {exerciciosFiltrados.length === 0 && (
-                <div className={styles.emptyState}>
-                <p>
-                    Nenhum exercício encontrado para <strong>{grupoAtivo}</strong> com busca <strong>"{busca}"</strong>.
-                </p>
-                </div>
-            )}
+      {exerciciosFiltrados.length === 0 && (
+        <div className={styles.emptyState}>
+          <p>
+            Nenhum exercício encontrado para <strong>{grupoAtivo}</strong> com busca <strong>"{busca}"</strong>.
+          </p>
         </div>
-        
-    );
+      )}
+
+      <section className={styles.selecionadosCard}>
+        <h3 className={styles.selecionadosTitle}>📋 Selecionados ({selecionados.length})</h3>
+        <div className={styles.listaSelecionados}>
+          {selecionados.length > 0 ? (
+            selecionados.map(ex => (
+              <div key={ex.id} className={styles.cardSelecionado}>
+                <p className={styles.nomeEx}>{ex.nome}</p>
+                <button 
+                  className={styles.btnRemove} 
+                  onClick={() => removerExercicio(ex.id)}
+                >
+                  ×
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className={styles.emptySelection}>Selecione exercícios acima.</p>
+          )}
+        </div>
+      </section>
+    </div>
+  );
 }
