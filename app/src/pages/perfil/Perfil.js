@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './components/perfil.module.css';
-import { fetchBiometriaList, createBiometria, deleteBiometria } from '../../redux/Biometria/actions';
+import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';
 import BiometricsCard from './components/biometriccard.js';
@@ -13,48 +13,44 @@ import Home from '../home/Home.js';
 export default function Perfil() {
     const [fotoUsuario, setFotoUsuario] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    
+    // Estado para guardar os dados específicos do usuário logado
+    const [meusDados, setMeusDados] = useState(null); 
+
     const dispatch = useDispatch();
     const biometria = useSelector(state => state.biometriaReducer.biometria);
     const loading = useSelector(state => state.biometriaReducer.loading);
-    console.log('Dados biométricos:', biometria);
     const navigate = useNavigate();
+
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
+    // Busca todos os dados quando a tela carrega
     useEffect(() => {
         dispatch(fetchBiometriaList());
     }, [dispatch]);
 
-    if (loading) {
-        return (
-            <div className={styles.container}>
-                <p>Carregando dados biométricos...</p>
-            </div>
-        );
-    }
-    if (!biometria || biometria.length === 0) {
-        return (
-            <>
-
-                <div className={styles.container}>
-                    <p>Dados biométricos não encontrados. Por favor, complete seu perfil.</p>
-                </div>
-                <button onClick={handleShowModal} className={styles.btnEditar}>
-                    Criar Perfil
-                </button>
-                <Home
-                    show={showModal}
-                    handleClose={handleCloseModal}
-                />
-            </>
-        );
-    }
+    // Sempre que a lista de 'biometria' atualizar do Redux, procuramos nosso usuário
+    useEffect(() => {
+        const emailLogado = localStorage.getItem('usuarioLogadoEmail');
+        
+        if (emailLogado && biometria.length > 0) {
+            // Procura o usuário que tem o mesmo email salvo no Login
+            const usuarioEncontrado = biometria.find(
+                (item) => item.usuario.email === emailLogado
+            );
+            setMeusDados(usuarioEncontrado);
+        }
+    }, [biometria]); // Roda essa verificação toda vez que 'biometria' mudar
 
     const handleDeletePerfilBiometrico = () => {
-        const id = biometria[0].id;
-        dispatch(deleteBiometria(id));
-        navigate('/');
+        if (meusDados) {
+            dispatch(deleteBiometria(meusDados.id));
+            localStorage.removeItem('usuarioLogadoEmail'); // Limpa a sessão
+            navigate('/login'); // Volta pro login
+        }
     }
+
     const handleUploadFoto = (event) => {
         const arquivo = event.target.files[0];
         if (arquivo) {
@@ -62,10 +58,39 @@ export default function Perfil() {
         }
     };
 
-    
+    // Telas de Loading e Erro
+    if (loading) {
+        return (
+            <div className={styles.container}>
+                <p>Carregando dados biométricos...</p>
+            </div>
+        );
+    }
 
+    // Se o array estiver vazio ou se não encontrou o usuário logado
+    if (!meusDados || !meusDados.usuario.perfil_biometrico) {
+    return (
+        <>
+            <OffCanvasNavBar /> {/* Mantém a barra superior visível */}
+            
+            <main className={styles.containerPerfil} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
+                <h3 style={{ marginBottom: '1rem', color: 'var(--on-surface)' }}>
+                    Olá, {meusDados?.usuario?.nome || 'Atleta'}!
+                </h3>
+                <p style={{ textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem' }}>
+                    Seus dados biométricos ainda não foram preenchidos.
+                </p>
+                <button onClick={handleShowModal} className={styles.btnEditar}>
+                    Criar Perfil Biométrico
+                </button>
+            </main>
 
+            <Home show={showModal} handleClose={handleCloseModal} />
+        </>
+    );
+}
 
+    // Renderização Principal usando meusDados (e não mais biometria[0])
     return (
         <>
             <OffCanvasNavBar />
@@ -78,41 +103,36 @@ export default function Perfil() {
                 <UserProfileCard
                     fotoUsuario={fotoUsuario}
                     handleUploadFoto={handleUploadFoto}
-                    nome={biometria[0]?.usuario.nome}
-                    email="roberto.carlos@email.com"
-                    iniciais="RC"
+                    nome={meusDados.usuario.nome}
+                    email={meusDados.usuario.email}
+                    iniciais={meusDados.usuario.nome.substring(0, 2).toUpperCase()} // Pega iniciais dinâmicas
+                    sexo={meusDados.usuario.perfil_biometrico.sexo} // Passa o sexo para o card
                 />
 
                 <BiometricsCard
-                    peso={biometria[0]?.usuario?.perfil_biometrico?.peso_kg}
-                    altura={biometria[0]?.usuario?.perfil_biometrico?.altura_cm}
-                    idade={biometria[0]?.usuario?.perfil_biometrico?.idade}
-                    tmb={biometria[0]?.usuario?.analise_metabolica?.tmb_kcal}
+                    peso={meusDados.usuario.perfil_biometrico.peso_kg}
+                    altura={meusDados.usuario.perfil_biometrico.altura_cm}
+                    idade={meusDados.usuario.perfil_biometrico.idade}
+                    tmb={meusDados.usuario.analise_metabolica.tmb_kcal}
+                    
                 />
 
                 <ExperienceCard
-                    nivel="Intermediário"
+                    nivel={meusDados.usuario.experiencia_usuario.nivel_experiencia}
                     descricao="Baseado em seu perfil biométrico e histórico de treinos"
                 />
 
                 <PlanDetailsCard
-
-                    nivelAtividade={biometria[0]?.usuario?.perfil_biometrico?.nivel_atividade}
+                    nivelAtividade={meusDados.usuario.perfil_biometrico.nivel_atividade}
                     planoAtual="ABC - Intermediário"
                 />
 
-                {/* 3. Troque o <Link> por um <button> que chama a função de abrir o modal */}
                 <button onClick={handleShowModal} className={styles.btnEditar}>
                     Editar Perfil
                 </button>
-
             </main>
 
-            {/* 4. Adicione o Modal no final do componente, passando as props */}
-            <Home
-                show={showModal}
-                handleClose={handleCloseModal}
-            />
+            <Home show={showModal} handleClose={handleCloseModal} />
         </>
     );
 }

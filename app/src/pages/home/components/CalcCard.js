@@ -2,8 +2,8 @@ import React from 'react';
 import styles from './home.module.css'; 
 import { useState } from 'react';
 
-const CalcCard = ({ peso, altura, idade, setPeso,nivelAtividade, setAltura, setIdade, setNivelAtividade }) => {
-    console.log('CalcCard - Props recebidas:', { peso, altura, idade });
+const CalcCard = ({ peso, altura, idade, sexo, setPeso, nivelAtividade, setAltura, setIdade, setNivelAtividade,setSexo }) => {
+    console.log('CalcCard - Props recebidas:', { peso, altura, idade, sexo, nivelAtividade });
     return (
         <div className={styles.calcCard}>
             <h2 className={styles.cardTitle}>🔥 Taxa Metabólica Basal</h2>
@@ -13,7 +13,13 @@ const CalcCard = ({ peso, altura, idade, setPeso,nivelAtividade, setAltura, setI
                     <label>Peso Atual (kg)</label>
                     <input type="number" step="0.1" min="0" onChange={(e) => setPeso(parseFloat(e.target.value))} placeholder={peso} />
                 </div>
-                
+                <div className={styles.inputWrapper}>
+                    <label>Sexo</label>
+                    <select defaultValue={sexo} onChange={(e) => setSexo(e.target.value)}>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                    </select>
+                </div>
                 <div className={styles.inputWrapper}>
                     <label>Altura (cm)</label>
                     <input type="number" step="0.1" min="0" onChange={(e) => setAltura(parseFloat(e.target.value))} placeholder={altura} />
