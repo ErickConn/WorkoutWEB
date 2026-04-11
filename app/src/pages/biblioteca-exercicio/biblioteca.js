@@ -8,6 +8,18 @@ import ListaExercicios from "./components/lista-exercicios";
 export default function BibliotecaExercicios() {
   const dispatch = useDispatch();
   const { exercicios, loading, error } = useSelector(state => state.exercicioReducer);
+  
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const voltar = () => {
+    if (location.state?.from === "treino-livre") {
+      navigate("/treino-livre");
+    } else {
+      navigate(-1); // volta para a página anterior
+    }
+  };
+
 
   const [busca, setBusca] = useState("");
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
@@ -45,7 +57,7 @@ export default function BibliotecaExercicios() {
       <HeaderBack
         title="Biblioteca de Exercícios"
         subtitle="Várias opções para escolher"
-        link="../treino-livre"
+        onBack={voltar}
       />
 
       <input
