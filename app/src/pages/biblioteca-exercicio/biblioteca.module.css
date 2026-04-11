@@ -3,7 +3,7 @@
   padding: 20px;
   background-color: #fff;
   min-height: 100vh;
-  padding-top: 80px; /* ajuste conforme a altura do HeaderBack */
+  padding-top: 100px; /* ajuste conforme a altura do HeaderBack */
 
 }
 
@@ -133,17 +133,55 @@
   transform: scale(1.02);
 }
 
-/* Botão de adicionar */
-.btnAdd {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: 2px solid #e2e8f0;
+/* Botão dos cards */
+.cardActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btnAdd, .btnEdit, .btnDelete {
   background: none;
-  color: #3b82f6;
-  font-weight: bold;
-  font-size: 1.25rem;
+  border: none;
   cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.btnAdd {
+  color: #10b981; /* verde */
+}
+
+.btnEdit {
+  color: #3b82f6; /* azul */
+}
+
+.btnDelete {
+  color: #ef4444; /* vermelho */
+}
+
+.warningText {
+  color: #ef4444;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.exercicioInfo p {
+  margin: 0.3rem 0;
+}
+
+/* Botão de adicionar exercício */
+.btnAddExercicio {
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btnAddExercicio:hover {
+  background: linear-gradient(to right, #2563eb, #1e40af);
 }
 
 /* Informações do exercício */
