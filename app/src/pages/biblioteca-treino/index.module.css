@@ -364,6 +364,17 @@
   width: 300px;
 }
 
+.btnAdicionarTreino {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .headerRotina {
   display: flex;
   align-items: center;

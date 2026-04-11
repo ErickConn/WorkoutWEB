@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import styles from '../index.module.css';
 import { useNavigate } from 'react-router-dom';
-import { removerPlano, removerTreinoDaRotinaEdicao, removerTreinoDaAPI, setPlanoAtivo } from '../../../redux/treino/actions'; 
+import { removerPlano, removerTreinoDaRotinaEdicao, removerTreinoDaAPI, setPlanoAtivo } from '../../../redux/treino/actions';
 import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
-import EditModal from '../../../components/EditModal';
+import EditarPlanoModal from './EditarPlanoModal';
 import TreinoLivreModal from '../../treino-livre';
 
-export default function CardTreino({ 
+export default function CardTreino({
   id,
-  titulo, 
+  titulo,
   isPreview = false,
-  nivel = "Iniciante", 
-  recomendado = false, 
+  nivel = "Iniciante",
+  recomendado = false,
   isCustom,
+  categoria = "modelo",
   rotina = []
 }) {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export default function CardTreino({
   const [diasExpandidos, setDiasExpandidos] = useState({});
 
   const navigate = useNavigate();
-  
+
   // Estados para os Modais
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTreinoModal, setShowTreinoModal] = useState(false);
@@ -59,23 +60,27 @@ export default function CardTreino({
 
   const handleComecarTreino = async (e) => {
     e.preventDefault();
-    await dispatch(setPlanoAtivo(id)); 
+    await dispatch(setPlanoAtivo(id));
     navigate('/treino');
   };
 
   return (
-    <div 
+    <div
       className={`${styles.cardTreino} ${isCustom ? styles.cardCustom : ''} ${aberto ? styles.cardAberto : ''}`}
       onClick={() => setAberto(!aberto)}
     >
       <div onClick={(e) => e.stopPropagation()}>
-        <EditModal show={showEditModal} handleClose={handleCloseEdit} idPlano={id} />
-        <TreinoLivreModal show={showTreinoModal} handleClose={handleCloseTreino} />
+        <EditarPlanoModal
+          show={showEditModal}
+          handleClose={handleCloseEdit}
+          plano={{ id, titulo, categoria, nivel }}
+        />
+        <TreinoLivreModal show={showTreinoModal} handleClose={handleCloseTreino} rotina={rotina} idPlano={id} />
       </div>
 
       <div className={styles.cardMainInfo}>
         <div className={`${styles.badgeIcon} ${styles.bgGreen}`}>💪</div>
-        
+
         <div className={styles.cardTextContent}>
           <div className={styles.cardTitleRow}>
             <h3 className={styles.cardName}>{titulo || "Novo Plano"}</h3>
@@ -84,16 +89,16 @@ export default function CardTreino({
 
           {!isPreview && (
             <div className={styles.cardActions}>
-              <Button 
-                variant="outline-primary" 
+              <Button
+                variant="outline-primary"
                 size="sm"
                 onClick={handleOpenEdit}
                 className="me-2"
               >
                 Editar Plano
               </Button>
-              <Button 
-                variant="outline-danger" 
+              <Button
+                variant="outline-danger"
                 size="sm"
                 onClick={handleRemoverPlanoCompleto}
               >
@@ -104,7 +109,7 @@ export default function CardTreino({
         </div>
         <div className={`${styles.seta} ${aberto ? styles.setaAtiva : ''}`}>›</div>
       </div>
-      
+
       {aberto && rotina.length > 0 && (
         <div className={styles.containerExpansivel} onClick={(e) => e.stopPropagation()}>
           {rotina.map((item, idx) => {
@@ -120,7 +125,7 @@ export default function CardTreino({
                   </div>
 
                   <div className={styles.itemActions}>
-                    <Button 
+                    <Button
                       size="sm"
                       variant="light"
                       className={styles.btnEditar}
@@ -128,8 +133,8 @@ export default function CardTreino({
                     >
                       ✏️
                     </Button>
-                    <button 
-                      className={styles.btnX} 
+                    <button
+                      className={styles.btnX}
                       onClick={(e) => handleRemoverTreinoUnico(e, id, item.dia)}
                       title="Remover este dia"
                     >
@@ -146,7 +151,7 @@ export default function CardTreino({
                       <span className={styles.metaEx}>{ex.seriesPadrao}x{ex.repsPadrao}</span>
                     </div>
                   ))}
-                  
+
                   {item.exercicios.length > 3 && (
                     <button className={styles.verMaisBtn} onClick={(e) => toggleVerMais(e, item.dia)}>
                       {isExpandido ? "Ver menos" : `+ ${item.exercicios.length - 3} movimentos`}
@@ -156,9 +161,18 @@ export default function CardTreino({
               </div>
             );
           })}
-          
+
           {!isPreview && (
-            <button className={styles.btnIniciar} onClick={handleComecarTreino}>Começar Treino</button>
+            <>
+              <Button
+                variant="outline-primary"
+                className={styles.btnAdicionarTreino}
+                onClick={(e) => { e.stopPropagation(); handleOpenTreino(e); }}
+              >
+                + Adicionar Novo Treino
+              </Button>
+              <button className={styles.btnIniciar} onClick={handleComecarTreino}>Começar Treino</button>
+            </>
           )}
         </div>
       )}

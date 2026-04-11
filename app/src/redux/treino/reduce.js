@@ -104,6 +104,16 @@ const treinoReducer = (state = initialState, action) => {
         )
       };
 
+    case 'EDITAR_PLANO':
+      return {
+        ...state,
+        planos: state.planos.map(plano =>
+          String(plano.id) === String(action.payload.id)
+            ? action.payload
+            : plano
+        )
+      };
+
     default:
       return state;
   }

@@ -175,3 +175,61 @@ export const finalizarTreino = () => {
     dispatch(setTreinoAtivo(proximoDia));
   };
 };
+
+export const editarPlano = (idPlano, dados) => {
+  return (dispatch) => {
+    dispatch(makeRequest());
+    return axios.patch(`${API_URL}/planos/${idPlano}`, dados)
+      .then((res) => {
+        dispatch({
+          type: 'EDITAR_PLANO',
+          payload: res.data
+        });
+        return res.data;
+      })
+      .catch((err) => {
+        dispatch(failRequest(err.message));
+        throw err;
+      });
+  };
+};
+
+export const adicionarTreinoAoPlano = (idPlano, nomeTreino, exerciciosSelecionados, rotinaAtual) => {
+  return (dispatch) => {
+    dispatch(makeRequest());
+    
+    // Gera a próxima letra (A, B, C, etc.)
+    const letras = ["A", "B", "C", "D", "E", "F", "G"];
+    const letraAtual = letras[rotinaAtual.length] || "?";
+    
+    // Cria o novo treino
+    const novoTreino = {
+      dia: letraAtual,
+      foco: nomeTreino || `Treino ${letraAtual}`,
+      exercicios: exerciciosSelecionados.map(ex => ({
+        ...ex,
+        seriesPadrao: ex.series || 3,
+        repsPadrao: ex.repeticoes || 12
+      })),
+      id: Date.now().toString(),
+      ativo: false
+    };
+    
+    // Adiciona à rotina existente
+    const novaRotina = [...rotinaAtual, novoTreino];
+    
+    // Faz o PATCH para salvar na API
+    return axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina })
+      .then((res) => {
+        dispatch({
+          type: 'EDITAR_PLANO',
+          payload: res.data
+        });
+        return res.data;
+      })
+      .catch((err) => {
+        dispatch(failRequest(err.message));
+        throw err;
+      });
+  };
+};

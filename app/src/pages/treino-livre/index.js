@@ -9,9 +9,9 @@ import { fetchExercicioList } from "../../redux/treino/actions";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
 import FooterButton from "../../components/FooterButton";
-import { adicionarTreinoNaRotina } from "../../redux/treino/actions";
+import { adicionarTreinoNaRotina, adicionarTreinoAoPlano } from "../../redux/treino/actions";
 
-export default function TreinoLivreModal({ show, handleClose }) {
+export default function TreinoLivreModal({ show, handleClose, rotina = null, idPlano = null }) {
   const [busca, setBusca] = useState("");
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   const [nomeTreino, setNomeTreino] = useState("");
@@ -23,7 +23,9 @@ export default function TreinoLivreModal({ show, handleClose }) {
 
   const dispatch = useDispatch();
   const exercicios = useSelector(state => state.treinoReducer.exercicios);
-  const { rotina } = useSelector(state => state.treinoReducer.planoEmEdicao);
+  const planoEmEdicaoRotina = useSelector(state => state.treinoReducer.planoEmEdicao).rotina;
+  // Use rotina from props, or fallback to planoEmEdicao.rotina from Redux
+  const rotinaAtual = rotina !== null ? rotina : planoEmEdicaoRotina;
 
   useEffect(() => {
     if (show && exercicios.length === 0) {
@@ -72,9 +74,15 @@ export default function TreinoLivreModal({ show, handleClose }) {
 
   const handleSalvar = () => {
     const letras = ["A", "B", "C", "D", "E", "F", "G"];
-    const letraAtual = letras[rotina.length] || "?";
+    const letraAtual = letras[rotinaAtual.length] || "?";
 
-    dispatch(adicionarTreinoNaRotina(nomeTreino, selecionados, letraAtual));
+    if (idPlano !== null) {
+      // Adicionando treino a um plano existente (via card-treino)
+      dispatch(adicionarTreinoAoPlano(idPlano, nomeTreino, selecionados, rotinaAtual));
+    } else {
+      // Adicionando treino no modo de edição (página plano)
+      dispatch(adicionarTreinoNaRotina(nomeTreino, selecionados, letraAtual));
+    }
 
     handleClose();
     setSelecionados([]);
