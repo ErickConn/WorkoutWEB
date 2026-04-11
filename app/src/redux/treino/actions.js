@@ -34,10 +34,9 @@ export const adicionarTreinoNaRotina = (nomeTreino, exerciciosSelecionados, letr
       foco: nomeTreino || `Treino ${letra}`,
       exercicios: exerciciosSelecionados.map(ex => ({
         ...ex,
-        seriesPadrao: 3,
-        repsPadrao: 12
+        seriesPadrao: ex.series || 3,
+        repsPadrao: ex.repeticoes || 12
       }))
-      // O ID e o campo 'ativo' agora são gerados no Reducer para consistência
     }
   };
 };
@@ -144,15 +143,15 @@ export const setTreinoAtivo = (dia) => {
       }));
 
       // 4. Salva a rotina modificada de volta no objeto pai (plano)
-      await axios.patch(`${API_URL}/planos/${planoAtivo.id}`, { 
-        rotina: novaRotina 
+      await axios.patch(`${API_URL}/planos/${planoAtivo.id}`, {
+        rotina: novaRotina
       });
 
       // 5. Atualiza o estado global do Redux
       dispatch({
         type: 'SET_TREINO_ATUAL',
-        payload: { 
-          idPlano: planoAtivo.id, 
+        payload: {
+          idPlano: planoAtivo.id,
           dia: dia
         }
       });

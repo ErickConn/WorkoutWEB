@@ -16,23 +16,47 @@ export default function TreinoLivreModal({ show, handleClose }) {
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   const [nomeTreino, setNomeTreino] = useState("");
   const [selecionados, setSelecionados] = useState([]);
-  
+  const [showSeriesModal, setShowSeriesModal] = useState(false);
+  const [exercicioSelecionado, setExercicioSelecionado] = useState(null);
+  const [series, setSeries] = useState("");
+  const [repeticoes, setRepeticoes] = useState("");
+
   const dispatch = useDispatch();
   const exercicios = useSelector(state => state.treinoReducer.exercicios);
   const { rotina } = useSelector(state => state.treinoReducer.planoEmEdicao);
 
   useEffect(() => {
-  if (show && exercicios.length === 0) {
-    dispatch(fetchExercicioList());
-  }
-}, [show, exercicios.length, dispatch]);
+    if (show && exercicios.length === 0) {
+      dispatch(fetchExercicioList());
+    }
+  }, [show, exercicios.length, dispatch]);
 
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
-  const adicionarExercicio = (exercicio) => {
-    if (!selecionados.find(ex => ex.id === exercicio.id)) {
-      setSelecionados([...selecionados, exercicio]);
+  const abrirModalSeries = (exercicio) => {
+    setExercicioSelecionado(exercicio);
+    setSeries("");
+    setRepeticoes("");
+    setShowSeriesModal(true);
+  };
+
+  const adicionarExercicioComSeries = () => {
+    if (!series || !repeticoes) {
+      alert("Por favor, preencha séries e repetições");
+      return;
     }
+
+    if (!selecionados.find(ex => ex.id === exercicioSelecionado.id)) {
+      const exercicioComDados = {
+        ...exercicioSelecionado,
+        series: parseInt(series),
+        repeticoes: parseInt(repeticoes)
+      };
+      setSelecionados([...selecionados, exercicioComDados]);
+    }
+
+    setShowSeriesModal(false);
+    setExercicioSelecionado(null);
   };
 
   const removerExercicio = (id) => {
@@ -47,15 +71,15 @@ export default function TreinoLivreModal({ show, handleClose }) {
   });
 
   const handleSalvar = () => {
-  const letras = ["A", "B", "C", "D", "E", "F", "G"];
-  const letraAtual = letras[rotina.length] || "?";
+    const letras = ["A", "B", "C", "D", "E", "F", "G"];
+    const letraAtual = letras[rotina.length] || "?";
 
-  dispatch(adicionarTreinoNaRotina(nomeTreino, selecionados, letraAtual));
+    dispatch(adicionarTreinoNaRotina(nomeTreino, selecionados, letraAtual));
 
-  handleClose();
-  setSelecionados([]);
-  setNomeTreino("");
-};
+    handleClose();
+    setSelecionados([]);
+    setNomeTreino("");
+  };
 
   return (
     <Modal show={show} onHide={handleClose} size="lg" scrollable centered>
@@ -65,24 +89,24 @@ export default function TreinoLivreModal({ show, handleClose }) {
       <Modal.Body className={styles.modalBody}>
         <section className={styles.card}>
           <label className={styles.label}>Nome do Treino</label>
-          <input 
-            type="text" 
-            placeholder="Ex: Meu Treino A" 
+          <input
+            type="text"
+            placeholder="Ex: Meu Treino A"
             className={styles.inputNome}
             value={nomeTreino}
             onChange={(e) => setNomeTreino(e.target.value)}
           />
         </section>
 
-        <SearchBar 
-          placeholder="Buscar exercícios..." 
+        <SearchBar
+          placeholder="Buscar exercícios..."
           value={busca}
           onChange={setBusca}
         />
 
-        <Filtro 
-          tipo="GRUPO MUSCULAR" 
-          filtros={filtros} 
+        <Filtro
+          tipo="GRUPO MUSCULAR"
+          filtros={filtros}
           ativo={grupoAtivo}
           onSelect={setGrupoAtivo}
         />
@@ -90,19 +114,19 @@ export default function TreinoLivreModal({ show, handleClose }) {
         <section className={styles.bibliotecaSection}>
           <div className={styles.headerFlex}>
             <h3 className={styles.sectionTitle}>Biblioteca</h3>
-            <Button 
-              title="Ver Tudo" 
+            <Button
+              title="Ver Tudo"
               link="/biblioteca-exercicio"
               variant="primary"
             />
-          </div>          
+          </div>
           <div className={styles.listaBiblioteca}>
             {bibliotecaFiltrada.length > 0 ? (
               bibliotecaFiltrada.map(ex => (
-                <ExercicioItem 
-                  key={ex.id} 
-                  exercicio={ex} 
-                  onAdd={() => adicionarExercicio(ex)} 
+                <ExercicioItem
+                  key={ex.id}
+                  exercicio={ex}
+                  onAdd={() => abrirModalSeries(ex)}
                 />
               ))
             ) : (
@@ -118,23 +142,70 @@ export default function TreinoLivreModal({ show, handleClose }) {
 
           <div className={styles.listaSelecionados}>
             {selecionados.length > 0 ? (
-                selecionados.map(ex => (
-                    <ExercicioSelecionado 
-                      key={ex.id} 
-                      exercicio={ex} 
-                      onRemove={() => removerExercicio(ex.id)} 
-                    />
-                  ))
+              selecionados.map(ex => (
+                <ExercicioSelecionado
+                  key={ex.id}
+                  exercicio={ex}
+                  onRemove={() => removerExercicio(ex.id)}
+                />
+              ))
             ) : (
-                <p className={styles.emptySelection}>Selecione exercícios acima.</p>
+              <p className={styles.emptySelection}>Selecione exercícios acima.</p>
             )}
           </div>
         </section>
       </Modal.Body>
 
       <Modal.Footer>
-        <FooterButton title="Salvar Treino" onClick={()=>handleSalvar()}></FooterButton>
+        <FooterButton title="Salvar Treino" onClick={() => handleSalvar()}></FooterButton>
       </Modal.Footer>
-    </Modal>
+      {/* Modal para inserir séries e repetições */}
+      <Modal show={showSeriesModal} onHide={() => setShowSeriesModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Configurar Exercício</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {exercicioSelecionado && (
+            <div>
+              <h5>{exercicioSelecionado.nome}</h5>
+              <p className={styles.itemMeta}>{exercicioSelecionado.grupo} • {exercicioSelecionado.equipamento}</p>
+
+              <div style={{ marginTop: '20px' }}>
+                <label className={styles.label}>Série(s)</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="10"
+                  placeholder="Digite a quantidade de séries"
+                  className={styles.inputNome}
+                  value={series}
+                  onChange={(e) => setSeries(e.target.value)}
+                />
+              </div>
+
+              <div style={{ marginTop: '15px' }}>
+                <label className={styles.label}>Repetição(ões)</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="50"
+                  placeholder="Digite a quantidade de repetições"
+                  className={styles.inputNome}
+                  value={repeticoes}
+                  onChange={(e) => setRepeticoes(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <BootstrapButton variant="secondary" onClick={() => setShowSeriesModal(false)}>
+            Cancelar
+          </BootstrapButton>
+          <BootstrapButton variant="primary" onClick={adicionarExercicioComSeries}>
+            Adicionar
+          </BootstrapButton>
+        </Modal.Footer>
+      </Modal>    </Modal>
   );
 }
