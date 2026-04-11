@@ -28,6 +28,9 @@ export default function OffCanvasNavBar(){
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <NavLink className={({ isActive }) => isActive ? "Link active" : "Link"} to='/login'>
+                    Logout
+                  </NavLink>
                   <NavLink className={({ isActive }) => isActive ? "Link active" : "Link"} to='/'>
                     Perfil
                   </NavLink>

@@ -1,0 +1,188 @@
+/* Login.module.css */
+
+.loginWrapper {
+  /* Variáveis de tema baseadas na configuração original do Tailwind */
+  --primary: #0050d4;
+  --tertiary: #10b981;
+  --surface: #f8fafc;
+  --on-surface: #2c2f31;
+  --on-surface-variant: #595c5e;
+  --outline: #94a3b8;
+  --font-headline: 'Lexend', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  background-color: var(--surface);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.loginWrapper * {
+  box-sizing: border-box;
+}
+
+/* Layout Principal */
+.mainContainer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.formWrapper {
+  width: 100%;
+  padding: 0 1rem;
+  max-width: 400px;
+}
+
+/* Cabeçalho / Logo */
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -0.05em;
+  font-style: italic;
+  font-family: var(--font-headline);
+}
+
+.logoAccent {
+  color: var(--tertiary);
+}
+
+/* Formulário */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  margin-left: 0.25rem;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--outline);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.forgotLink {
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgotLink:hover {
+  color: var(--tertiary);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  font-family: var(--font-body);
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.input:focus {
+  border-color: var(--tertiary);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.input::placeholder {
+  color: #94a3b8;
+}
+
+.submitBtn {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--tertiary) 100%);
+  border: none;
+  color: white;
+  font-family: var(--font-headline);
+  font-weight: bold;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: opacity 0.2s;
+}
+
+.submitBtn:hover {
+  opacity: 0.9;
+}
+
+/* Rodapé */
+.footer {
+  padding: 2rem 0;
+  text-align: center;
+  background-color: white;
+  border-top: 1px solid #f1f5f9;
+}
+
+.disclaimer {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  margin: 0 auto 1rem auto;
+  line-height: 1.625;
+  max-width: 280px;
+}
+
+.disclaimerLink {
+  color: var(--tertiary);
+  font-weight: 500;
+}
+
+.statusIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.statusDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--tertiary);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.statusText {
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--outline);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}

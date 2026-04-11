@@ -15,6 +15,7 @@ import BibliotecaTreino from './pages/biblioteca-treino';
 import Perfil from './pages/perfil/Perfil';
 import Plano from './pages/plano';
 import BibliotecaExercicios from './pages/biblioteca-exercicio/biblioteca'; 
+import Login from './pages/login/login';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path='/biblioteca-exercicio' element={<BibliotecaExercicios></BibliotecaExercicios>}> </Route>
         <Route path='/home' element={<Home></Home>}></Route>
         <Route path='/plano' element={<Plano></Plano>}></Route>
+        <Route path='/login' element={<Login></Login>}></Route>
       </Routes>
     </>
   );
