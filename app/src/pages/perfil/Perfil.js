@@ -63,7 +63,9 @@ export default function Perfil() {
         navigate('/'); 
     }
 }
-
+    const handleupdatePerfil = () => {
+        navigate('/update-usuario'); 
+    };
     const handleUploadFoto = (event) => {
         const arquivo = event.target.files[0];
         if (arquivo) {
@@ -113,6 +115,9 @@ export default function Perfil() {
                 <button onClick={handleDeletePerfilBiometrico} className={styles.btnDeletar}>
                     Deletar Perfil Biométrico
                 </button>
+                <button onClick={handleupdatePerfil} className={styles.btnEditar}>
+                    Editar Dados de Conta
+                </button>
 
                 <UserProfileCard
                     fotoUsuario={fotoUsuario}
@@ -121,6 +126,7 @@ export default function Perfil() {
                     email={meusDados.usuario.email}
                     iniciais={meusDados.usuario.nome.substring(0, 2).toUpperCase()} 
                     sexo={meusDados.usuario.perfil_biometrico.sexo} 
+                    role={meusDados.usuario.role}
                 />
 
                 <BiometricsCard

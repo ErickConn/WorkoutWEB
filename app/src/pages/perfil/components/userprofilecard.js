@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './perfil.module.css';
 
-const UserProfileCard = ({ fotoUsuario, handleUploadFoto, nome, email, iniciais, sexo }) => {
+const UserProfileCard = ({ fotoUsuario, handleUploadFoto, nome, email, iniciais, sexo, role }) => {
     
     // Função simples para deixar a primeira letra maiúscula
     const formatarTexto = (texto) => {
@@ -45,7 +45,8 @@ const UserProfileCard = ({ fotoUsuario, handleUploadFoto, nome, email, iniciais,
                 )}
 
                 <div className={styles.badgeAluno}>
-                    <span className={styles.icone}>👤</span> Aluno
+                    <span className={styles.icone}>👤 </span> 
+                    {role}
                 </div>
             </div>
         </section>
