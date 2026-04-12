@@ -23,14 +23,14 @@ export default function Perfil() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    
+    const estadoCompleto = useSelector(state => state);
+    console.log("🔍 ESTADO COMPLETO DO REDUX:", estadoCompleto);
     // REDUX STATES
     const biometria = useSelector(state => state.biometriaReducer.biometria);
     const loading = useSelector(state => state.biometriaReducer.loading);
-    
-    // 1. Puxando a lista de treinos do Redux (verifique se o nome do seu reducer é treinoReducer mesmo)
-    const treinos = useSelector(state => state.treinoReducer?.treinos || []); 
-
+    const treinosData = useSelector(state => state.treinoReducer?.planos);
+    const treinos = treinosData || []; 
+    console.log("📊 TREINOS DO REDUX:", treinos);
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
@@ -48,7 +48,7 @@ export default function Perfil() {
         dispatch(fetchBiometriaList());
         dispatch(fetchTreinoList()); 
     }, [dispatch]);
-
+    
     // Sempre que a lista de 'biometria' atualizar do Redux, procuramos nosso usuário
     useEffect(() => {
         const emailLogado = localStorage.getItem('usuarioLogadoEmail');
