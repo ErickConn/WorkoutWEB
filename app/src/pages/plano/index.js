@@ -39,10 +39,13 @@ export default function PaginaPlano() {
 
   dispatch(salvarPlanoCompleto(planoCompleto))
   .then(()=>{
+    setNomePlano("");
     navigate("/biblioteca-treino");
+  })
+  .catch((err) => {
+    console.error("Erro ao salvar plano:", err);
+    alert("Erro ao salvar o plano. Tente novamente.");
   });
-
-  setNomePlano("");
 
 };
 

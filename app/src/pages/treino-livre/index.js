@@ -24,7 +24,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
   const dispatch = useDispatch();
   const exercicios = useSelector(state => state.exercicioReducer.exercicios);
   const planoEmEdicaoRotina = useSelector(state => state.treinoReducer.planoEmEdicao).rotina;
-  // Use rotina from props, or fallback to planoEmEdicao.rotina from Redux
+
   const rotinaAtual = rotina !== null ? rotina : planoEmEdicaoRotina;
 
   useEffect(() => {
@@ -201,7 +201,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
       <Modal.Footer>
         <FooterButton title="Salvar Treino" onClick={() => handleSalvar()}></FooterButton>
       </Modal.Footer>
-      {/* Modal para inserir séries e repetições */}
+
       <Modal show={showSeriesModal} onHide={() => setShowSeriesModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Configurar Exercício</Modal.Title>
