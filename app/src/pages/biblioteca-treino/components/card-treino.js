@@ -87,7 +87,7 @@ export default function CardTreino({
           show={showTreinoModal}
           handleClose={handleCloseTreino}
           rotina={rotina}
-          idPlano={id}
+          idPlano={isPreview ? null : id}
           treinoEmEdicao={treinoEmEdicao}
         />
       </div>
