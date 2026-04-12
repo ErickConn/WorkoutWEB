@@ -16,20 +16,20 @@ export default function Perfil() {
     const [fotoUsuario, setFotoUsuario] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    
-    
-    const [meusDados, setMeusDados] = useState(null); 
+
+
+    const [meusDados, setMeusDados] = useState(null);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     const estadoCompleto = useSelector(state => state);
     console.log("🔍 ESTADO COMPLETO DO REDUX:", estadoCompleto);
     // REDUX STATES
     const biometria = useSelector(state => state.biometriaReducer.biometria);
     const loading = useSelector(state => state.biometriaReducer.loading);
     const treinosData = useSelector(state => state.treinoReducer?.planos);
-    const treinos = treinosData || []; 
+    const treinos = treinosData || [];
     console.log("📊 TREINOS DO REDUX:", treinos);
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -46,30 +46,30 @@ export default function Perfil() {
     // 2. Dispara as ações para buscar Biometria E Treinos quando a tela carrega
     useEffect(() => {
         dispatch(fetchBiometriaList());
-        dispatch(fetchTreinoList()); 
+        dispatch(fetchTreinoList());
     }, [dispatch]);
-    
+
     // Sempre que a lista de 'biometria' atualizar do Redux, procuramos nosso usuário
     useEffect(() => {
         const emailLogado = localStorage.getItem('usuarioLogadoEmail');
-        
+
         if (emailLogado && biometria?.length > 0) {
             const usuarioEncontrado = biometria.find(
                 (item) => item.usuario.email === emailLogado
             );
             setMeusDados(usuarioEncontrado);
         }
-    }, [biometria]); 
+    }, [biometria]);
 
     const confirmDelete = () => {
         if (meusDados) {
             dispatch(deleteBiometria(meusDados.id));
-            localStorage.removeItem('usuarioLogadoEmail'); 
-            navigate('/'); 
+            localStorage.removeItem('usuarioLogadoEmail');
+            navigate('/');
         }
     }
     const handleupdatePerfil = () => {
-        navigate('/update-usuario'); 
+        navigate('/update-usuario');
     };
     const handleUploadFoto = (event) => {
         const arquivo = event.target.files[0];
@@ -91,7 +91,7 @@ export default function Perfil() {
     if (!meusDados || !meusDados.usuario.perfil_biometrico) {
         return (
             <>
-                <OffCanvasNavBar /> 
+                <OffCanvasNavBar />
                 <main className={styles.containerPerfil} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
                     <h3 style={{ marginBottom: '1rem', color: 'var(--on-surface)' }}>
                         Olá, {meusDados?.usuario?.nome || 'Atleta'}!
@@ -108,8 +108,11 @@ export default function Perfil() {
         );
     }
 
-    // 3. Procura qual plano de treino está com ativo: true
-    const planoAtivo = treinos.find(treino => treino.ativo === true);
+    // 3. Procura qual plano de treino está com ativo para este usuário
+    const userIdAtivo = meusDados?.usuario?.id;
+    const planoAtivo = treinos.find(
+        (treino) => treino.ativo === true || (userIdAtivo && treino.activeUserIds?.[userIdAtivo])
+    );
 
     // Renderização Principal 
     return (
@@ -129,8 +132,8 @@ export default function Perfil() {
                     handleUploadFoto={handleUploadFoto}
                     nome={meusDados.usuario.nome}
                     email={meusDados.usuario.email}
-                    iniciais={meusDados.usuario.nome.substring(0, 2).toUpperCase()} 
-                    sexo={meusDados.usuario.perfil_biometrico.sexo} 
+                    iniciais={meusDados.usuario.nome.substring(0, 2).toUpperCase()}
+                    sexo={meusDados.usuario.perfil_biometrico.sexo}
                     role={meusDados.usuario.role}
                 />
 
@@ -148,9 +151,9 @@ export default function Perfil() {
 
                 <PlanDetailsCard
                     nivelAtividade={meusDados.usuario.perfil_biometrico.nivel_atividade}
-                    
+
                     // 4. Aqui nós usamos o nome do plano ativo. Se não tiver nenhum ativo, mostra um texto padrão
-                    planoAtual={planoAtivo ? planoAtivo.titulo : "Nenhum plano ativo"} 
+                    planoAtual={planoAtivo ? planoAtivo.titulo : "Nenhum plano ativo"}
                 />
 
                 <button onClick={handleShowModal} className={styles.btnEditar}>
@@ -165,14 +168,14 @@ export default function Perfil() {
                         ⚠️ Confirmar Exclusão
                     </Modal.Title>
                 </Modal.Header>
-                
+
                 <Modal.Body style={{ paddingTop: '0' }}>
                     <p>Tem certeza de que deseja deletar seu perfil biométrico de forma permanente?</p>
                     <p style={{ color: 'var(--on-surface-variant)', fontSize: '0.9rem', marginBottom: '0' }}>
                         Esta ação não pode ser desfeita. Todos os seus dados de metabolismo e experiência serão perdidos e você será redirecionado para a tela de login.
                     </p>
                 </Modal.Body>
-                
+
                 <Modal.Footer style={{ borderTop: 'none' }}>
                     <Button variant="secondary" onClick={handleCloseDeleteModal}>
                         Cancelar

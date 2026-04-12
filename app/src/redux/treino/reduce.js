@@ -91,11 +91,34 @@ const treinoReducer = (state = initialState, action) => {
     case 'SET_PLANO_ATIVO':
       return {
         ...state,
-        planos: state.planos.map((plano) =>
-          String(plano.id) === String(action.payload)
-            ? { ...plano, ativo: true }
-            : { ...plano, ativo: false }
-        ),
+        planos: state.planos.map((plano) => {
+          const isAtivoParaUsuario = Boolean(
+            plano.activeUserIds && action.payload.userId && plano.activeUserIds[action.payload.userId]
+          );
+
+          if (String(plano.id) === String(action.payload.idPlano)) {
+            return {
+              ...plano,
+              activeUserIds: {
+                ...(plano.activeUserIds || {}),
+                [action.payload.userId]: true
+              },
+              ativo: true
+            };
+          }
+
+          if (isAtivoParaUsuario) {
+            const novosActiveUserIds = { ...plano.activeUserIds };
+            delete novosActiveUserIds[action.payload.userId];
+            return {
+              ...plano,
+              activeUserIds: novosActiveUserIds,
+              ativo: false
+            };
+          }
+
+          return plano;
+        })
       };
 
     case 'SET_TREINO_ATUAL':
@@ -105,6 +128,11 @@ const treinoReducer = (state = initialState, action) => {
           String(plano.id) === String(action.payload.idPlano)
             ? {
               ...plano,
+              activeDayByUser: {
+                ...(plano.activeDayByUser || {}),
+                [action.payload.userId]: action.payload.dia
+              },
+              activeDay: action.payload.dia,
               rotina: plano.rotina.map((treino) => ({
                 ...treino,
                 ativo: String(treino.dia) === String(action.payload.dia)

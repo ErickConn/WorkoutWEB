@@ -8,9 +8,9 @@ export default function ListaTreinos({ titulo, dados }) {
     <div className={styles.containerLista}>
       <h3 className={styles.sessaoTitle}>{titulo}</h3>
       {dados.map((treino) => (
-        <CardTreino 
-          key={treino.id} 
-          {...treino} 
+        <CardTreino
+          key={treino.id}
+          {...treino}
         />
       ))}
     </div>

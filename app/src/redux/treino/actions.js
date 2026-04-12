@@ -1,5 +1,6 @@
 import { GET_TREINO_LIST, MAKE_REQUEST, FAIL_REQUEST, GET_EXERCICIO_LIST } from "./actionType";
 import axios from 'axios';
+import { getUserIdFromEmail } from '../../utils/userAuth';
 
 const API_URL = "https://json-server-wweb.onrender.com";
 
@@ -9,11 +10,49 @@ export const getTreinoList = (data) => ({ type: GET_TREINO_LIST, payload: data }
 export const getExercicioList = (data) => ({ type: GET_EXERCICIO_LIST, payload: data });
 
 export const fetchTreinoList = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(makeRequest());
-    axios.get(`${API_URL}/planos`)
-      .then((res) => dispatch(getTreinoList(res.data)))
-      .catch(err => dispatch(failRequest(err.message)));
+    try {
+      const userId = await getUserIdFromEmail();
+      const { data: planos } = await axios.get(`${API_URL}/planos`);
+
+      const planosFiltrados = planos
+        .map((plano) => {
+          const ativoParaUsuario = plano.activeUserIds && userId && plano.activeUserIds[userId];
+          const activeDay = plano.activeDayByUser?.[userId] || null;
+
+          const rotinaComAtivo = Array.isArray(plano.rotina)
+            ? plano.rotina.map((treino) => ({
+              ...treino,
+              ativo: activeDay ? String(treino.dia) === String(activeDay) : Boolean(treino.ativo)
+            }))
+            : plano.rotina;
+
+          const planoAjustado = {
+            ...plano,
+            ativo: Boolean(ativoParaUsuario),
+            activeDay: activeDay,
+            activeUserIds: plano.activeUserIds || {},
+            activeDayByUser: plano.activeDayByUser || {},
+            rotina: rotinaComAtivo
+          };
+
+          if (plano.categoria !== "personalizado") {
+            return planoAjustado;
+          }
+
+          if (userId && plano.userId === userId) {
+            return planoAjustado;
+          }
+
+          return null;
+        })
+        .filter(Boolean);
+
+      dispatch(getTreinoList(planosFiltrados));
+    } catch (err) {
+      dispatch(failRequest(err.message));
+    }
   };
 };
 
@@ -33,17 +72,24 @@ export const adicionarTreinoNaRotina = (nomeTreino, exerciciosSelecionados, letr
 };
 
 export const salvarPlanoCompleto = (plano) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(makeRequest());
-    return axios.post(`${API_URL}/planos`, plano)
-      .then((res) => {
-        dispatch({ type: "SALVAR_PLANO_COMPLETO", payload: res.data });
-        return res.data;
-      })
-      .catch((err) => {
-        dispatch(failRequest(err.message));
-        throw err;
-      });
+    try {
+      const userId = await getUserIdFromEmail();
+      const planoComUserId = {
+        ...plano,
+        userId: userId || null,
+        activeUserIds: {},
+        activeDayByUser: {}
+      };
+
+      const res = await axios.post(`${API_URL}/planos`, planoComUserId);
+      dispatch({ type: "SALVAR_PLANO_COMPLETO", payload: res.data });
+      return res.data;
+    } catch (err) {
+      dispatch(failRequest(err.message));
+      throw err;
+    }
   };
 };
 
@@ -96,16 +142,34 @@ export const setPlanoAtivo = (idPlano) => {
   return async (dispatch) => {
     dispatch(makeRequest());
     try {
+      const userId = await getUserIdFromEmail();
+      if (!userId) {
+        dispatch(failRequest("Usuário não autenticado"));
+        return;
+      }
+
       const { data: planos } = await axios.get(`${API_URL}/planos`);
+      const planoAtual = planos.find(p => String(p.id) === String(idPlano));
+      if (!planoAtual) {
+        dispatch(failRequest("Plano não encontrado"));
+        return;
+      }
 
       const desativarPromises = planos
-        .filter(p => p.ativo === true && String(p.id) !== String(idPlano))
-        .map(p => axios.patch(`${API_URL}/planos/${p.id}`, { ativo: false }));
+        .filter(p => String(p.id) !== String(idPlano) && p.activeUserIds && p.activeUserIds[userId])
+        .map(p => {
+          const novosActiveUserIds = { ...p.activeUserIds };
+          delete novosActiveUserIds[userId];
+          return axios.patch(`${API_URL}/planos/${p.id}`, { activeUserIds: novosActiveUserIds });
+        });
 
       await Promise.all(desativarPromises);
-      await axios.patch(`${API_URL}/planos/${idPlano}`, { ativo: true });
 
-      dispatch({ type: 'SET_PLANO_ATIVO', payload: idPlano });
+      const novoActiveUserIds = { ...(planoAtual.activeUserIds || {}) };
+      novoActiveUserIds[userId] = true;
+      await axios.patch(`${API_URL}/planos/${idPlano}`, { activeUserIds: novoActiveUserIds });
+
+      dispatch({ type: 'SET_PLANO_ATIVO', payload: { idPlano, userId } });
     } catch (err) {
       dispatch(failRequest(err.message));
     }
@@ -117,13 +181,14 @@ export const setTreinoAtivo = (dia) => {
     dispatch(makeRequest());
 
     try {
-      // 1. Busca os planos atualizados do servidor
+      const userId = await getUserIdFromEmail();
+      if (!userId) {
+        dispatch(failRequest("Usuário não autenticado"));
+        return;
+      }
+
       const { data: planos } = await axios.get(`${API_URL}/planos`);
-
-      console.log(planos)
-
-      // 2. Localiza o plano que está com ativo: true
-      const planoAtivo = planos.find(p => p.ativo === true);
+      const planoAtivo = planos.find(p => p.activeUserIds && p.activeUserIds[userId]);
 
       if (!planoAtivo) {
         console.warn("Nenhum plano ativo encontrado para selecionar o treino.");
@@ -131,24 +196,21 @@ export const setTreinoAtivo = (dia) => {
         return;
       }
 
-      // 3. Itera sobre a rotina para definir o novo treino ativo
-      // Compara o idTreino recebido com o treino.id do seu db.json
-      const novaRotina = planoAtivo.rotina.map(treino => ({
-        ...treino,
-        ativo: String(treino.dia) === String(dia)
-      }));
+      const activeDayByUser = {
+        ...(planoAtivo.activeDayByUser || {}),
+        [userId]: dia
+      };
 
-      // 4. Salva a rotina modificada de volta no objeto pai (plano)
       await axios.patch(`${API_URL}/planos/${planoAtivo.id}`, {
-        rotina: novaRotina
+        activeDayByUser
       });
 
-      // 5. Atualiza o estado global do Redux
       dispatch({
         type: 'SET_TREINO_ATUAL',
         payload: {
           idPlano: planoAtivo.id,
-          dia: dia
+          dia: dia,
+          userId
         }
       });
 

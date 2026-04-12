@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import styles from './treino.module.css';
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTreinoList } from "../../redux/treino/actions";
 import { finalizarTreino } from "../../redux/treino/actions";
 import TreinoCard from "./components/treino-card";
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 import FooterButton from "../../components/FooterButton";
+import Button from "../../components/Button";
 
 export default function Treino() {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ export default function Treino() {
     alert("Parabéns! Treino Concluido!")
   };
 
-  if (!planos || planos.length === 0) {
+  if (!planos) {
     return (
       <div className={styles.mainContainer}>
         <OffCanvasNavBar />
@@ -34,6 +35,18 @@ export default function Treino() {
   }
 
   const planoAtivo = planos.find(p => p.ativo) || planos[0];
+  console.log(planoAtivo)
+
+  if (planoAtivo === undefined) {
+    return (
+      <div>
+        <OffCanvasNavBar />
+        <p>Parece que você ainda não selecionou um plano de treino.</p>
+        <p>Para acessar a biblioteca de treinos:</p>
+        <Button link="/biblioteca-treino" title="Clique Aqui"></Button>
+      </div >
+    );
+  }
 
   const rotinaHoje = planoAtivo.rotina
     ? planoAtivo.rotina.find(treino => treino.ativo === true) || planoAtivo.rotina[0]
@@ -50,7 +63,7 @@ export default function Treino() {
               <p className={styles.progressSubtitle}>Hoje: {rotinaHoje?.foco}</p>
             </div>
             <div className={styles.progressBadge}>
-              <span className={styles.badgeText}>{rotinaHoje.dia}</span>
+              <span className={styles.badgeText}>{rotinaHoje?.dia}</span>
             </div>
           </div>
           <div className={styles.progressBarBg}>

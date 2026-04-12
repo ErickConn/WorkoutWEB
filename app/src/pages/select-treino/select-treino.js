@@ -51,10 +51,10 @@ export default function Selecttreino() {
                     <HighlightWorkoutCard
                         variant="green"
                         badgeText="✨ RECOMENDADO HOJE"
-                        title={`Treino ${treino.rotina[0]?.dia || ''}`}
-                        subtitle={treino.rotina[0]?.foco}
-                        footerText={<span>{treino.rotina[0]?.exercicios?.length || 0} exercícios</span>}
-                        onClick={() => handleSelecionarTreino(treino.rotina[0]?.dia)}
+                        title={`Treino ${treino.rotina.find(item => item.ativo)?.dia || treino.rotina[0]?.dia || ''}`}
+                        subtitle={treino.rotina.find(item => item.ativo)?.foco || treino.rotina[0]?.foco}
+                        footerText={<span>{treino.rotina.find(item => item.ativo)?.exercicios?.length || treino.rotina[0]?.exercicios?.length || 0} exercícios</span>}
+                        onClick={() => handleSelecionarTreino(treino.rotina.find(item => item.ativo)?.dia || treino.rotina[0]?.dia)}
                     />
                 </div>
 
