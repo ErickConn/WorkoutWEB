@@ -12,8 +12,6 @@ export default function CardTreino({
   titulo,
   isPreview = false,
   nivel = "Iniciante",
-  recomendado = false,
-  isCustom,
   categoria = "modelo",
   rotina = []
 }) {
@@ -74,7 +72,7 @@ export default function CardTreino({
 
   return (
     <div
-      className={`${styles.cardTreino} ${isCustom ? styles.cardCustom : ''} ${aberto ? styles.cardAberto : ''}`}
+      className={`${styles.cardTreino} ${aberto ? styles.cardAberto : ''}`}
       onClick={() => setAberto(!aberto)}
     >
       <div onClick={(e) => e.stopPropagation()}>

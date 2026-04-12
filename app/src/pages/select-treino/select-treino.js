@@ -47,16 +47,6 @@ export default function Selecttreino() {
                     <p className="mb-0">Plano: {treino.titulo}</p>
                 </div>
 
-                {treino.rotina.length > 0 && (
-                    <div className="mb-3">
-                        <LastWorkout
-                            dia={treino.rotina[0].dia}
-                            foco={treino.rotina[0].foco}
-                            lastDone={2}
-                        />
-                    </div>
-                )}
-
                 <div className="mb-4">
                     <HighlightWorkoutCard
                         variant="green"
@@ -79,9 +69,7 @@ export default function Selecttreino() {
                                 colorClass={colors[index % colors.length]}
                                 dia={item.dia}
                                 foco={item.foco}
-                                lastDone="-- dias atrás"
                                 exercises={item.exercicios?.length || 0}
-                                time={item.estimativaTempo || 45}
                             />
                         </Col>
                     ))}

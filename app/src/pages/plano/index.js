@@ -12,6 +12,8 @@ export default function PaginaPlano() {
   const navigate = useNavigate();
   const [modalAberto, setModalAberto] = useState(false);
   const [nomePlano, setNomePlano] = useState("");
+  const [nivelPlano, setNivelPlano] = useState("");
+  const [categoriaPlano, setCategoriaPlano] = useState("");
   
   const dispatch = useDispatch();
   const { planoEmEdicao } = useSelector(state => state.treinoReducer);
@@ -30,16 +32,27 @@ export default function PaginaPlano() {
     alert("Por favor, dê um nome ao plano!");
     return;
   }
+  if (!nivelPlano) {
+    alert("Por favor, selecione o nível do plano!");
+    return;
+  }
+  if (!categoriaPlano) {
+    alert("Por favor, selecione a categoria do plano!");
+    return;
+  }
 
   const planoCompleto = {
     ...cardTemporario[0],
     isPreview: false, 
-    categoria: 'personalizado'
+    nivel: nivelPlano,
+    categoria: categoriaPlano
   };
 
   dispatch(salvarPlanoCompleto(planoCompleto))
   .then(()=>{
     setNomePlano("");
+    setNivelPlano("");
+    setCategoriaPlano("");
     navigate("/biblioteca-treino");
   })
   .catch((err) => {
@@ -64,6 +77,31 @@ export default function PaginaPlano() {
       className={styles.inputNome}
     />
   </div>
+        <div className={styles.inputGroup}>
+          <label>Nível do Plano</label>
+          <select 
+            value={nivelPlano}
+            onChange={(e) => setNivelPlano(e.target.value)}
+            className={styles.inputNome}
+          >
+            <option value="">Selecione o nível</option>
+            <option value="Iniciante">Iniciante</option>
+            <option value="Intermediário">Intermediário</option>
+            <option value="Avançado">Avançado</option>
+          </select>
+        </div>
+        <div className={styles.inputGroup}>
+          <label>Categoria do Plano</label>
+          <select 
+            value={categoriaPlano}
+            onChange={(e) => setCategoriaPlano(e.target.value)}
+            className={styles.inputNome}
+          >
+            <option value="">Selecione a categoria</option>
+            <option value="modelo">modelo (visível para todos)</option>
+            <option value="personalizado">personalizado (só para você)</option>
+          </select>
+        </div>
         <button onClick={() => setModalAberto(true)}>
           + Adicionar Treino à Rotina (Treino {String.fromCharCode(65 + planoEmEdicao.rotina.length)})
         </button>
