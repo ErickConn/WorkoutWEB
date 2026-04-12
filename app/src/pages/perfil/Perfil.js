@@ -4,6 +4,7 @@ import styles from './components/perfil.module.css';
 import { fetchTreinoList } from '../../redux/treino/actions'; // Action já estava aqui
 import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { Modal, Button } from 'react-bootstrap';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';
 import BiometricsCard from './components/biometriccard.js';
 import PlanDetailsCard from './components/plandetailscard.js';
@@ -14,12 +15,14 @@ import Home from '../home/Home.js';
 export default function Perfil() {
     const [fotoUsuario, setFotoUsuario] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     
-    // Estado para guardar os dados específicos do usuário logado
+    
     const [meusDados, setMeusDados] = useState(null); 
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    
     
     // REDUX STATES
     const biometria = useSelector(state => state.biometriaReducer.biometria);
@@ -30,6 +33,15 @@ export default function Perfil() {
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
+    const handleCloseDeleteModal = () => setShowDeleteModal(false);
+    const handleShowDeleteModal = () => {
+        // A trava de segurança do Admin continua aqui, antes mesmo de abrir o modal!
+        if (meusDados?.usuario?.role === 'admin') {
+            alert('Ação bloqueada: O perfil de Administrador Mestre não pode ser deletado.');
+            return;
+        }
+        setShowDeleteModal(true);
+    };
 
     // 2. Dispara as ações para buscar Biometria E Treinos quando a tela carrega
     useEffect(() => {
@@ -49,20 +61,13 @@ export default function Perfil() {
         }
     }, [biometria]); 
 
-    const handleDeletePerfilBiometrico = () => {
-    if (meusDados) {
-        // Verifica se é admin ANTES de deletar
-        if (meusDados.usuario.role === 'admin') {
-            alert('Ação bloqueada: O perfil de Administrador Mestre não pode ser deletado.');
-            return; // Cancela a função na hora
+    const confirmDelete = () => {
+        if (meusDados) {
+            dispatch(deleteBiometria(meusDados.id));
+            localStorage.removeItem('usuarioLogadoEmail'); 
+            navigate('/'); 
         }
-
-        // Se não for admin, segue a vida normal:
-        dispatch(deleteBiometria(meusDados.id));
-        localStorage.removeItem('usuarioLogadoEmail'); 
-        navigate('/'); 
     }
-}
     const handleupdatePerfil = () => {
         navigate('/update-usuario'); 
     };
@@ -112,7 +117,7 @@ export default function Perfil() {
             <OffCanvasNavBar />
 
             <main className={styles.containerPerfil}>
-                <button onClick={handleDeletePerfilBiometrico} className={styles.btnDeletar}>
+                <button onClick={handleShowDeleteModal} className={styles.btnDeletar}>
                     Deletar Perfil
                 </button>
                 <button onClick={handleupdatePerfil} className={styles.btnEditar}>
@@ -154,6 +159,29 @@ export default function Perfil() {
             </main>
 
             <Home show={showModal} handleClose={handleCloseModal} />
+            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
+                <Modal.Header closeButton style={{ borderBottom: 'none' }}>
+                    <Modal.Title style={{ color: '#ef4444', fontWeight: 'bold' }}>
+                        ⚠️ Confirmar Exclusão
+                    </Modal.Title>
+                </Modal.Header>
+                
+                <Modal.Body style={{ paddingTop: '0' }}>
+                    <p>Tem certeza de que deseja deletar seu perfil biométrico de forma permanente?</p>
+                    <p style={{ color: 'var(--on-surface-variant)', fontSize: '0.9rem', marginBottom: '0' }}>
+                        Esta ação não pode ser desfeita. Todos os seus dados de metabolismo e experiência serão perdidos e você será redirecionado para a tela de login.
+                    </p>
+                </Modal.Body>
+                
+                <Modal.Footer style={{ borderTop: 'none' }}>
+                    <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                        Cancelar
+                    </Button>
+                    <Button variant="danger" onClick={confirmDelete}>
+                        Sim, Deletar Perfil
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }
