@@ -17,15 +17,6 @@ export const fetchTreinoList = () => {
   };
 };
 
-export const fetchExercicioList = () => {
-  return (dispatch) => {
-    dispatch(makeRequest());
-    axios.get(`${API_URL}/biblioteca_exercicios`)
-      .then((res) => dispatch(getExercicioList(res.data)))
-      .catch(err => dispatch(failRequest(err.message)));
-  };
-};
-
 export const adicionarTreinoNaRotina = (nomeTreino, exerciciosSelecionados, letra) => {
   return {
     type: 'ADICIONAR_TREINO_NA_ROTINA',
@@ -246,12 +237,12 @@ export const atualizarTreinoNoPlano = (idPlano, treinoEditado, rotinaAtual) => {
     const rotinaAtualizada = rotinaAtual.map((item) =>
       item.dia === treinoEditado.dia
         ? {
-            ...item,
-            foco: treinoEditado.foco || item.foco,
-            exercicios: treinoEditado.exercicios,
-            ativo: treinoEditado.ativo ?? item.ativo,
-            id: item.id || treinoEditado.id
-          }
+          ...item,
+          foco: treinoEditado.foco || item.foco,
+          exercicios: treinoEditado.exercicios,
+          ativo: treinoEditado.ativo ?? item.ativo,
+          id: item.id || treinoEditado.id
+        }
         : item
     );
 

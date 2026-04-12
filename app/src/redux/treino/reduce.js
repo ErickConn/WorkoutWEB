@@ -2,7 +2,6 @@ import { GET_EXERCICIO_LIST, GET_TREINO_LIST, MAKE_REQUEST } from "./actionType"
 
 const initialState = {
   planos: [],
-  exercicios: [],
   planoEmEdicao: {
     nome: "",
     rotina: []

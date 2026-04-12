@@ -5,10 +5,11 @@ import Filtro from "../../components/Filtro";
 import SearchBar from "../../components/SearchBar";
 import ExercicioItem from "./components/exercicio-item";
 import ExercicioSelecionado from "./components/exercicio-selecionado";
-import { fetchExercicioList, adicionarTreinoNaRotina, adicionarTreinoAoPlano, atualizarTreinoNoPlano, atualizarTreinoDaRotinaEdicao } from "../../redux/treino/actions";
+import { adicionarTreinoNaRotina, adicionarTreinoAoPlano, atualizarTreinoNoPlano, atualizarTreinoDaRotinaEdicao } from "../../redux/treino/actions";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
 import FooterButton from "../../components/FooterButton";
+import { fetchExercicioList } from "../../redux/exercicio/actions";
 
 export default function TreinoLivreModal({ show, handleClose, rotina = null, idPlano = null, treinoEmEdicao = null }) {
   const [busca, setBusca] = useState("");
@@ -21,7 +22,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
   const [repeticoes, setRepeticoes] = useState("");
 
   const dispatch = useDispatch();
-  const exercicios = useSelector(state => state.treinoReducer.exercicios);
+  const exercicios = useSelector(state => state.exercicioReducer.exercicios);
   const planoEmEdicaoRotina = useSelector(state => state.treinoReducer.planoEmEdicao).rotina;
   // Use rotina from props, or fallback to planoEmEdicao.rotina from Redux
   const rotinaAtual = rotina !== null ? rotina : planoEmEdicaoRotina;
