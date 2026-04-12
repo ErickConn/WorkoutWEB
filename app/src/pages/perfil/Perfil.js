@@ -113,7 +113,7 @@ export default function Perfil() {
 
             <main className={styles.containerPerfil}>
                 <button onClick={handleDeletePerfilBiometrico} className={styles.btnDeletar}>
-                    Deletar Perfil Biométrico
+                    Deletar Perfil
                 </button>
                 <button onClick={handleupdatePerfil} className={styles.btnEditar}>
                     Editar Dados de Conta
