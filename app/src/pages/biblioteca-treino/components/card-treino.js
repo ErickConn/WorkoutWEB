@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../index.module.css';
 import { useNavigate } from 'react-router-dom';
 import { removerPlano, removerTreinoDaRotinaEdicao, removerTreinoDaAPI, setPlanoAtivo } from '../../../redux/treino/actions';
@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import EditarPlanoModal from './EditarPlanoModal';
 import TreinoLivreModal from '../../treino-livre';
+import { getLoggedUser } from '../../../utils/userAuth';
 
 export default function CardTreino({
   id,
@@ -13,7 +14,8 @@ export default function CardTreino({
   isPreview = false,
   nivel = "Iniciante",
   categoria = "modelo",
-  rotina = []
+  rotina = [],
+  userId = null
 }) {
   const dispatch = useDispatch();
   const [aberto, setAberto] = useState(false);
@@ -25,6 +27,21 @@ export default function CardTreino({
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTreinoModal, setShowTreinoModal] = useState(false);
   const [treinoEmEdicao, setTreinoEmEdicao] = useState(null);
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
+
+  useEffect(() => {
+    const carregarUsuario = async () => {
+      const usuario = await getLoggedUser();
+      setUsuarioLogado(usuario);
+    };
+
+    carregarUsuario();
+  }, []);
+
+  const podeModificar = Boolean(
+    usuarioLogado &&
+    (usuarioLogado.usuario.role === 'admin' || String(usuarioLogado.usuario.id) === String(userId))
+  );
 
   // Handlers para EditModal
   const handleOpenEdit = (e) => { e.stopPropagation(); setShowEditModal(true); };
@@ -99,7 +116,7 @@ export default function CardTreino({
           </div>
           <p className={styles.cardDetails}>{rotina.length} treinos • {nivel}</p>
 
-          {!isPreview && (
+          {!isPreview && podeModificar && (
             <div className={styles.cardActions}>
               <Button
                 variant="outline-primary"
@@ -136,23 +153,25 @@ export default function CardTreino({
                     <p className={styles.focoRotina}>Treino {item.dia} - {item.foco}</p>
                   </div>
 
-                  <div className={styles.itemActions}>
-                    <Button
-                      size="sm"
-                      variant="light"
-                      className={styles.btnEditar}
-                      onClick={(e) => handleOpenTreino(e, item)}
-                    >
-                      ✏️
-                    </Button>
-                    <button
-                      className={styles.btnX}
-                      onClick={(e) => handleRemoverTreinoUnico(e, id, item.dia)}
-                      title="Remover este dia"
-                    >
-                      ✕
-                    </button>
-                  </div>
+                  {podeModificar && (
+                    <div className={styles.itemActions}>
+                      <Button
+                        size="sm"
+                        variant="light"
+                        className={styles.btnEditar}
+                        onClick={(e) => handleOpenTreino(e, item)}
+                      >
+                        ✏️
+                      </Button>
+                      <button
+                        className={styles.btnX}
+                        onClick={(e) => handleRemoverTreinoUnico(e, id, item.dia)}
+                        title="Remover este dia"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div className={styles.listaExerciciosPreview}>
@@ -176,13 +195,15 @@ export default function CardTreino({
 
           {!isPreview && (
             <>
-              <Button
-                variant="outline-primary"
-                className={styles.btnAdicionarTreino}
-                onClick={(e) => { e.stopPropagation(); handleOpenTreino(e); }}
-              >
-                + Adicionar Novo Treino
-              </Button>
+              {podeModificar && (
+                <Button
+                  variant="outline-primary"
+                  className={styles.btnAdicionarTreino}
+                  onClick={(e) => { e.stopPropagation(); handleOpenTreino(e); }}
+                >
+                  + Adicionar Novo Treino
+                </Button>
+              )}
               <button className={styles.btnIniciar} onClick={handleComecarTreino}>Começar Treino</button>
             </>
           )}

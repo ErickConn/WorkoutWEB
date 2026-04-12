@@ -1,8 +1,25 @@
 import { GET_TREINO_LIST, MAKE_REQUEST, FAIL_REQUEST, GET_EXERCICIO_LIST } from "./actionType";
 import axios from 'axios';
-import { getUserIdFromEmail } from '../../utils/userAuth';
+import { getUserIdFromEmail, getLoggedUser } from '../../utils/userAuth';
 
 const API_URL = "https://json-server-wweb.onrender.com";
+
+const ensurePlanEditable = async (idPlano) => {
+  const usuario = await getLoggedUser();
+  if (!usuario) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const { data: plano } = await axios.get(`${API_URL}/planos/${idPlano}`);
+  const usuarioAtualId = usuario.usuario.id;
+  const usuarioAtualRole = usuario.usuario.role;
+
+  if (usuarioAtualRole !== 'admin' && String(plano.userId) !== String(usuarioAtualId)) {
+    throw new Error("Apenas o criador do plano ou um administrador pode editar ou remover este plano.");
+  }
+
+  return { plano, usuario };
+};
 
 export const makeRequest = () => ({ type: MAKE_REQUEST });
 export const failRequest = (msg) => ({ type: FAIL_REQUEST, payload: msg });
@@ -94,11 +111,16 @@ export const salvarPlanoCompleto = (plano) => {
 };
 
 export const removerPlano = (id) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(makeRequest());
-    axios.delete(`${API_URL}/planos/${id}`)
-      .then(() => dispatch({ type: "ELIMINAR_PLANO_SUCCESS", payload: id }))
-      .catch(err => dispatch(failRequest(err.message)));
+    try {
+      await ensurePlanEditable(id);
+      await axios.delete(`${API_URL}/planos/${id}`);
+      dispatch({ type: "ELIMINAR_PLANO_SUCCESS", payload: id });
+    } catch (err) {
+      dispatch(failRequest(err.message));
+      throw err;
+    }
   };
 };
 
@@ -113,28 +135,28 @@ export const atualizarTreinoDaRotinaEdicao = (treinoEditado) => ({
 });
 
 export const removerTreinoDaAPI = (idPlano, diaParaRemover, rotinaAtual) => {
-  return (dispatch) => {
-    if (rotinaAtual.length <= 1) {
-      if (window.confirm("Este é o último treino deste plano. Deseja excluir o plano completo?")) {
-        return dispatch(removerPlano(idPlano));
+  return async (dispatch) => {
+    try {
+      await ensurePlanEditable(idPlano);
+      if (rotinaAtual.length <= 1) {
+        if (window.confirm("Este é o último treino deste plano. Deseja excluir o plano completo?")) {
+          return dispatch(removerPlano(idPlano));
+        }
+        return;
       }
-      return;
-    }
 
-    const novaRotina = rotinaAtual.filter(item => item.dia !== diaParaRemover);
-    dispatch(makeRequest());
+      const novaRotina = rotinaAtual.filter(item => item.dia !== diaParaRemover);
+      dispatch(makeRequest());
 
-    axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina })
-      .then(() => {
-        dispatch({
-          type: 'REMOVER_TREINO_DA_ROTINA',
-          payload: { id: idPlano, dia: diaParaRemover }
-        });
-      })
-      .catch(err => {
-        dispatch(failRequest(err.message));
-        alert("Erro ao remover treino.");
+      await axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina });
+      dispatch({
+        type: 'REMOVER_TREINO_DA_ROTINA',
+        payload: { id: idPlano, dia: diaParaRemover }
       });
+    } catch (err) {
+      dispatch(failRequest(err.message));
+      alert(err.message || "Erro ao remover treino.");
+    }
   };
 };
 
@@ -235,90 +257,85 @@ export const finalizarTreino = () => {
 };
 
 export const editarPlano = (idPlano, dados) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(makeRequest());
-    return axios.patch(`${API_URL}/planos/${idPlano}`, dados)
-      .then((res) => {
-        dispatch({
-          type: 'EDITAR_PLANO',
-          payload: res.data
-        });
-        return res.data;
-      })
-      .catch((err) => {
-        dispatch(failRequest(err.message));
-        throw err;
+    try {
+      await ensurePlanEditable(idPlano);
+      const res = await axios.patch(`${API_URL}/planos/${idPlano}`, dados);
+      dispatch({
+        type: 'EDITAR_PLANO',
+        payload: res.data
       });
+      return res.data;
+    } catch (err) {
+      dispatch(failRequest(err.message));
+      throw err;
+    }
   };
 };
 
 export const adicionarTreinoAoPlano = (idPlano, nomeTreino, exerciciosSelecionados, rotinaAtual) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(makeRequest());
+    try {
+      await ensurePlanEditable(idPlano);
 
-    // Gera a próxima letra (A, B, C, etc.)
-    const letras = ["A", "B", "C", "D", "E", "F", "G"];
-    const letraAtual = letras[rotinaAtual.length] || "?";
+      const letras = ["A", "B", "C", "D", "E", "F", "G"];
+      const letraAtual = letras[rotinaAtual.length] || "?";
 
-    // Cria o novo treino
-    const novoTreino = {
-      dia: letraAtual,
-      foco: nomeTreino || `Treino ${letraAtual}`,
-      exercicios: exerciciosSelecionados.map(ex => ({
-        ...ex,
-        seriesPadrao: ex.series || 3,
-        repsPadrao: ex.repeticoes || 12
-      })),
-      id: Date.now().toString(),
-      ativo: false
-    };
+      const novoTreino = {
+        dia: letraAtual,
+        foco: nomeTreino || `Treino ${letraAtual}`,
+        exercicios: exerciciosSelecionados.map(ex => ({
+          ...ex,
+          seriesPadrao: ex.series || 3,
+          repsPadrao: ex.repeticoes || 12
+        })),
+        id: Date.now().toString(),
+        ativo: false
+      };
 
-    // Adiciona à rotina existente
-    const novaRotina = [...rotinaAtual, novoTreino];
-
-    // Faz o PATCH para salvar na API
-    return axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina })
-      .then((res) => {
-        dispatch({
-          type: 'EDITAR_PLANO',
-          payload: res.data
-        });
-        return res.data;
-      })
-      .catch((err) => {
-        dispatch(failRequest(err.message));
-        throw err;
+      const novaRotina = [...rotinaAtual, novoTreino];
+      const res = await axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina });
+      dispatch({
+        type: 'EDITAR_PLANO',
+        payload: res.data
       });
+      return res.data;
+    } catch (err) {
+      dispatch(failRequest(err.message));
+      throw err;
+    }
   };
 };
 
 export const atualizarTreinoNoPlano = (idPlano, treinoEditado, rotinaAtual) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(makeRequest());
+    try {
+      await ensurePlanEditable(idPlano);
 
-    const rotinaAtualizada = rotinaAtual.map((item) =>
-      item.dia === treinoEditado.dia
-        ? {
-          ...item,
-          foco: treinoEditado.foco || item.foco,
-          exercicios: treinoEditado.exercicios,
-          ativo: treinoEditado.ativo ?? item.ativo,
-          id: item.id || treinoEditado.id
-        }
-        : item
-    );
+      const rotinaAtualizada = rotinaAtual.map((item) =>
+        item.dia === treinoEditado.dia
+          ? {
+            ...item,
+            foco: treinoEditado.foco || item.foco,
+            exercicios: treinoEditado.exercicios,
+            ativo: treinoEditado.ativo ?? item.ativo,
+            id: item.id || treinoEditado.id
+          }
+          : item
+      );
 
-    return axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: rotinaAtualizada })
-      .then((res) => {
-        dispatch({
-          type: 'EDITAR_PLANO',
-          payload: res.data
-        });
-        return res.data;
-      })
-      .catch((err) => {
-        dispatch(failRequest(err.message));
-        throw err;
+      const res = await axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: rotinaAtualizada });
+      dispatch({
+        type: 'EDITAR_PLANO',
+        payload: res.data
       });
+      return res.data;
+    } catch (err) {
+      dispatch(failRequest(err.message));
+      throw err;
+    }
   };
 };

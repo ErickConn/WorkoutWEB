@@ -22,3 +22,13 @@ export const getUserIdFromEmail = async () => {
     const user = await getUserByEmail(email);
     return user?.usuario?.id || null;
 };
+
+export const getLoggedUser = async () => {
+    const email = getLoggedUserEmail();
+    return await getUserByEmail(email);
+};
+
+export const getLoggedUserRole = async () => {
+    const user = await getLoggedUser();
+    return user?.usuario?.role || null;
+};
