@@ -29,22 +29,23 @@ export default function Treino() {
     return (
       <div className={styles.mainContainer}>
         <OffCanvasNavBar />
-        <p>Carregando seu treino de hoje...</p>
+        <p className={styles.loadingMessage}>Carregando seu treino de hoje...</p>
       </div>
     );
   }
 
-  const planoAtivo = planos.find(p => p.ativo) || planos[0];
-  console.log(planoAtivo)
+  const planoAtivo = planos.find(p => p.ativo);
 
   if (planoAtivo === undefined) {
     return (
-      <div>
+      <>
         <OffCanvasNavBar />
-        <p>Parece que você ainda não selecionou um plano de treino.</p>
-        <p>Para acessar a biblioteca de treinos:</p>
-        <Button link="/biblioteca-treino" title="Clique Aqui"></Button>
-      </div >
+        <div className={styles.noPlanContainer}>
+          <p className={styles.noPlanMessage}>Parece que você ainda não selecionou um plano de treino.</p>
+          <p className={styles.noPlanSubMessage}>Para acessar a biblioteca de treinos:</p>
+          <Button link="/biblioteca-treino" title="Clique Aqui"></Button>
+        </div >
+      </>
     );
   }
 
