@@ -43,9 +43,17 @@ export default function PaginaPlano() {
 
   const planoCompleto = {
     ...cardTemporario[0],
-    isPreview: false, 
+    isPreview: false,
     nivel: nivelPlano,
-    categoria: categoriaPlano
+    categoria: categoriaPlano,
+    rotina: cardTemporario[0].rotina.map((treino) => ({
+      ...treino,
+      exercicios: treino.exercicios.map(({ series, repeticoes, ...exRest }) => ({
+        ...exRest,
+        seriesPadrao: series ?? exRest.seriesPadrao ?? 3,
+        repsPadrao: repeticoes ?? exRest.repsPadrao ?? 12
+      }))
+    }))
   };
 
   dispatch(salvarPlanoCompleto(planoCompleto))

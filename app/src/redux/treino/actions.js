@@ -79,11 +79,15 @@ export const adicionarTreinoNaRotina = (nomeTreino, exerciciosSelecionados, letr
     payload: {
       dia: letra,
       foco: nomeTreino || `Treino ${letra}`,
-      exercicios: exerciciosSelecionados.map(ex => ({
-        ...ex,
-        seriesPadrao: ex.series || 3,
-        repsPadrao: ex.repeticoes || 12
-      }))
+      exercicios: exerciciosSelecionados.map(ex => {
+        const { series, repeticoes, ...rest } = ex;
+        return {
+          ...rest,
+          grupo: ex.grupo,
+          seriesPadrao: series ?? rest.seriesPadrao ?? 3,
+          repsPadrao: repeticoes ?? rest.repsPadrao ?? 12
+        };
+      })
     }
   };
 };
@@ -286,11 +290,15 @@ export const adicionarTreinoAoPlano = (idPlano, nomeTreino, exerciciosSelecionad
       const novoTreino = {
         dia: letraAtual,
         foco: nomeTreino || `Treino ${letraAtual}`,
-        exercicios: exerciciosSelecionados.map(ex => ({
-          ...ex,
-          seriesPadrao: ex.series || 3,
-          repsPadrao: ex.repeticoes || 12
-        })),
+        exercicios: exerciciosSelecionados.map(ex => {
+          const { series, repeticoes, ...rest } = ex;
+          return {
+            ...rest,
+            grupo: ex.grupo,
+            seriesPadrao: series ?? rest.seriesPadrao ?? 3,
+            repsPadrao: repeticoes ?? rest.repsPadrao ?? 12
+          };
+        }),
         id: Date.now().toString(),
         ativo: false
       };

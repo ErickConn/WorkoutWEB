@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Modal, Button as BootstrapButton } from 'react-bootstrap';
 import styles from './treino-livre.module.css';
 import Filtro from "../../components/Filtro";
@@ -24,6 +24,8 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
   const dispatch = useDispatch();
   const exercicios = useSelector(state => state.exercicioReducer.exercicios);
   const planoEmEdicaoRotina = useSelector(state => state.treinoReducer.planoEmEdicao).rotina;
+
+  const exerciciosById = useMemo(() => new Map((exercicios || []).map(ex => [String(ex.id), ex])), [exercicios]);
 
   const rotinaAtual = rotina !== null ? rotina : planoEmEdicaoRotina;
 
@@ -94,6 +96,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
 
     const exerciciosFormatados = selecionados.map((ex) => ({
       ...ex,
+      grupo: ex.grupo || exerciciosById.get(String(ex.id))?.grupo || "",
       seriesPadrao: ex.series ?? ex.seriesPadrao ?? 3,
       repsPadrao: ex.repeticoes ?? ex.repsPadrao ?? 12
     }));
