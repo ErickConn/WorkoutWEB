@@ -10,6 +10,7 @@ import BiometricsCard from './components/biometriccard.js';
 import PlanDetailsCard from './components/plandetailscard.js';
 import ExperienceCard from './components/experiencecard.js';
 import UserProfileCard from './components/userprofilecard.js';
+import Spinner from '../../components/Spinner.js';
 import Home from '../home/Home.js';
 
 export default function Perfil() {
@@ -81,8 +82,9 @@ export default function Perfil() {
     // Telas de Loading e Erro
     if (loading) {
         return (
-            <div className={styles.container}>
-                <p>Carregando dados biométricos...</p>
+            <div className={styles.mainContainer}>
+                <OffCanvasNavBar />
+                <Spinner className="vh-100" />
             </div>
         );
     }
