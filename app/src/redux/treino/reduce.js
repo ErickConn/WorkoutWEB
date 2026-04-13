@@ -1,7 +1,8 @@
-import { GET_EXERCICIO_LIST, GET_TREINO_LIST, MAKE_REQUEST } from "./actionType";
+import { GET_EXERCICIO_LIST, GET_TREINO_LIST, MAKE_REQUEST, FAIL_REQUEST } from "./actionType";
 
 const initialState = {
   planos: [],
+  loading: false,
   planoEmEdicao: {
     nome: "",
     rotina: []
@@ -11,12 +12,22 @@ const initialState = {
 const treinoReducer = (state = initialState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
-      return state;
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case FAIL_REQUEST:
+      return {
+        ...state,
+        loading: false,
+      };
 
     case GET_TREINO_LIST:
       return {
         ...state,
         planos: [...action.payload],
+        loading: false,
       };
 
     case GET_EXERCICIO_LIST:
@@ -28,6 +39,7 @@ const treinoReducer = (state = initialState, action) => {
     case 'ADICIONAR_TREINO_NA_ROTINA':
       return {
         ...state,
+        loading: false,
         planoEmEdicao: {
           ...state.planoEmEdicao,
           rotina: [
@@ -57,6 +69,7 @@ const treinoReducer = (state = initialState, action) => {
       if (!id) {
         return {
           ...state,
+          loading: false,
           planoEmEdicao: {
             ...state.planoEmEdicao,
             rotina: state.planoEmEdicao.rotina.filter(item => item.dia !== dia)
@@ -65,6 +78,7 @@ const treinoReducer = (state = initialState, action) => {
       }
       return {
         ...state,
+        loading: false,
         planos: state.planos.map(plano =>
           String(plano.id) === String(id)
             ? {
@@ -78,6 +92,7 @@ const treinoReducer = (state = initialState, action) => {
     case 'SALVAR_PLANO_COMPLETO':
       return {
         ...state,
+        loading: false,
         planos: [...state.planos, action.payload],
         planoEmEdicao: { nome: "", rotina: [] }
       };
@@ -85,12 +100,14 @@ const treinoReducer = (state = initialState, action) => {
     case 'ELIMINAR_PLANO_SUCCESS':
       return {
         ...state,
+        loading: false,
         planos: state.planos.filter(plano => String(plano.id) !== String(action.payload)),
       };
 
     case 'SET_PLANO_ATIVO':
       return {
         ...state,
+        loading: false,
         planos: state.planos.map((plano) => {
           const isAtivoParaUsuario = Boolean(
             plano.activeUserIds && action.payload.userId && plano.activeUserIds[action.payload.userId]
@@ -124,6 +141,7 @@ const treinoReducer = (state = initialState, action) => {
     case 'SET_TREINO_ATUAL':
       return {
         ...state,
+        loading: false,
         planos: state.planos.map((plano) =>
           String(plano.id) === String(action.payload.idPlano)
             ? {
@@ -145,6 +163,7 @@ const treinoReducer = (state = initialState, action) => {
     case 'EDITAR_PLANO':
       return {
         ...state,
+        loading: false,
         planos: state.planos.map(plano =>
           String(plano.id) === String(action.payload.id)
             ? action.payload

@@ -7,22 +7,24 @@ import { fetchTreinoList, setTreinoAtivo } from '../../redux/treino/actions';
 import RoutineCard from './components/routinecard';
 import LastWorkout from './components/lastworkout.js';
 import HighlightWorkoutCard from './components/HighlightWorkoutCard.js';
+import Spinner from '../../components/Spinner';
 
 export default function Selecttreino() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const planos = useSelector(state => state.treinoReducer.planos) || [];
+    const loading = useSelector(state => state.treinoReducer.loading);
     const treino = planos.find(p => p.ativo) || planos[0];
 
     useEffect(() => {
         dispatch(fetchTreinoList());
     }, [dispatch]);
 
-    if (!treino || !treino.rotina) {
+    if (loading || !treino || !treino.rotina) {
         return (
             <Container className="d-flex justify-content-center align-items-center vh-100">
-                <p>Carregando treinos...</p>
+                <Spinner />
             </Container>
         );
     }

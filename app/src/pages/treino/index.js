@@ -8,11 +8,13 @@ import TreinoCard from "./components/treino-card";
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 import FooterButton from "../../components/FooterButton";
 import Button from "../../components/Button";
+import Spinner from "../../components/Spinner";
 
 export default function Treino() {
   const dispatch = useDispatch();
 
   const planos = useSelector(state => state.treinoReducer.planos);
+  const loading = useSelector(state => state.treinoReducer.loading);
 
   useEffect(() => {
     if (!planos || planos.length === 0) {
@@ -25,16 +27,16 @@ export default function Treino() {
     alert("Parabéns! Treino Concluido!")
   };
 
-  if (!planos) {
+  const planoAtivo = planos.find(p => p.ativo);
+
+  if (loading) {
     return (
       <div className={styles.mainContainer}>
         <OffCanvasNavBar />
-        <p className={styles.loadingMessage}>Carregando seu treino de hoje...</p>
+        <Spinner className="vh-100" />
       </div>
     );
   }
-
-  const planoAtivo = planos.find(p => p.ativo);
 
   if (planoAtivo === undefined) {
     return (

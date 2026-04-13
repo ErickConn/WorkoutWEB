@@ -8,16 +8,22 @@ import { fetchTreinoList } from '../../redux/treino/actions';
 import { useSelector, useDispatch } from 'react-redux';
 
 import React, { useState, useEffect } from "react";
+import Spinner from "../../components/Spinner";
 
 export default function BibliotecaTreino() {
   const [busca, setBusca] = useState("");
   const [nivelAtivo, setNivelAtivo] = useState("Todos");
   const dispatch = useDispatch();
-  const todosOsTreinos = useSelector(rootReducer=>rootReducer.treinoReducer.planos);
+  const todosOsTreinos = useSelector(rootReducer => rootReducer.treinoReducer.planos);
+  const loading = useSelector(rootReducer => rootReducer.treinoReducer.loading);
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(fetchTreinoList());
   }, [dispatch])
+
+  if (loading) {
+    return <Spinner className="vh-100" />;
+  }
 
   const treinosFiltrados = todosOsTreinos.filter((treino) => {
     const bateBusca = treino.titulo.toLowerCase().includes(busca.toLowerCase());
@@ -33,16 +39,16 @@ export default function BibliotecaTreino() {
     <div className={styles.container}>
       <div className={styles.content}>
         <HeaderBack title="Biblioteca de Treinos" subtitle="Planos modelo"></HeaderBack>
-        
-        <SearchBar 
-          placeholder="Buscar treinos..." 
-          value={busca} 
-          onChange={setBusca} 
+
+        <SearchBar
+          placeholder="Buscar treinos..."
+          value={busca}
+          onChange={setBusca}
         />
 
-        <Filtro 
-          tipo="NÍVEL" 
-          filtros={["Todos", "Iniciante", "Intermediário", "Avançado"]} 
+        <Filtro
+          tipo="NÍVEL"
+          filtros={["Todos", "Iniciante", "Intermediário", "Avançado"]}
           ativo={nivelAtivo}
           onSelect={setNivelAtivo}
         />
