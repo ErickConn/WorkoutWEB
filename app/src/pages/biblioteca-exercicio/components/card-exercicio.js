@@ -9,6 +9,8 @@ export default function CardExercicio({ exercicio, onAdd, onEdit, onDelete }) {
         <p className={styles.itemName}>{formatarNomeExercicio(exercicio.nome)}</p>
         <p className={styles.itemMeta}>
           Grupo: {exercicio.grupo} | Equipamento: {exercicio.equipamento}
+          {/* Futuro: mostrar nível */}
+          {/* | Nível: {exercicio.nivel} */}
         </p>
       </div>
       <div className={styles.cardActions}>

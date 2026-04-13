@@ -2,19 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./biblioteca.module.css";
-import axios from "axios";
 import HeaderBack from "../../components/HeaderBack";
-import { fetchExercicioList, setExercicioList } from '../../redux/exercicio/actions';
+import { fetchExercicioList } from '../../redux/exercicio/actions';
 import ListaExercicios from "./components/lista-exercicios";
 import NovoExercicioModal from "./modals/modalNovoExercicio";
 import EditarExercicioModal from "./modals/modalEditarExercicio";
 import DeletarExercicioModal from "./modals/modalDeletarExercicio";
 
-
 export default function BibliotecaExercicios() {
   const dispatch = useDispatch();
   const { exercicios, loading, error } = useSelector(state => state.exercicioReducer);
-  
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -22,16 +20,21 @@ export default function BibliotecaExercicios() {
     if (location.state?.from === "treino-livre") {
       navigate("/treino-livre");
     } else {
-      navigate(-1); // volta para a página anterior
+      navigate(-1);
     }
   };
 
   const [busca, setBusca] = useState("");
-  const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   const [selecionados, setSelecionados] = useState([]);
   const [showNovoModal, setShowNovoModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const grupos = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
+    const [grupoAtivo, setGrupoAtivo] = useState("Todos");
+  // futuro: níveis disponíveis
+  const niveis = ["Todos", "Básico", "Intermediário", "Avançado"];
+  const [nivelAtivo, setNivelAtivo] = useState("Todos");
 
   const handleDelete = (id) => {
     const exercicio = exercicios.find(ex => ex.id === id);
@@ -45,10 +48,8 @@ export default function BibliotecaExercicios() {
   };
 
   const handleAdd = (exercicio) => {
-    // Aqui você pode adicionar ao treino livre
     alert(`Adicionar exercício: ${exercicio.nome}`);
   };
-
 
   useEffect(() => {
     dispatch(fetchExercicioList());
@@ -57,15 +58,18 @@ export default function BibliotecaExercicios() {
   if (loading) return <p>Carregando página, aguarde...</p>;
   if (error) return <p>Erro: {error}</p>;
 
-  const grupos = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
+  // filtro atual (grupo + busca) => futuro: (grupo + busca + nível)
   const exerciciosFiltrados = exercicios.filter(ex => {
     const nomeOuTitulo = ex.nome || ex.titulo || "";
     const bateBusca = nomeOuTitulo.toLowerCase().includes(busca.toLowerCase());
     const grupo = ex.grupo || "";
     const bateGrupo = grupoAtivo === "Todos" || grupo === grupoAtivo;
-    return bateBusca && bateGrupo;
+    const nivel = ex.nivel || "";
+    const bateNivel = nivelAtivo === "Todos" || nivel === nivelAtivo;
+    return bateBusca && bateGrupo && bateNivel;
   });
+  
 
   const adicionarExercicio = (exercicio) => {
     if (!selecionados.find(s => s.id === exercicio.id)) {
@@ -84,12 +88,13 @@ export default function BibliotecaExercicios() {
         subtitle="Várias opções para escolher"
         onBack={voltar}
       />
-      <div >
-        <button 
-        className={styles.btnAddExercicio} 
-        onClick={() => setShowNovoModal(true)}
+
+      <div>
+        <button
+          className={styles.btnAddExercicio}
+          onClick={() => setShowNovoModal(true)}
         >
-        + Adicionar Exercício
+          + Adicionar Exercício
         </button>
         <NovoExercicioModal show={showNovoModal} handleClose={() => setShowNovoModal(false)} />
       </div>
@@ -113,22 +118,38 @@ export default function BibliotecaExercicios() {
         ))}
       </div>
 
-      <ListaExercicios 
-        titulo="Exercícios" 
-        dados={exerciciosFiltrados} 
-        onAdd={adicionarExercicio} 
+      {/* Futuro: filtro por nível */}
+      {/*
+      <div className={styles.filtro}>
+        {niveis.map(nivel => (
+          <button
+            key={nivel}
+            className={nivelAtivo === nivel ? styles.active : ""}
+            onClick={() => setNivelAtivo(nivel)}
+          >
+            {nivel}
+          </button>
+        ))}
+      </div>
+      */}
+
+      <ListaExercicios
+        titulo="Exercícios"
+        dados={exerciciosFiltrados}
+        onAdd={adicionarExercicio}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-      <EditarExercicioModal 
-        show={showEditModal} 
-        handleClose={() => setShowEditModal(false)} 
-        exercicio={selecionados} 
+
+      <EditarExercicioModal
+        show={showEditModal}
+        handleClose={() => setShowEditModal(false)}
+        exercicio={selecionados}
       />
-      <DeletarExercicioModal 
-        show={showDeleteModal} 
-        handleClose={() => setShowDeleteModal(false)} 
-        exercicio={selecionados} 
+      <DeletarExercicioModal
+        show={showDeleteModal}
+        handleClose={() => setShowDeleteModal(false)}
+        exercicio={selecionados}
       />
 
       {exerciciosFiltrados.length === 0 && (
@@ -146,8 +167,10 @@ export default function BibliotecaExercicios() {
             selecionados.map(ex => (
               <div key={ex.id} className={styles.cardSelecionado}>
                 <p className={styles.nomeEx}>{ex.nome}</p>
-                <button 
-                  className={styles.btnRemove} 
+                {/* Futuro: mostrar nível */}
+                {/* <p className={styles.nivelEx}>Nível: {ex.nivel}</p> */}
+                <button
+                  className={styles.btnRemove}
                   onClick={() => removerExercicio(ex.id)}
                 >
                   ×
