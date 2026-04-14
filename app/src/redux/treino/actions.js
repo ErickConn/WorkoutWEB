@@ -121,7 +121,6 @@ export const removerPlano = (id) => {
       await ensurePlanEditable(id);
       await axios.delete(`${API_URL}/planos/${id}`);
       dispatch({ type: "ELIMINAR_PLANO_SUCCESS", payload: id });
-      // Refetch da lista de planos após remover para sincronizar o estado
       await dispatch(fetchTreinoList());
     } catch (err) {
       dispatch(failRequest(err.message));
@@ -252,16 +251,21 @@ export const setTreinoAtivo = (dia) => {
 
 export const finalizarTreino = () => {
   return async (dispatch, getState) => {
-    const { planos } = getState().treinoReducer;
-    const planoAtivo = planos.find(p => p.ativo) || planos[0];
-    if (!planoAtivo || !planoAtivo.rotina) return;
-    const currentIndex = planoAtivo.rotina.findIndex(t => t.ativo);
-    if (currentIndex === -1) {
-      console.warn("Nenhum treino está marcado como ativo. Pulando para o primeiro.");
+    try {
+      const { planos } = getState().treinoReducer;
+      const planoAtivo = planos.find(p => p.ativo) || planos[0];
+      if (!planoAtivo || !planoAtivo.rotina) {
+        console.warn("Nenhum plano ativo ou rotina encontrada para finalizar treino.");
+        return;
+      }
+      const currentIndex = planoAtivo.rotina.findIndex(t => t.ativo);
+      const nextIndex = (currentIndex + 1) % planoAtivo.rotina.length;
+      const proximoDia = planoAtivo.rotina[nextIndex].dia;
+      await dispatch(setTreinoAtivo(proximoDia));
+    } catch (err) {
+      console.error("Erro ao finalizar treino:", err.message);
+      throw err;
     }
-    const nextIndex = (currentIndex + 1) % planoAtivo.rotina.length;
-    const proximoDia = planoAtivo.rotina[nextIndex].dia;
-    await dispatch(setTreinoAtivo(proximoDia));
   };
 };
 

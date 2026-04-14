@@ -17,13 +17,15 @@ export default function Treino() {
   const loading = useSelector(state => state.treinoReducer.loading);
 
   useEffect(() => {
-    dispatch(fetchTreinoList());
-  }, [dispatch]);
+    if (!planos || planos.length === 0) {
+      dispatch(fetchTreinoList());
+    }
+  }, [dispatch, planos]);
 
   const handleFinalizar = async () => {
     try {
       await dispatch(finalizarTreino());
-      alert("Parabéns! Treino Concluido!")
+      alert("Parabéns! Treino Concluido!");
     } catch (err) {
       console.error("Erro ao finalizar treino:", err);
       alert("Erro ao finalizar treino. Tente novamente.");

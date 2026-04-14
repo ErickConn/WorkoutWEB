@@ -33,7 +33,7 @@ export default function BibliotecaExercicios() {
   const grupos = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
     const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   // futuro: níveis disponíveis
-  const niveis = ["Todos", "Básico", "Intermediário", "Avançado"];
+  const niveis = ["Todos", "Iniciante", "Intermediário", "Avançado"];
   const [nivelAtivo, setNivelAtivo] = useState("Todos");
 
   const handleDelete = (id) => {
@@ -47,9 +47,6 @@ export default function BibliotecaExercicios() {
     setShowEditModal(true);
   };
 
-  const handleAdd = (exercicio) => {
-    alert(`Adicionar exercício: ${exercicio.nome}`);
-  };
 
   useEffect(() => {
     dispatch(fetchExercicioList());
@@ -118,8 +115,6 @@ export default function BibliotecaExercicios() {
         ))}
       </div>
 
-      {/* Futuro: filtro por nível */}
-      {/*
       <div className={styles.filtro}>
         {niveis.map(nivel => (
           <button
@@ -131,12 +126,11 @@ export default function BibliotecaExercicios() {
           </button>
         ))}
       </div>
-      */}
 
       <ListaExercicios
         titulo="Exercícios"
         dados={exerciciosFiltrados}
-        onAdd={adicionarExercicio}
+        //onAdd={adicionarExercicio}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
@@ -167,8 +161,7 @@ export default function BibliotecaExercicios() {
             selecionados.map(ex => (
               <div key={ex.id} className={styles.cardSelecionado}>
                 <p className={styles.nomeEx}>{ex.nome}</p>
-                {/* Futuro: mostrar nível */}
-                {/* <p className={styles.nivelEx}>Nível: {ex.nivel}</p> */}
+                <p className={styles.nivelEx}>Nível: {ex.nivel_experiencia}</p>
                 <button
                   className={styles.btnRemove}
                   onClick={() => removerExercicio(ex.id)}

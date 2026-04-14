@@ -12,7 +12,7 @@ export default function ListaExercicios({ titulo, dados, onAdd, onEdit, onDelete
         <CardExercicio 
           key={item.id} 
           exercicio={item} 
-          onAdd={onAdd} 
+          //onAdd={onAdd} 
           onEdit={onEdit}
           onDelete={onDelete}
         />

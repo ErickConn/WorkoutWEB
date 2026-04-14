@@ -249,3 +249,14 @@
   font-size: 0.85rem;
   color: #64748b;
 }
+/* Modal de Novo Exercício */
+.formGroup {
+  display: flex;
+  flex-direction: column; 
+  gap: 8px;              
+  margin-bottom: 15px;    
+}
+
+.formGroup label {
+  font-weight: 600;       
+}
