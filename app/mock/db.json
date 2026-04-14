@@ -144,67 +144,85 @@
       "id": 101,
       "nome": "Supino Reto",
       "grupo": "Peito",
-      "equipamento": "Barra"
+      "equipamento": "Barra",
+      "nivel_experiencia": "Intermediário"
     },
     {
       "id": 102,
       "nome": "Crucifixo Inclinado",
       "grupo": "Peito",
-      "equipamento": "Halteres"
+      "equipamento": "Halteres",
+      "nivel_experiencia": "Iniciante"
     },
     {
       "id": 103,
       "nome": "Tríceps Corda",
       "grupo": "Tríceps",
-      "equipamento": "Polia"
+      "equipamento": "Polia",
+      "nivel_experiencia": "Iniciante"
     },
     {
       "id": 201,
       "nome": "Puxada Frontal",
       "grupo": "Costas",
-      "equipamento": "Máquina"
+      "equipamento": "Máquina",
+      "nivel_experiencia": "Iniciante"
     },
     {
       "id": 202,
       "nome": "Rosca Direta",
       "grupo": "Bíceps",
-      "equipamento": "Halteres"
+      "equipamento": "Halteres",
+      "nivel_experiencia": "Iniciante"
     },
     {
       "id": 301,
       "nome": "Agachamento",
       "grupo": "Pernas",
-      "equipamento": "Barra"
+      "equipamento": "Barra",
+      "nivel_experiencia": "Avançado"
     },
     {
       "id": 302,
       "nome": "Desenvolvimento Militar",
       "grupo": "Ombros",
-      "equipamento": "Barra"
+      "equipamento": "Barra",
+      "nivel_experiencia": "Intermediário"
     },
     {
       "id": 401,
       "nome": "Elevação Lateral",
       "grupo": "Ombros",
-      "equipamento": "Halteres"
+      "equipamento": "Halteres",
+      "nivel_experiencia": "Iniciante"
     },
     {
       "id": 402,
       "nome": "Afundo",
       "grupo": "Pernas",
-      "equipamento": "Peso Corporal"
+      "equipamento": "Peso Corporal",
+      "nivel_experiencia": "Iniciante"
     },
     {
       "id": 403,
       "nome": "Remada Curvada",
       "grupo": "Costas",
-      "equipamento": "Barra"
+      "equipamento": "Barra",
+      "nivel_experiencia": "Intermediário"
     },
     {
       "id": 501,
       "nome": "Rosca Martelo",
       "grupo": "Bíceps",
-      "equipamento": "Halteres"
+      "equipamento": "Halteres",
+      "nivel_experiencia": "Iniciante"
+    },
+    {
+      "id": 502,
+      "nome": "Levantamento Terra",
+      "grupo": "Costas",
+      "equipamento": "Barra",
+      "nivel": "Avançado"
     }
   ]
 }

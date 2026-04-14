@@ -13,6 +13,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
   const [nome, setNome] = useState("");
   const [grupo, setGrupo] = useState("");
   const [equipamento, setEquipamento] = useState("");
+  const [nivel, setNivel] = useState("");
 
   const handleSalvar = async () => {
     if (!nome || !grupo || !equipamento) {
@@ -55,17 +56,27 @@ export default function NovoExercicioModal({ show, handleClose }) {
       </Modal.Header>
       <Modal.Body>
         <div className={styles.formGroup}>
-          <label>Nome</label>
+          <label>Nome: </label>
           <input value={nome} onChange={e => setNome(e.target.value)} />
         </div>
         <div className={styles.formGroup}>
-          <label>Grupo Muscular</label>
+          <label>Grupo Muscular: </label>
           <input value={grupo} onChange={e => setGrupo(e.target.value)} />
         </div>
         <div className={styles.formGroup}>
-          <label>Equipamento</label>
+          <label>Equipamento: </label>
           <input value={equipamento} onChange={e => setEquipamento(e.target.value)} />
         </div>
+        <div className={styles.formGroup}>
+          <label>Nível de Experiência: </label>
+          <select value={nivel} onChange={e => setNivel(e.target.value)}>
+            <option value="">Selecione...</option>
+            <option value="Iniciante">Iniciante</option>
+            <option value="Intermediário">Intermediário</option>
+            <option value="Avançado">Avançado</option>
+          </select>
+        </div>
+
       </Modal.Body>
       <Modal.Footer>
         <BootstrapButton variant="secondary" onClick={handleClose}>
