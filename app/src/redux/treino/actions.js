@@ -347,3 +347,25 @@ export const atualizarTreinoNoPlano = (idPlano, treinoEditado, rotinaAtual) => {
     }
   };
 };
+
+export const atualizarExercicioTreino = (idExercicio, dadosAtualizados) => {
+  return async (dispatch, getState) => {
+    const { planos } = getState().treinoReducer;
+    const planoAtivo = planos.find(p => p.ativo);
+    if (!planoAtivo) return;
+
+    const novaRotina = planoAtivo.rotina.map(treino => ({
+      ...treino,
+      exercicios: treino.exercicios.map(ex =>
+        ex.id === idExercicio ? { ...ex, ...dadosAtualizados } : ex
+      )
+    }));
+
+    await axios.patch(`${API_URL}/planos/${planoAtivo.id}`, { rotina: novaRotina });
+
+    dispatch({
+      type: 'EDITAR_PLANO',
+      payload: { ...planoAtivo, rotina: novaRotina }
+    });
+  };
+};

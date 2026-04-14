@@ -1,32 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styles from '../exercicio.module.css';
+import { atualizarExercicioTreino } from "../../../redux/treino/actions";
 
-export default function RegistroCard({ numSeries, carga }) {
+export default function RegistroCard({ exercicioOriginal }) {
+  const dispatch = useDispatch();
+  const [carga, setCarga] = useState(exercicioOriginal.cargaRealizada || "");
+  const [reps, setReps] = useState(exercicioOriginal.repsRealizadas || "");
+
+  const handleSalvar = () => {
+    const exercicioEditado = {
+      ...exercicioOriginal,
+      cargaRealizada: carga,
+      repsRealizadas: reps,
+      concluido: true
+    };
+    dispatch(atualizarExercicioTreino(exercicioOriginal.id, exercicioEditado));
+    alert("Exercício atualizado!");
+  };
+
   return (
     <section className={styles.whiteCard}>
       <h2 className={styles.sectionTitle}>⚡ Registro de Hoje</h2>
-      
-      <div className={styles.registrationList}>
-        {Array.from({ length: numSeries }).map((a, index) => (
-          <div key={index} className={`${styles.regBox} ${index === 0 ? styles.active : ''}`}>
-            <div className={styles.regHeader}>
-              <span className={styles.regNumber}>{index + 1}</span>
-              <span className={styles.regTitle}>Série #{index + 1}</span>
-            </div>
-            
-            <div className={styles.inputGroup}>
-              <div className={styles.inputField}>
-                <label>Peso (kg)</label>
-                <input type="number" placeholder={carga?.replace('kg', '')} />
-              </div>
-              <div className={styles.inputField}>
-                <label>Reps Realizadas</label>
-                <input type="number" placeholder="0" />
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className={styles.inputGroup}>
+        <div className={styles.inputField}>
+          <label>Peso (kg)</label>
+          <input type="number" value={carga} onChange={e => setCarga(e.target.value)} />
+        </div>
+        <div className={styles.inputField}>
+          <label>Reps Realizadas</label>
+          <input type="number" value={reps} onChange={e => setReps(e.target.value)} />
+        </div>
       </div>
+      <button className={styles.saveButton} onClick={handleSalvar}>Concluir</button>
     </section>
   );
 }

@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import styles from './treino.module.css';
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTreinoList } from "../../redux/treino/actions";
-import { finalizarTreino } from "../../redux/treino/actions";
-import TreinoCard from "./components/treino-card";
+import { fetchTreinoList, finalizarTreino } from "../../redux/treino/actions";
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 import FooterButton from "../../components/FooterButton";
 import Button from "../../components/Button";
 import Spinner from "../../components/Spinner";
+import ExerciseCard from "./components/exercise-card"; 
 
 export default function Treino() {
   const dispatch = useDispatch();
-
   const planos = useSelector(state => state.treinoReducer.planos);
   const loading = useSelector(state => state.treinoReducer.loading);
 
@@ -24,11 +22,10 @@ export default function Treino() {
 
   const handleFinalizar = async () => {
     await dispatch(finalizarTreino());
-    alert("Parabéns! Treino Concluido!")
+    alert("Parabéns! Treino Concluído!");
   };
 
   const planoAtivo = planos.find(p => p.ativo);
-
   if (loading) {
     return (
       <div className={styles.mainContainer}>
@@ -38,7 +35,7 @@ export default function Treino() {
     );
   }
 
-  if (planoAtivo === undefined) {
+  if (!planoAtivo) {
     return (
       <>
         <OffCanvasNavBar />
@@ -46,7 +43,7 @@ export default function Treino() {
           <p className={styles.noPlanMessage}>Parece que você ainda não selecionou um plano de treino.</p>
           <p className={styles.noPlanSubMessage}>Para acessar a biblioteca de treinos:</p>
           <Button link="/biblioteca-treino" title="Clique Aqui"></Button>
-        </div >
+        </div>
       </>
     );
   }
@@ -59,39 +56,28 @@ export default function Treino() {
     <>
       <OffCanvasNavBar />
       <main className={styles.mainContainer}>
-        <Link to='/select-treino' className={styles.progressCard}>
-          <div className={styles.progressHeader}>
-            <div>
-              <h2 className={styles.progressTitle}>{planoAtivo.titulo}</h2>
-              <p className={styles.progressSubtitle}>Hoje: {rotinaHoje?.foco}</p>
-            </div>
-            <div className={styles.progressBadge}>
-              <span className={styles.badgeText}>{rotinaHoje?.dia}</span>
-            </div>
-          </div>
-          <div className={styles.progressBarBg}>
-            <div className={styles.progressBarFill} style={{ width: '40%' }}></div>
-          </div>
-        </Link>
-
-        <Link to='/biblioteca-treino' className={styles.planCard}>
-          <div className={styles.planContent}>
-            <div>
-              <p className={styles.planLabel}>Plano Ativo</p>
-              <p className={styles.planName}>{planoAtivo.titulo}</p>
-            </div>
-            <div className={styles.planTag}>
-              {planoAtivo.categoria || "Personalizado"}
-            </div>
-          </div>
-        </Link>
+        <h2>{planoAtivo.titulo}</h2>
+        <p>Hoje: {rotinaHoje?.foco} ({rotinaHoje?.dia})</p>
 
         {rotinaHoje ? (
-          <TreinoCard rotina={rotinaHoje} />
+          <div>
+            {rotinaHoje.exercicios.map(exercicio => (
+              <ExerciseCard
+                key={exercicio.id}
+                id={exercicio.id}
+                nome={exercicio.nome}
+                series={exercicio.seriesPadrao}
+                reps={exercicio.repsPadrao}
+                cargaRealizada={exercicio.cargaRealizada}
+                concluido={exercicio.concluido}
+              />
+            ))}
+          </div>
         ) : (
           <p>Nenhum exercício encontrado para hoje.</p>
         )}
-        <FooterButton title="Finalizar Treino" onClick={handleFinalizar}></FooterButton>
+
+        <FooterButton title="Finalizar Treino" onClick={handleFinalizar} />
       </main>
     </>
   );
