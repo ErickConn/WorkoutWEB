@@ -52,7 +52,7 @@ export default function Selecttreino() {
                 <div className="mb-4">
                     <HighlightWorkoutCard
                         variant="green"
-                        badgeText="✨ RECOMENDADO HOJE"
+                        badgeText="✨ FAVORITO HOJE"
                         title={`Treino ${treino.rotina.find(item => item.ativo)?.dia || treino.rotina[0]?.dia || ''}`}
                         subtitle={treino.rotina.find(item => item.ativo)?.foco || treino.rotina[0]?.foco}
                         footerText={<span>{treino.rotina.find(item => item.ativo)?.exercicios?.length || treino.rotina[0]?.exercicios?.length || 0} exercícios</span>}
