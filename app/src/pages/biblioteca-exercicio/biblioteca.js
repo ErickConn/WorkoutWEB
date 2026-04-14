@@ -12,6 +12,7 @@ import DeletarExercicioModal from "./modals/modalDeletarExercicio";
 export default function BibliotecaExercicios() {
   const dispatch = useDispatch();
   const { exercicios, loading, error } = useSelector(state => state.exercicioReducer);
+  console.log("Exercícios no estado:", exercicios);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,13 +32,14 @@ export default function BibliotecaExercicios() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const grupos = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
-    const [grupoAtivo, setGrupoAtivo] = useState("Todos");
+  const [grupoAtivo, setGrupoAtivo] = useState("Todos");
   // futuro: níveis disponíveis
   const niveis = ["Todos", "Iniciante", "Intermediário", "Avançado"];
   const [nivelAtivo, setNivelAtivo] = useState("Todos");
 
   const handleDelete = (id) => {
     const exercicio = exercicios.find(ex => ex.id === id);
+    console.log("Exercício encontrado para deletar:", exercicio);
     setSelecionados(exercicio);
     setShowDeleteModal(true);
   };
@@ -49,6 +51,7 @@ export default function BibliotecaExercicios() {
 
 
   useEffect(() => {
+    console.log("Carregando exercícios...");
     dispatch(fetchExercicioList());
   }, [dispatch]);
 
@@ -64,19 +67,11 @@ export default function BibliotecaExercicios() {
     const bateGrupo = grupoAtivo === "Todos" || grupo === grupoAtivo;
     const nivel = ex.nivel || "";
     const bateNivel = nivelAtivo === "Todos" || nivel === nivelAtivo;
+    
+    console.log("Filtrando por:", { nomeOuTitulo, bateBusca, grupo, bateGrupo, nivel, bateNivel });
     return bateBusca && bateGrupo && bateNivel;
   });
   
-
-  const adicionarExercicio = (exercicio) => {
-    if (!selecionados.find(s => s.id === exercicio.id)) {
-      setSelecionados([...selecionados, exercicio]);
-    }
-  };
-
-  const removerExercicio = (id) => {
-    setSelecionados(selecionados.filter(s => s.id !== id));
-  };
 
   return (
     <div className={styles.biblioteca}>
@@ -154,27 +149,6 @@ export default function BibliotecaExercicios() {
         </div>
       )}
 
-      <section className={styles.selecionadosCard}>
-        <h3 className={styles.selecionadosTitle}>📋 Selecionados ({selecionados.length})</h3>
-        <div className={styles.listaSelecionados}>
-          {selecionados.length > 0 ? (
-            selecionados.map(ex => (
-              <div key={ex.id} className={styles.cardSelecionado}>
-                <p className={styles.nomeEx}>{ex.nome}</p>
-                <p className={styles.nivelEx}>Nível: {ex.nivel_experiencia}</p>
-                <button
-                  className={styles.btnRemove}
-                  onClick={() => removerExercicio(ex.id)}
-                >
-                  ×
-                </button>
-              </div>
-            ))
-          ) : (
-            <p className={styles.emptySelection}>Selecione exercícios acima.</p>
-          )}
-        </div>
-      </section>
     </div>
   );
 }

@@ -64,7 +64,7 @@
   font-size: 0.875rem;
 }
 
-.secaoRecomendados {
+.secaoFavoritos {
   margin: 1.5rem 0;
 }
 
@@ -78,7 +78,7 @@
   margin-bottom: 0.5rem;
 }
 
-.cardRecomendado {
+.cardFavorito {
   background-color: white;
   border-radius: 0.75rem;
   padding: 1rem;
@@ -130,7 +130,7 @@
   margin: 0;
 }
 
-.tagRecomendado {
+.tagFavorito {
   background-color: #22c55e;
   color: white;
   font-size: 0.75rem;

@@ -31,7 +31,7 @@ export default function BibliotecaTreino() {
     return bateBusca && bateNivel;
   });
 
-  const recomendados = treinosFiltrados.filter(t => t.categoria === "recomendado");
+  const favoritos = treinosFiltrados.filter(t => t.categoria === "favorito");
   const modelos = treinosFiltrados.filter(t => t.categoria === "modelo");
   const personalizados = treinosFiltrados.filter(t => t.categoria === "personalizado");
 
@@ -53,7 +53,7 @@ export default function BibliotecaTreino() {
           onSelect={setNivelAtivo}
         />
 
-        <ListaTreinos titulo="✨ RECOMENDADOS" dados={recomendados} />
+        <ListaTreinos titulo="✨ FAVORITOS" dados={favoritos} />
         <ListaTreinos titulo="Todos os Planos Modelo" dados={modelos} />
         <ListaTreinos titulo="Seus Treinos" dados={personalizados} />
 

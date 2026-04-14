@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from './treino.module.css';
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTreinoList, finalizarTreino } from "../../redux/treino/actions";
 // Certifique-se de que essa action envia os dados para o treinoReducer
@@ -45,8 +45,13 @@ export default function Treino() {
   }, [dispatch]);
 
   const handleFinalizar = async () => {
-    await dispatch(finalizarTreino());
-    alert("Parabéns! Treino Concluído!");
+    try {
+      await dispatch(finalizarTreino());
+      alert("Parabéns! Treino Concluido!");
+    } catch (err) {
+      console.error("Erro ao finalizar treino:", err);
+      alert("Erro ao finalizar treino. Tente novamente.");
+    }
   };
 
   const planoAtivo = planos?.find(p => p.ativo);
@@ -70,7 +75,7 @@ export default function Treino() {
           <p className={styles.noPlanMessage}>Parece que você ainda não selecionou um plano de treino.</p>
           <p className={styles.noPlanSubMessage}>Para acessar a biblioteca de treinos:</p>
           <Button link="/biblioteca-treino" title="Clique Aqui"></Button>
-        </div>
+        </div >
       </>
     );
   }
@@ -115,8 +120,7 @@ export default function Treino() {
         ) : (
           <p>Nenhum exercício encontrado para hoje.</p>
         )}
-
-        <FooterButton title="Finalizar Treino" onClick={handleFinalizar} />
+        <FooterButton title="Finalizar Treino" onClick={handleFinalizar}></FooterButton>
       </main>
     </>
   );
