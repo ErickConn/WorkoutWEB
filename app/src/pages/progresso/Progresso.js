@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProgresso } from "../../redux/progresso/actions";
 import styles from "./progresso.module.css";
@@ -8,52 +8,74 @@ import ProgressCard from "./components/progress-card";
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 
 export default function Progresso() {
-  // Simulação de dados vindos do backend =>  este usuário pratica 1x por semana
-  /*const [dadosUsuario, setDadosUsuario] = useState({
-    semanas: 8,
-    cargas: [4800, 5100, 5300, 5500, 5800, 6000, 6250,6500],
-    pesos: [78.5, 80.1, 79.6, 78, 77.9, 77.6, 76.2, 75.8],
-    datas: ['06/jan','11/jan','20/jan','27/jan','04/fev','10/fev','17/fev','24/fev']
-  });*/
   const dispatch = useDispatch();
-  const { historico, loading, error } = useSelector(state => state.progressoReducer);
+  const { historico, loading, error } = useSelector((state) => state.progressoReducer);
 
   useEffect(() => {
     dispatch(fetchProgresso());
   }, [dispatch]);
 
-
   if (loading) return <p>Carregando dados de progresso...</p>;
   if (error) return <p>Erro: {error}</p>;
-  if (!historico.length) return <p>Nenhum dado encontrado.</p>;
+  if (!historico || !historico.length) return <p>Nenhum dado encontrado.</p>;
 
   // Pegando o usuario exemplo
   const usuario = historico[0];
 
-  // exemplo: pegar peso e carga do histórico
-  const pesos = usuario.historico_peso.map(p => p.peso_kg);
-  const datas = usuario.historico_peso.map(p => {
+  // Garante que historico_peso e historico_carga sejam arrays
+  const historicoPeso = usuario.historico_peso || [];
+  const historicoCarga = usuario.historico_carga || [];
+
+  // Extraindo pesos com segurança
+  const pesos = historicoPeso.map((p) => Number(p.peso_kg) || 0);
+  
+  // Extraindo datas com segurança
+  const datas = historicoPeso.map((p) => {
+    if (!p.data) return "";
     const [ano, mes, dia] = p.data.split("-");
     return `${dia}/${mes}/${ano}`;
   });
-  const cargas = usuario.historico_carga.map(semana =>
-    semana.treinos.reduce((total, treino) =>
-      total + treino.exercicios.reduce((soma, ex) => soma + ex.carga_kg, 0), 0)
-  );
 
-  // Peso inicial e atual a partir do array
-  const pesoInicial = pesos[0];
-  const pesoAtual = pesos[pesos.length - 1];
+  const cargas = historicoCarga.map((semana) => {
+    if (!semana.treinos || !Array.isArray(semana.treinos)) return 0;
 
-  // Carga inicial e atual a partir do array
-  const cargaInicial = cargas[0];
-  const cargaAtual = cargas[cargas.length-1];
+    return semana.treinos.reduce((total, treino) => {
+      if (!treino.exercicios || !Array.isArray(treino.exercicios)) return total;
 
-  // Quantidade de treinos realizados na última semana
-  const ultimaSemana = usuario.historico_carga[usuario.historico_carga.length - 1];
-  const numeroTreinos = ultimaSemana.treinos.length;
-  const semanaAtual = ultimaSemana.semana;
+      return total + treino.exercicios.reduce((soma, ex) => {
+        let cargaDoExercicio = 0;
 
+        // Cenario 1: Formato antigo (ex: carga_kg: 40)
+        if (ex.carga_kg !== undefined) {
+          cargaDoExercicio = Number(ex.carga_kg) || 0;
+        } 
+        // Cenario 2: Novo formato (Semana 15+ com seriesRealizadas)
+        else if (ex.seriesRealizadas && Array.isArray(ex.seriesRealizadas)) {
+          let maiorCarga = 0;
+          ex.seriesRealizadas.forEach(serie => {
+            const cargaDaSerie = Number(serie.carga) || 0;
+            if (cargaDaSerie > maiorCarga) maiorCarga = cargaDaSerie;
+          });
+          cargaDoExercicio = maiorCarga;
+        }
+
+        return soma + cargaDoExercicio;
+      }, 0);
+    }, 0);
+  });
+
+  // Peso inicial e atual a partir do array (com fallback para 0 se o array estiver vazio)
+  const pesoInicial = pesos.length > 0 ? pesos[0] : 0;
+  const pesoAtual = pesos.length > 0 ? pesos[pesos.length - 1] : 0;
+
+  // Carga inicial e atual (com fallback para 0 se o array estiver vazio)
+  const cargaInicial = cargas.length > 0 ? cargas[0] : 0;
+  const cargaAtual = cargas.length > 0 ? cargas[cargas.length - 1] : 0;
+
+  // Quantidade de treinos realizados na última semana (com segurança)
+  const ultimaSemana = historicoCarga.length > 0 ? historicoCarga[historicoCarga.length - 1] : { treinos: [], semana: 0 };
+  const numeroTreinos = (ultimaSemana.treinos || []).length;
+  const semanaAtual = ultimaSemana.semana || 0;
 
   // Relatório
   const variacaoForca = (cargaAtual - cargaInicial).toFixed(1);
@@ -61,21 +83,37 @@ export default function Progresso() {
 
   return (
     <>
-    <OffCanvasNavBar></OffCanvasNavBar>
-    <main> 
+      <OffCanvasNavBar />
+      <main>
         <div className={styles.dashboard}>
-            {/* Cards */}
-            <div className={styles.cards}>
-                <ProgressCard emoji="🏋️" valor={cargaAtual} titulo="Carga Total (Kg)" variacao={variacaoForca} descricao="kg"></ProgressCard >
-                <ProgressCard emoji="⚖️" valor={pesoAtual} titulo="Peso Atual (Kg)" variacao={variacaoPeso} descricao="kg"></ProgressCard >
-                <ProgressCard emoji="🔥" valor={`${numeroTreinos} treinos completos`} titulo={`na semana ${semanaAtual}`}></ProgressCard > 
-            </div>
-            {/* Gráfico */}
-            <ProgressChart datas={datas} cargas={cargas} pesos={pesos}></ProgressChart>
-            {/* Relatório */}
-            <ProgressReport dadosUsuario={usuario}></ProgressReport>
+          {/* Cards */}
+          <div className={styles.cards}>
+            <ProgressCard
+              emoji="🏋️"
+              valor={cargaAtual}
+              titulo="Carga Total (Kg)"
+              variacao={variacaoForca}
+              descricao="kg"
+            />
+            <ProgressCard
+              emoji="⚖️"
+              valor={pesoAtual}
+              titulo="Peso Atual (Kg)"
+              variacao={variacaoPeso}
+              descricao="kg"
+            />
+            <ProgressCard
+              emoji="🔥"
+              valor={`${numeroTreinos} treinos completos`}
+              titulo={`na semana ${semanaAtual}`}
+            />
+          </div>
+          {/* Gráfico */}
+          <ProgressChart datas={datas} cargas={cargas} pesos={pesos} />
+          {/* Relatório */}
+          <ProgressReport dadosUsuario={usuario} />
         </div>
-    </main>
+      </main>
     </>
-  )
+  );
 }
