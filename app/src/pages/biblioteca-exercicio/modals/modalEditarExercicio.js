@@ -12,13 +12,16 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
   const [nome, setNome] = useState("");
   const [grupo, setGrupo] = useState("");
   const [equipamento, setEquipamento] = useState("");
+  const [nivel_experiencia, setNivel] = useState("");
 
   // Quando abrir o modal, preencher os campos com os dados atuais
   useEffect(() => {
     if (exercicio) {
+      console.log("Carregando dados do exercício para edição:", exercicio);
       setNome(exercicio.nome);
       setGrupo(exercicio.grupo);
       setEquipamento(exercicio.equipamento);
+      setNivel(exercicio.nivel_experiencia || "Iniciante");
     }
   }, [exercicio]);
 
@@ -28,7 +31,7 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
       return;
     }
 
-    const exercicioAtualizado = { ...exercicio, nome, grupo, equipamento };
+    const exercicioAtualizado = { ...exercicio, nome, grupo, equipamento, nivel_experiencia };
 
     try {
       await axios.put(
@@ -42,7 +45,7 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
       console.log(`Exercício com ID ${exercicio.id} atualizado com sucesso.`);
       handleClose();
     } catch (err) {
-      console.error("Erro ao editar exercício:", err);
+      console.error("Erro ao editar exercício:", err.response?.data || err.message);
       alert("Não foi possível editar o exercício.");
     }
   };
@@ -64,6 +67,15 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
         <div className={styles.formGroup}>
           <label>Equipamento</label>
           <input value={equipamento} onChange={e => setEquipamento(e.target.value)} />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Nível de Experiência: </label>
+          <select value={nivel_experiencia} onChange={e => setNivel(e.target.value)}>
+            <option value="">Selecione...</option>
+            <option value="Iniciante">Iniciante</option>
+            <option value="Intermediário">Intermediário</option>
+            <option value="Avançado">Avançado</option>
+          </select>
         </div>
       </Modal.Body>
       <Modal.Footer>

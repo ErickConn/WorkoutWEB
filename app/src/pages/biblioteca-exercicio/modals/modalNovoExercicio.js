@@ -16,6 +16,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
   const [nivel, setNivel] = useState("");
 
   const handleSalvar = async () => {
+    console.log("Salvando novo exercício com dados:", { nome, grupo, equipamento, nivel });
     if (!nome || !grupo || !equipamento) {
       alert("Preencha todos os campos!");
       return;
@@ -28,15 +29,19 @@ export default function NovoExercicioModal({ show, handleClose }) {
 
     const ultimoId = idsNumericos.length > 0 ? Math.max(...idsNumericos) : 0;
     console.log("Último ID encontrado:", ultimoId);
+    const novoId = ultimoId + 1;
+    console.log("Novo ID a ser usado:", novoId);
 
     const novoExercicio = {
-      id: ultimoId + 1,
+      id: novoId,
       nome: formatarNomeExercicio(nome),
       grupo: formatarNomeExercicio(grupo),
-      equipamento: formatarNomeExercicio(equipamento)
+      equipamento: formatarNomeExercicio(equipamento),
+      nivel_experiencia: nivel || "Iniciante" // padrão para Iniciante se não for selecionado
     };
 
     try {
+      console.log("Enviando para API:", novoExercicio);
       const res = await axios.post( "https://json-server-wweb.onrender.com/biblioteca_exercicios", novoExercicio );
       dispatch(setExercicioList([...exercicios, res.data]));
       handleClose();
@@ -45,7 +50,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
       setEquipamento("");
       console.log("Novo exercício adicionado:", res.data);
     } catch (err) {
-      console.error("Erro ao adicionar exercício:", err);
+      console.error("Erro ao adicionar exercício:", err.response?.data || err.message);
     }
   };
 
