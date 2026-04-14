@@ -9,7 +9,7 @@ export default function SubstitutosCard({ substitutos }) {
         <h3 className={styles.cardTitle}>Exercícios Substitutos</h3>
       </div>
       <div className={styles.subtleList}>
-        {substitutos.map((sub, index) => (
+        {(substitutos || []).map((sub, index) => (
           <div key={index} className={styles.subtleItem}>
             <strong>{sub.nome}</strong>
             <span>Equipamento: {sub.equipamento}</span>
