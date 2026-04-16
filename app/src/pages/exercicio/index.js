@@ -51,12 +51,18 @@ export default function Exercicio() {
 
   const dataAtual = new Date().toISOString().split('T')[0];
   
-  // Lê as séries já salvas do reducer correto, usando String() para evitar bugs de tipagem
-  const registroUsuario = registrosUsuario?.find(r =>
-    String(r.exercicioId) === String(id) && r.data === dataAtual
+  const todosRegistrosDoExercicio = registrosUsuario?.filter(r =>
+    String(r.exercicioId) === String(id) && 
+    (!r.dia || r.dia === rotinaHoje?.dia) && 
+    (!r.idPlano || r.idPlano === planoAtivo?.id)
   );
 
-  const seriesRealizadas = registroUsuario?.seriesRealizadas || [];
+  const registroHoje = todosRegistrosDoExercicio?.find(r => r.data === dataAtual);
+  const registrosPassados = todosRegistrosDoExercicio?.filter(r => r.data !== dataAtual);
+  const ultimoRegistro = registrosPassados?.sort((a, b) => new Date(b.data) - new Date(a.data))[0];
+
+  const seriesRealizadas = registroHoje?.seriesRealizadas || [];
+  const historicoRealizado = ultimoRegistro?.seriesRealizadas || [];
 
   // Protegemos a tela não só pelo loading, mas garantimos que as variáveis base já existem
   if (loading || !planos || !registrosUsuario) {
@@ -89,9 +95,9 @@ export default function Exercicio() {
         <div className={styles.mainGrid}>
           
           <div className={styles.column}>
-            {/* O SeriesCard agora envia as séries dinâmicas do Redux em vez das estáticas do JSON */}
+            {/* O SeriesCard agora envia as séries passadas mais recentes para servir de referência */}
             <SeriesCard 
-                historico={seriesRealizadas} 
+                historico={historicoRealizado} 
                 dica={exercicioAtual.dica || "Execute o exercício com técnica correta."} 
             />
           </div>

@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 import { getUserIdFromEmail, getLoggedUser } from '../../utils/userAuth';
+import { confirmarConclusaoTreinoGeral } from '../progresso/actions';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "https://my-json-server.typicode.com/ErickConn/JSON-Server-WWEB";
 
 const ensurePlanEditable = async (idPlano) => {
     const usuario = await getLoggedUser();
@@ -256,6 +257,11 @@ export const finalizarTreino = () => {
                 return;
             }
             const currentIndex = planoAtivo.rotina.findIndex(t => t.ativo);
+            const diaAtual = planoAtivo.rotina[currentIndex].dia;
+
+            // Gera/consolida a presença do usuário no DB para garantir a auditoria da sessão
+            await dispatch(confirmarConclusaoTreinoGeral(diaAtual));
+
             const nextIndex = (currentIndex + 1) % planoAtivo.rotina.length;
             const proximoDia = planoAtivo.rotina[nextIndex].dia;
             await dispatch(setTreinoAtivo(proximoDia)).unwrap();

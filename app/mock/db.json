@@ -53,39 +53,118 @@
           "treinos": [
             {
               "data": "2026-01-01",
+              "dia": "A",
+              "idPlano": "1712245560",
               "exercicios": [
                 {
-                  "id": 301,
-                  "nome": "Agachamento",
-                  "carga_kg": 40,
-                  "series": 4,
-                  "reps": 8
+                  "id": "301",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "40",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "40",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "40",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "40",
+                      "reps": "8",
+                      "concluida": true
+                    }
+                  ]
                 },
                 {
-                  "id": 101,
-                  "nome": "Supino Reto",
-                  "carga_kg": 25,
-                  "series": 4,
-                  "reps": 10
+                  "id": "101",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "25",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "25",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "25",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "25",
+                      "reps": "10",
+                      "concluida": true
+                    }
+                  ]
                 }
               ]
             },
             {
               "data": "2026-01-03",
+              "dia": "B",
+              "idPlano": "1712245560",
               "exercicios": [
                 {
-                  "id": 201,
-                  "nome": "Puxada Frontal",
-                  "carga_kg": 30,
-                  "series": 4,
-                  "reps": 10
+                  "id": "201",
+                  "dia": "B",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "30",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "30",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "30",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "30",
+                      "reps": "10",
+                      "concluida": true
+                    }
+                  ]
                 },
                 {
-                  "id": 103,
-                  "nome": "Tríceps Corda",
-                  "carga_kg": 15,
-                  "series": 3,
-                  "reps": 12
+                  "id": "103",
+                  "dia": "B",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "15",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "15",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "15",
+                      "reps": "12",
+                      "concluida": true
+                    }
+                  ]
                 }
               ]
             }
@@ -96,20 +175,62 @@
           "treinos": [
             {
               "data": "2026-01-08",
+              "dia": "A",
+              "idPlano": "1712245560",
               "exercicios": [
                 {
-                  "id": 301,
-                  "nome": "Agachamento",
-                  "carga_kg": 42,
-                  "series": 4,
-                  "reps": 8
+                  "id": "301",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "42",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "42",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "42",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "42",
+                      "reps": "8",
+                      "concluida": true
+                    }
+                  ]
                 },
                 {
-                  "id": 101,
-                  "nome": "Supino Reto",
-                  "carga_kg": 27,
-                  "series": 4,
-                  "reps": 10
+                  "id": "101",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "27",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "27",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "27",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "27",
+                      "reps": "10",
+                      "concluida": true
+                    }
+                  ]
                 }
               ]
             }
@@ -120,53 +241,230 @@
           "treinos": [
             {
               "data": "2026-01-12",
+              "dia": "A",
+              "idPlano": "1712245560",
               "exercicios": [
                 {
-                  "id": 301,
-                  "nome": "Agachamento",
-                  "carga_kg": 45,
-                  "series": 4,
-                  "reps": 8
+                  "id": "301",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "45",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "45",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "45",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "45",
+                      "reps": "8",
+                      "concluida": true
+                    }
+                  ]
                 },
                 {
-                  "id": 101,
-                  "nome": "Supino Reto",
-                  "carga_kg": 28,
-                  "series": 4,
-                  "reps": 10
+                  "id": "101",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "28",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "28",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "28",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "28",
+                      "reps": "10",
+                      "concluida": true
+                    }
+                  ]
                 },
                 {
-                  "id": 103,
-                  "nome": "Tríceps Corda",
-                  "carga_kg": 18,
-                  "series": 3,
-                  "reps": 12
+                  "id": "103",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "18",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "18",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "18",
+                      "reps": "12",
+                      "concluida": true
+                    }
+                  ]
                 }
               ]
             },
             {
               "data": "2026-01-16",
+              "dia": "B",
+              "idPlano": "1712245560",
               "exercicios": [
                 {
-                  "id": 201,
-                  "nome": "Puxada Frontal",
-                  "carga_kg": 32,
-                  "series": 4,
-                  "reps": 10
+                  "id": "201",
+                  "dia": "B",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "32",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "32",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "32",
+                      "reps": "10",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "32",
+                      "reps": "10",
+                      "concluida": true
+                    }
+                  ]
                 },
                 {
-                  "id": 102,
-                  "nome": "Crucifixo Inclinado",
-                  "carga_kg": 20,
-                  "series": 3,
-                  "reps": 12
+                  "id": "102",
+                  "dia": "B",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "20",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "20",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "20",
+                      "reps": "12",
+                      "concluida": true
+                    }
+                  ]
                 },
                 {
-                  "id": 301,
-                  "nome": "Agachamento",
-                  "carga_kg": 47,
-                  "series": 4,
-                  "reps": 8
+                  "id": "301",
+                  "dia": "B",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "47",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "47",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "47",
+                      "reps": "8",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "47",
+                      "reps": "8",
+                      "concluida": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "semana": 4,
+          "treinos": [
+            {
+              "data": "2026-04-09",
+              "dia": "A",
+              "idPlano": "Z7EvaBsyDMo",
+              "exercicios": [
+                {
+                  "id": "101",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "1215",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "1215",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "1215",
+                      "reps": "12",
+                      "concluida": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "data": "2026-04-10",
+              "dia": "B",
+              "idPlano": "Z7EvaBsyDMo",
+              "exercicios": [
+                {
+                  "id": "101",
+                  "dia": "B",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "13",
+                      "reps": "13",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "13",
+                      "reps": "13",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "13",
+                      "reps": "13",
+                      "concluida": true
+                    }
+                  ]
                 }
               ]
             }
@@ -177,62 +475,57 @@
           "treinos": [
             {
               "data": "2026-04-16",
+              "dia": "A",
+              "idPlano": "vEcgSUyFfyk",
               "exercicios": [
                 {
-                  "id": "201",
+                  "id": "101",
+                  "dia": "A",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
-                      "carga": "12",
-                      "reps": "12",
-                      "salva": true,
-                      "concluida": true
-                    },
-                    {
-                      "carga": "13",
-                      "reps": "13",
-                      "salva": true,
-                      "concluida": true
-                    },
-                    {
-                      "carga": "14",
-                      "reps": "14",
-                      "salva": true,
-                      "concluida": true
-                    },
-                    {
                       "carga": "15",
                       "reps": "15",
-                      "salva": true,
                       "concluida": true
-                    }
-                  ]
-                },
-                {
-                  "id": "202",
-                  "concluido": false,
-                  "seriesRealizadas": [
-                    {
-                      "carga": "12",
-                      "reps": "12",
-                      "salva": true,
-                      "concluida": true
-                    },
-                    {
-                      "carga": "",
-                      "reps": "",
-                      "salva": false,
-                      "concluida": false
-                    },
-                    {
-                      "carga": "",
-                      "reps": "",
-                      "salva": false,
-                      "concluida": false
                     }
                   ]
                 }
               ]
+            },
+            {
+              "data": "2026-04-16",
+              "dia": "A",
+              "idPlano": "Z7EvaBsyDMo",
+              "exercicios": [
+                {
+                  "id": "101",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "18",
+                      "reps": "-318",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "18",
+                      "reps": "18",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "18",
+                      "reps": "18",
+                      "concluida": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "data": "2026-04-16",
+              "dia": "B",
+              "idPlano": "Z7EvaBsyDMo",
+              "exercicios": []
             }
           ]
         }
@@ -240,77 +533,6 @@
     }
   ],
   "planos": [
-    {
-      "id": "1",
-      "ativo": false,
-      "titulo": "Foco Hipertrofia ABC",
-      "nivel": "Intermediário",
-      "categoria": "favorito",
-      "isCustom": false,
-      "rotina": [
-        {
-          "dia": "A",
-          "ativo": false,
-          "foco": "Peito e Tríceps",
-          "exercicios": [
-            {
-              "id": 101,
-              "nome": "Supino Reto",
-              "seriesPadrao": 4,
-              "repsPadrao": 10
-            },
-            {
-              "id": 102,
-              "nome": "Tríceps Corda",
-              "seriesPadrao": 3,
-              "repsPadrao": 12
-            }
-          ]
-        },
-        {
-          "dia": "B",
-          "ativo": true,
-          "foco": "Costas e Bíceps",
-          "exercicios": [
-            {
-              "id": 201,
-              "nome": "Puxada Frontal",
-              "seriesPadrao": 4,
-              "repsPadrao": 10
-            },
-            {
-              "id": 202,
-              "nome": "Rosca Direta",
-              "seriesPadrao": 3,
-              "repsPadrao": 12
-            }
-          ]
-        },
-        {
-          "dia": "C",
-          "foco": "Treino C",
-          "exercicios": [
-            {
-              "id": "101",
-              "nome": "Supino Reto",
-              "grupo": "Peito",
-              "equipamento": "Barra",
-              "nivel_experiencia": "Intermediário",
-              "seriesPadrao": 3,
-              "repsPadrao": 12
-            }
-          ],
-          "id": "1776355756681",
-          "ativo": false
-        }
-      ],
-      "activeUserIds": {
-        "12345": true
-      },
-      "activeDayByUser": {
-        "12345": "B"
-      }
-    },
     {
       "id": "1712245560",
       "titulo": "Meu Treino de Verão",
@@ -333,6 +555,98 @@
           ]
         }
       ]
+    },
+    {
+      "id": "Z7EvaBsyDMo",
+      "titulo": "Teste123",
+      "rotina": [
+        {
+          "dia": "A",
+          "foco": "Treino A",
+          "exercicios": [
+            {
+              "id": "101",
+              "nome": "Supino Reto",
+              "grupo": "Peito",
+              "equipamento": "Barra",
+              "nivel_experiencia": "Intermediário",
+              "seriesPadrao": 3,
+              "repsPadrao": 12
+            },
+            {
+              "id": "102",
+              "nome": "Crucifixo Inclinado",
+              "grupo": "Peito",
+              "equipamento": "Halteres",
+              "nivel_experiencia": "Iniciante",
+              "seriesPadrao": 4,
+              "repsPadrao": 12
+            }
+          ],
+          "id": "1776358169465",
+          "ativo": false
+        },
+        {
+          "dia": "B",
+          "foco": "Treino B",
+          "exercicios": [
+            {
+              "id": "201",
+              "nome": "Puxada Frontal",
+              "grupo": "Costas",
+              "equipamento": "Máquina",
+              "nivel_experiencia": "Iniciante",
+              "seriesPadrao": 4,
+              "repsPadrao": 12
+            }
+          ],
+          "id": "1776358174171",
+          "ativo": false
+        }
+      ],
+      "isPreview": false,
+      "ativo": false,
+      "isCustom": true,
+      "nivel": "Intermediário",
+      "categoria": "personalizado",
+      "userId": "12345",
+      "activeUserIds": {
+        "12345": true
+      },
+      "activeDayByUser": {
+        "12345": "A"
+      }
+    },
+    {
+      "id": "vEcgSUyFfyk",
+      "titulo": "Teste1234",
+      "rotina": [
+        {
+          "dia": "A",
+          "foco": "Treino A",
+          "exercicios": [
+            {
+              "id": "101",
+              "nome": "Supino Reto",
+              "grupo": "Peito",
+              "equipamento": "Barra",
+              "nivel_experiencia": "Intermediário",
+              "seriesPadrao": 1,
+              "repsPadrao": 12
+            }
+          ],
+          "id": "1776358412659",
+          "ativo": false
+        }
+      ],
+      "isPreview": false,
+      "ativo": false,
+      "isCustom": true,
+      "nivel": "Iniciante",
+      "categoria": "modelo",
+      "userId": "12345",
+      "activeUserIds": {},
+      "activeDayByUser": {}
     }
   ],
   "biblioteca_exercicios": [

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "https://my-json-server.typicode.com/ErickConn/JSON-Server-WWEB";
 
 export const getLoggedUserEmail = () => {
     return localStorage.getItem('usuarioLogadoEmail');

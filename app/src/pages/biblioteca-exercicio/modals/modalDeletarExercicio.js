@@ -11,7 +11,7 @@ export default function DeletarExercicioModal({ show, handleClose, exercicio }) 
 
   const handleConfirmar = async () => {
     try {
-      await axios.delete(`https://json-server-wweb.onrender.com/biblioteca_exercicios/${exercicio.id}`);
+      await axios.delete(`https://my-json-server.typicode.com/ErickConn/JSON-Server-WWEB/biblioteca_exercicios/${exercicio.id}`);
       const novaLista = exercicios.filter(ex => ex.id !== exercicio.id);
       dispatch(setExercicioList(novaLista));
       console.log(`Exercício com ID ${exercicio.id} excluído com sucesso.`);

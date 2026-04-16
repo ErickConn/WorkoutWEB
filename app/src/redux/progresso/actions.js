@@ -1,8 +1,9 @@
 import { FETCH_PROGRESSO_REQUEST, FETCH_PROGRESSO_SUCCESS, FETCH_PROGRESSO_FAILURE } from "./actionType";
 import axios from 'axios';
 import { getUserIdFromEmail } from '../../utils/userAuth';
+import { editarPlano } from '../treino/slices';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "https://my-json-server.typicode.com/ErickConn/JSON-Server-WWEB";
 
 export const fetchProgresso = () => {
   return (dispatch) => {
@@ -11,7 +12,7 @@ export const fetchProgresso = () => {
       .then((res) => {
         dispatch({
           type: FETCH_PROGRESSO_SUCCESS,
-          payload: res.data 
+          payload: res.data
         });
       })
       .catch((err) => {
@@ -26,42 +27,105 @@ export const fetchProgresso = () => {
 
 export const atualizarExercicioTreino = (idExercicio, dadosAtualizados) => {
   return async (dispatch, getState) => {
+    const dataAtual = new Date().toISOString().split('T')[0];
+    const { registrosUsuario } = getState().progressoReducer;
+    
+    // Find current records to preserve series context
     const { planos } = getState().treinoReducer;
-    const planoAtivo = planos.find(p => p.ativo);
-    if (!planoAtivo) return;
+    const planoAtivo = planos?.find(p => p.ativo);
+    const rotinaHoje = planoAtivo?.rotina?.find(treino => treino.ativo === true) || planoAtivo?.rotina?.[0];
+    const diaTreino = rotinaHoje?.dia;
 
-    const novaRotina = planoAtivo.rotina.map(treino => ({
-      ...treino,
-      exercicios: treino.exercicios.map(ex =>
-        ex.id === idExercicio ? { ...ex, ...dadosAtualizados } : ex
-      )
-    }));
+    const registroHoje = registrosUsuario?.find(r =>
+      String(r.exercicioId) === String(idExercicio) && r.data === dataAtual && (!r.dia || r.dia === diaTreino)
+    );
 
-    await axios.patch(`${API_URL}/planos/${planoAtivo.id}`, { rotina: novaRotina });
-
-    dispatch({
-      type: 'EDITAR_PLANO',
-      payload: { ...planoAtivo, rotina: novaRotina }
-    });
+    const series = registroHoje?.seriesRealizadas || [];
+    
+    // Bypass replacing the entire JSON template, directly update the daily history tracking instead
+    await dispatch(salvarRegistroExercicio(idExercicio, series, dadosAtualizados.concluido));
   };
 };
 
-// 1. FUNÇÃO DE SALVAR
-export const salvarRegistroExercicio = (exercicioId, seriesRealizadas) => {
-  return async (dispatch) => {
+export const confirmarConclusaoTreinoGeral = (diaTreino) => {
+  return async (dispatch, getState) => {
     const userId = await getUserIdFromEmail();
-    const dataAtual = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    
-    // Verifica se todas as séries passadas estão concluídas
-    const isExercicioConcluido = seriesRealizadas.length > 0 && seriesRealizadas.every(s => s.concluida);
+    const dataAtual = new Date().toISOString().split('T')[0];
 
-    // Buscar histórico do usuário
+    // Fetch the active plan ID to keep the audit trail complete
+    const { planos } = getState().treinoReducer;
+    const planoAtivo = planos?.find(p => p.ativo);
+    const idPlano = planoAtivo?.id;
+
     const { data: historicos } = await axios.get(`${API_URL}/historico_usuario`);
     const historicoUsuario = historicos.find(h => String(h.id) === String(userId));
 
-    // O objeto EXATO que queremos salvar no JSON
+    if (!historicoUsuario) {
+      await axios.post(`${API_URL}/historico_usuario`, {
+        id: userId,
+        nivel_atividade: "moderado",
+        historico_peso: [],
+        historico_carga: [{
+          semana: 1,
+          treinos: [{
+            data: dataAtual,
+            dia: diaTreino,
+            idPlano: idPlano,
+            exercicios: []
+          }]
+        }]
+      });
+      return;
+    }
+
+    let historicoCarga = historicoUsuario.historico_carga || [];
+    const semanaAtualNum = Math.ceil((new Date() - new Date('2026-01-01')) / (7 * 24 * 60 * 60 * 1000));
+    let semanaAtual = historicoCarga.find(hc => hc.semana === semanaAtualNum);
+
+    if (!semanaAtual) {
+      semanaAtual = { semana: semanaAtualNum, treinos: [] };
+      historicoCarga.push(semanaAtual);
+    }
+
+    let treinoAtual = semanaAtual.treinos.find(t => t.data === dataAtual && t.dia === diaTreino && (!t.idPlano || t.idPlano === idPlano));
+
+    if (!treinoAtual) {
+      semanaAtual.treinos.push({
+        data: dataAtual,
+        dia: diaTreino,
+        idPlano: idPlano,
+        exercicios: []
+      });
+      
+      await axios.patch(`${API_URL}/historico_usuario/${userId}`, {
+        historico_carga: historicoCarga
+      });
+    }
+  };
+};
+
+export const salvarRegistroExercicio = (exercicioId, seriesRealizadas, forceConcluido = null) => {
+  return async (dispatch, getState) => {
+    const userId = await getUserIdFromEmail();
+    const dataAtual = new Date().toISOString().split('T')[0];
+
+    // Identify the specific routine split letter (A, B, C)
+    const { planos } = getState().treinoReducer;
+    const planoAtivo = planos?.find(p => p.ativo);
+    const rotinaHoje = planoAtivo?.rotina?.find(treino => treino.ativo === true) || planoAtivo?.rotina?.[0];
+    const diaTreino = rotinaHoje?.dia;
+    const idPlano = planoAtivo?.id;
+
+    const isExercicioConcluido = forceConcluido !== null 
+      ? forceConcluido 
+      : (seriesRealizadas.length > 0 && seriesRealizadas.every(s => s.concluida));
+
+    const { data: historicos } = await axios.get(`${API_URL}/historico_usuario`);
+    const historicoUsuario = historicos.find(h => String(h.id) === String(userId));
+
     const novoExercicioSalvo = {
       id: String(exercicioId),
+      dia: diaTreino,
       concluido: isExercicioConcluido,
       seriesRealizadas: seriesRealizadas
     };
@@ -75,17 +139,18 @@ export const salvarRegistroExercicio = (exercicioId, seriesRealizadas) => {
           semana: 1,
           treinos: [{
             data: dataAtual,
+            dia: diaTreino,
+            idPlano: idPlano,
             exercicios: [novoExercicioSalvo]
           }]
         }]
       });
-      // AQUI: Avisamos o Redux para atualizar a tela!
       dispatch(carregarRegistrosUsuario());
       return;
     }
 
     let historicoCarga = historicoUsuario.historico_carga || [];
-    
+
     const semanaAtualNum = Math.ceil((new Date() - new Date('2026-01-01')) / (7 * 24 * 60 * 60 * 1000));
     let semanaAtual = historicoCarga.find(hc => hc.semana === semanaAtualNum);
 
@@ -94,15 +159,19 @@ export const salvarRegistroExercicio = (exercicioId, seriesRealizadas) => {
       historicoCarga.push(semanaAtual);
     }
 
-    let treinoAtual = semanaAtual.treinos.find(t => t.data === dataAtual);
+    let treinoAtual = semanaAtual.treinos.find(t => t.data === dataAtual && t.dia === diaTreino && (!t.idPlano || t.idPlano === idPlano));
 
     if (!treinoAtual) {
       semanaAtual.treinos.push({
         data: dataAtual,
+        dia: diaTreino,
+        idPlano: idPlano,
         exercicios: [novoExercicioSalvo]
       });
     } else {
-      const exercicioIndex = treinoAtual.exercicios.findIndex(ex => String(ex.id) === String(exercicioId));
+      const exercicioIndex = treinoAtual.exercicios.findIndex(ex => 
+        String(ex.id) === String(exercicioId) && ex.dia === diaTreino
+      );
 
       if (exercicioIndex >= 0) {
         treinoAtual.exercicios[exercicioIndex] = novoExercicioSalvo;
@@ -111,17 +180,14 @@ export const salvarRegistroExercicio = (exercicioId, seriesRealizadas) => {
       }
     }
 
-    // Atualiza o banco de dados
     await axios.patch(`${API_URL}/historico_usuario/${userId}`, {
       historico_carga: historicoCarga
     });
 
-    // AQUI ESTAVA O SEGREDO: Atualizamos o frontend na mesma hora para refletir no RegistroCard
     dispatch(carregarRegistrosUsuario());
   };
 };
 
-// 2. FUNÇÃO DE CARREGAR (Faltava no seu arquivo!)
 export const carregarRegistrosUsuario = () => {
   return async (dispatch) => {
     const userId = await getUserIdFromEmail();
@@ -137,6 +203,9 @@ export const carregarRegistrosUsuario = () => {
             registros.push({
               exercicioId: ex.id,
               data: treino.data,
+              dia: ex.dia || treino.dia,
+              idPlano: treino.idPlano,
+              concluido: ex.concluido,
               seriesRealizadas: ex.seriesRealizadas || []
             });
           });
@@ -144,7 +213,6 @@ export const carregarRegistrosUsuario = () => {
       });
     }
 
-    // Dispara para o progressoReducer organizar os cards
     dispatch({
       type: 'CARREGAR_REGISTROS_USUARIO',
       payload: registros

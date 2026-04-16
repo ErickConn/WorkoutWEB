@@ -3,8 +3,7 @@ import styles from './treino.module.css';
 import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTreinoList, finalizarTreino } from "../../redux/treino/slices";
-// Certifique-se de que essa action envia os dados para o treinoReducer
-import { fetchProgresso } from "../../redux/progresso/actions"; 
+import { fetchProgresso, carregarRegistrosUsuario } from "../../redux/progresso/actions";
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 import FooterButton from "../../components/FooterButton";
 import Button from "../../components/Button";
@@ -13,36 +12,33 @@ import TreinoCard from "./components/treino-card";
 
 export default function Treino() {
   const dispatch = useDispatch();
-  
-  // Puxa os planos do Treino Reducer
+
   const planos = useSelector(state => state.treinoReducer.planos);
   const loadingTreino = useSelector(state => state.treinoReducer.loading);
 
   console.log(planos);
 
-  // Puxa o histórico e os registros do Progresso Reducer
-  const historico = useSelector(state => state.progressoReducer.historico); 
-  const registrosUsuario = useSelector(state => state.progressoReducer.registrosUsuario); 
+  const historico = useSelector(state => state.progressoReducer.historico);
+  const registrosUsuario = useSelector(state => state.progressoReducer.registrosUsuario);
   const loadingProgresso = useSelector(state => state.progressoReducer.loading);
 
-  // Usamos um loading geral que espera os dois reducers terminarem
   const loading = loadingTreino || loadingProgresso;
 
   useEffect(() => {
-    // Como o array de dependências só tem o 'dispatch', 
-    // este bloco roda apenas 1x quando a tela carrega.
 
-    // Agora ele verifica se não existe OU se é um array vazio
     if (!planos || planos.length === 0) {
       dispatch(fetchTreinoList());
     }
-    
-    // Mesma lógica para o histórico
+
     if (!historico || historico.length === 0) {
       dispatch(fetchProgresso());
     }
-    
-  }, [dispatch]);
+
+    if (!registrosUsuario || registrosUsuario.length === 0) {
+      dispatch(carregarRegistrosUsuario());
+    }
+
+  }, [dispatch, planos, historico, registrosUsuario]);
 
   const handleFinalizar = async () => {
     try {
@@ -55,8 +51,7 @@ export default function Treino() {
   };
 
   const planoAtivo = planos?.find(p => p.ativo);
-  
-  // A tela de loading aguarda a finalização das requisições
+
   if (loading) {
     return (
       <div className={styles.mainContainer}>
@@ -66,7 +61,6 @@ export default function Treino() {
     );
   }
 
-  // Se não houver planos MESMO APÓS o loading terminar
   if (!planoAtivo) {
     return (
       <>
@@ -116,7 +110,7 @@ export default function Treino() {
         </Link>
 
         {rotinaHoje ? (
-          <TreinoCard rotina={rotinaHoje} historico={historico || []} />
+          <TreinoCard rotina={rotinaHoje} idPlano={planoAtivo?.id} />
         ) : (
           <p>Nenhum exercício encontrado para hoje.</p>
         )}

@@ -42,7 +42,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
 
     try {
       console.log("Enviando para API:", novoExercicio);
-      const res = await axios.post( "https://json-server-wweb.onrender.com/biblioteca_exercicios", novoExercicio );
+      const res = await axios.post( "https://my-json-server.typicode.com/ErickConn/JSON-Server-WWEB/biblioteca_exercicios", novoExercicio );
       dispatch(setExercicioList([...exercicios, res.data]));
       handleClose();
       setNome("");

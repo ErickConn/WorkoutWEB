@@ -35,7 +35,7 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
 
     try {
       await axios.put(
-        `https://json-server-wweb.onrender.com/biblioteca_exercicios/${exercicio.id}`,
+        `https://my-json-server.typicode.com/ErickConn/JSON-Server-WWEB/biblioteca_exercicios/${exercicio.id}`,
         exercicioAtualizado
       );
       const novaLista = exercicios.map(ex =>
