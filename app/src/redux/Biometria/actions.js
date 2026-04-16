@@ -6,7 +6,7 @@ import { GET_BIOMETRIA_ITEM } from "./actionType";
 import { CREATE_BIOMETRIA } from "./actionType";
 import { DELETE_BIOMETRIA } from "./actionType";
 import axios from 'axios';
-const API_URL = "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
 
 export const makeRequest = () => {
     return {

@@ -4,7 +4,7 @@ import FooterButton from "../../components/FooterButton";
 import SearchBar from "../../components/SearchBar";
 import Filtro from "../../components/Filtro";
 import ListaTreinos from "./components/lista-treinos";
-import { fetchTreinoList } from '../../redux/treino/actions';
+import { fetchTreinoList } from '../../redux/treino/slices';
 import { useSelector, useDispatch } from 'react-redux';
 
 import React, { useState, useEffect } from "react";

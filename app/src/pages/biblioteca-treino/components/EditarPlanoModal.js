@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button as BootstrapButton } from 'react-bootstrap';
 import { useDispatch } from "react-redux";
-import { editarPlano } from "../../../redux/treino/actions";
+import { editarPlano } from "../../../redux/treino/slices";
 import styles from '../index.module.css';
 
 export default function EditarPlanoModal({ show, handleClose, plano }) {
@@ -33,7 +33,7 @@ export default function EditarPlanoModal({ show, handleClose, plano }) {
                 nivel: novoNivel
             };
 
-            await dispatch(editarPlano(plano.id, dados));
+            await dispatch(editarPlano({idPlano: plano.id, dados: dados}));
             handleClose();
         } catch (err) {
             console.error("Erro ao salvar plano:", err);

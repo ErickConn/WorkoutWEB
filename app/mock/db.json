@@ -1,39 +1,51 @@
 {
   "biometria": [
-  {
-    "id": "0CHWdT3wh2g",
-    "usuario": {
-      "id": "12345",
-      "nome": "Usuário Exemplo (Admin)",
-      "email": "admin@championsbody.com",
-      "password": "123",
-      "role": "admin", 
-      "perfil_biometrico": {
-        "peso_kg": 78.5,
-        "altura_cm": 175,
-        "idade": 28,
-        "sexo": "masculino",
-        "nivel_atividade": "moderado"
-      },
-      "analise_metabolica": {
-        "tmb_kcal": 1845,
-        "gasto_energetico_total_kcal": 2490,
-        "data_calculo": "2026-03-29T21:14:00Z"
-      },
-      "experiencia_usuario": {
-        "nivel_experiencia": "Intermediário"
+    {
+      "id": "0CHWdT3wh2g",
+      "usuario": {
+        "id": "12345",
+        "nome": "Usuário Exemplo (Admin)",
+        "email": "admin@championsbody.com",
+        "password": "123",
+        "role": "admin",
+        "perfil_biometrico": {
+          "peso_kg": 78.5,
+          "altura_cm": 175,
+          "idade": 28,
+          "sexo": "masculino",
+          "nivel_atividade": "moderado"
+        },
+        "analise_metabolica": {
+          "tmb_kcal": 1845,
+          "gasto_energetico_total_kcal": 2490,
+          "data_calculo": "2026-03-29T21:14:00Z"
+        },
+        "experiencia_usuario": {
+          "nivel_experiencia": "Intermediário"
+        }
       }
     }
-  }
-],
-  "historico_usuario":[
+  ],
+  "historico_usuario": [
     {
       "id": "12345",
-      "nivel_atividade": "moderado", 
+      "nivel_atividade": "moderado",
       "historico_peso": [
-        { "semana": 1, "data": "2026-01-01", "peso_kg": 80 },
-        { "semana": 2, "data": "2026-01-10", "peso_kg": 79 },
-        { "semana": 3, "data": "2026-01-17", "peso_kg": 78.5 }
+        {
+          "semana": 1,
+          "data": "2026-01-01",
+          "peso_kg": 80
+        },
+        {
+          "semana": 2,
+          "data": "2026-01-10",
+          "peso_kg": 79
+        },
+        {
+          "semana": 3,
+          "data": "2026-01-17",
+          "peso_kg": 78.5
+        }
       ],
       "historico_carga": [
         {
@@ -42,15 +54,39 @@
             {
               "data": "2026-01-01",
               "exercicios": [
-                { "id": 301, "nome": "Agachamento", "carga_kg": 40, "series": 4, "reps": 8 },
-                { "id": 101, "nome": "Supino Reto", "carga_kg": 25, "series": 4, "reps": 10 }
+                {
+                  "id": 301,
+                  "nome": "Agachamento",
+                  "carga_kg": 40,
+                  "series": 4,
+                  "reps": 8
+                },
+                {
+                  "id": 101,
+                  "nome": "Supino Reto",
+                  "carga_kg": 25,
+                  "series": 4,
+                  "reps": 10
+                }
               ]
             },
             {
               "data": "2026-01-03",
               "exercicios": [
-                { "id": 201, "nome": "Puxada Frontal", "carga_kg": 30, "series": 4, "reps": 10 },
-                { "id": 103, "nome": "Tríceps Corda", "carga_kg": 15, "series": 3, "reps": 12 }
+                {
+                  "id": 201,
+                  "nome": "Puxada Frontal",
+                  "carga_kg": 30,
+                  "series": 4,
+                  "reps": 10
+                },
+                {
+                  "id": 103,
+                  "nome": "Tríceps Corda",
+                  "carga_kg": 15,
+                  "series": 3,
+                  "reps": 12
+                }
               ]
             }
           ]
@@ -58,32 +94,144 @@
         {
           "semana": 2,
           "treinos": [
-              {
-                "data": "2026-01-08",
-                "exercicios": [
-                  { "id": 301, "nome": "Agachamento", "carga_kg": 42, "series": 4, "reps": 8 },
-                  { "id": 101, "nome": "Supino Reto", "carga_kg": 27, "series": 4, "reps": 10 }
-                ]
-              }
-            ]
-          },
-          {
+            {
+              "data": "2026-01-08",
+              "exercicios": [
+                {
+                  "id": 301,
+                  "nome": "Agachamento",
+                  "carga_kg": 42,
+                  "series": 4,
+                  "reps": 8
+                },
+                {
+                  "id": 101,
+                  "nome": "Supino Reto",
+                  "carga_kg": 27,
+                  "series": 4,
+                  "reps": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
           "semana": 3,
           "treinos": [
             {
               "data": "2026-01-12",
               "exercicios": [
-                { "id": 301, "nome": "Agachamento", "carga_kg": 45, "series": 4, "reps": 8 },
-                { "id": 101, "nome": "Supino Reto", "carga_kg": 28, "series": 4, "reps": 10 },
-                { "id": 103, "nome": "Tríceps Corda", "carga_kg": 18, "series": 3, "reps": 12 }
+                {
+                  "id": 301,
+                  "nome": "Agachamento",
+                  "carga_kg": 45,
+                  "series": 4,
+                  "reps": 8
+                },
+                {
+                  "id": 101,
+                  "nome": "Supino Reto",
+                  "carga_kg": 28,
+                  "series": 4,
+                  "reps": 10
+                },
+                {
+                  "id": 103,
+                  "nome": "Tríceps Corda",
+                  "carga_kg": 18,
+                  "series": 3,
+                  "reps": 12
+                }
               ]
             },
             {
               "data": "2026-01-16",
               "exercicios": [
-                { "id": 201, "nome": "Puxada Frontal", "carga_kg": 32, "series": 4, "reps": 10 },
-                { "id": 102, "nome": "Crucifixo Inclinado", "carga_kg": 20, "series": 3, "reps": 12 },
-                { "id": 301, "nome": "Agachamento", "carga_kg": 47, "series": 4, "reps": 8 }
+                {
+                  "id": 201,
+                  "nome": "Puxada Frontal",
+                  "carga_kg": 32,
+                  "series": 4,
+                  "reps": 10
+                },
+                {
+                  "id": 102,
+                  "nome": "Crucifixo Inclinado",
+                  "carga_kg": 20,
+                  "series": 3,
+                  "reps": 12
+                },
+                {
+                  "id": 301,
+                  "nome": "Agachamento",
+                  "carga_kg": 47,
+                  "series": 4,
+                  "reps": 8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "semana": 16,
+          "treinos": [
+            {
+              "data": "2026-04-16",
+              "exercicios": [
+                {
+                  "id": "201",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "12",
+                      "reps": "12",
+                      "salva": true,
+                      "concluida": true
+                    },
+                    {
+                      "carga": "13",
+                      "reps": "13",
+                      "salva": true,
+                      "concluida": true
+                    },
+                    {
+                      "carga": "14",
+                      "reps": "14",
+                      "salva": true,
+                      "concluida": true
+                    },
+                    {
+                      "carga": "15",
+                      "reps": "15",
+                      "salva": true,
+                      "concluida": true
+                    }
+                  ]
+                },
+                {
+                  "id": "202",
+                  "concluido": false,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "12",
+                      "reps": "12",
+                      "salva": true,
+                      "concluida": true
+                    },
+                    {
+                      "carga": "",
+                      "reps": "",
+                      "salva": false,
+                      "concluida": false
+                    },
+                    {
+                      "carga": "",
+                      "reps": "",
+                      "salva": false,
+                      "concluida": false
+                    }
+                  ]
+                }
               ]
             }
           ]
@@ -105,20 +253,63 @@
           "ativo": false,
           "foco": "Peito e Tríceps",
           "exercicios": [
-            { "id": 101, "nome": "Supino Reto", "seriesPadrao": 4, "repsPadrao": 10 },
-            { "id": 102, "nome": "Tríceps Corda", "seriesPadrao": 3, "repsPadrao": 12 }
+            {
+              "id": 101,
+              "nome": "Supino Reto",
+              "seriesPadrao": 4,
+              "repsPadrao": 10
+            },
+            {
+              "id": 102,
+              "nome": "Tríceps Corda",
+              "seriesPadrao": 3,
+              "repsPadrao": 12
+            }
           ]
         },
         {
           "dia": "B",
-          "ativo": false,
+          "ativo": true,
           "foco": "Costas e Bíceps",
           "exercicios": [
-            { "id": 201, "nome": "Puxada Frontal", "seriesPadrao": 4, "repsPadrao": 10 },
-            { "id": 202, "nome": "Rosca Direta", "seriesPadrao": 3, "repsPadrao": 12 }
+            {
+              "id": 201,
+              "nome": "Puxada Frontal",
+              "seriesPadrao": 4,
+              "repsPadrao": 10
+            },
+            {
+              "id": 202,
+              "nome": "Rosca Direta",
+              "seriesPadrao": 3,
+              "repsPadrao": 12
+            }
           ]
+        },
+        {
+          "dia": "C",
+          "foco": "Treino C",
+          "exercicios": [
+            {
+              "id": "101",
+              "nome": "Supino Reto",
+              "grupo": "Peito",
+              "equipamento": "Barra",
+              "nivel_experiencia": "Intermediário",
+              "seriesPadrao": 3,
+              "repsPadrao": 12
+            }
+          ],
+          "id": "1776355756681",
+          "ativo": false
         }
-      ]
+      ],
+      "activeUserIds": {
+        "12345": true
+      },
+      "activeDayByUser": {
+        "12345": "B"
+      }
     },
     {
       "id": "1712245560",
@@ -133,7 +324,12 @@
           "ativo": false,
           "foco": "Full Body",
           "exercicios": [
-            { "id": 301, "nome": "Agachamento", "seriesPadrao": 4, "repsPadrao": 8 }
+            {
+              "id": 301,
+              "nome": "Agachamento",
+              "seriesPadrao": 4,
+              "repsPadrao": 8
+            }
           ]
         }
       ]
@@ -141,88 +337,89 @@
   ],
   "biblioteca_exercicios": [
     {
-      "id": 101,
+      "id": "101",
       "nome": "Supino Reto",
       "grupo": "Peito",
       "equipamento": "Barra",
       "nivel_experiencia": "Intermediário"
     },
     {
-      "id": 102,
+      "id": "102",
       "nome": "Crucifixo Inclinado",
       "grupo": "Peito",
       "equipamento": "Halteres",
       "nivel_experiencia": "Iniciante"
     },
     {
-      "id": 103,
+      "id": "103",
       "nome": "Tríceps Corda",
       "grupo": "Tríceps",
       "equipamento": "Polia",
       "nivel_experiencia": "Iniciante"
     },
     {
-      "id": 201,
+      "id": "201",
       "nome": "Puxada Frontal",
       "grupo": "Costas",
       "equipamento": "Máquina",
       "nivel_experiencia": "Iniciante"
     },
     {
-      "id": 202,
+      "id": "202",
       "nome": "Rosca Direta",
       "grupo": "Bíceps",
       "equipamento": "Halteres",
       "nivel_experiencia": "Iniciante"
     },
     {
-      "id": 301,
+      "id": "301",
       "nome": "Agachamento",
       "grupo": "Pernas",
       "equipamento": "Barra",
       "nivel_experiencia": "Avançado"
     },
     {
-      "id": 302,
+      "id": "302",
       "nome": "Desenvolvimento Militar",
       "grupo": "Ombros",
       "equipamento": "Barra",
       "nivel_experiencia": "Intermediário"
     },
     {
-      "id": 401,
+      "id": "401",
       "nome": "Elevação Lateral",
       "grupo": "Ombros",
       "equipamento": "Halteres",
       "nivel_experiencia": "Iniciante"
     },
     {
-      "id": 402,
+      "id": "402",
       "nome": "Afundo",
       "grupo": "Pernas",
       "equipamento": "Peso Corporal",
       "nivel_experiencia": "Iniciante"
     },
     {
-      "id": 403,
+      "id": "403",
       "nome": "Remada Curvada",
       "grupo": "Costas",
       "equipamento": "Barra",
       "nivel_experiencia": "Intermediário"
     },
     {
-      "id": 501,
+      "id": "501",
       "nome": "Rosca Martelo",
       "grupo": "Bíceps",
       "equipamento": "Halteres",
       "nivel_experiencia": "Iniciante"
     },
     {
-      "id": 502,
+      "id": "502",
       "nome": "Levantamento Terra",
       "grupo": "Costas",
       "equipamento": "Barra",
       "nivel": "Avançado"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

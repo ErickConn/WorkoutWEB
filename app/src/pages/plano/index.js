@@ -5,7 +5,7 @@ import TreinoLivreModal from "../treino-livre";
 import styles from "./index.module.css";
 import FooterButton from "../../components/FooterButton";
 import HeaderBack from "../../components/HeaderBack";
-import { salvarPlanoCompleto } from "../../redux/treino/actions";
+import { salvarPlanoCompleto } from "../../redux/treino/slices";
 import { useNavigate } from "react-router-dom";
 
 export default function PaginaPlano() {

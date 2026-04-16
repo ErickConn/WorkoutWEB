@@ -5,7 +5,7 @@ import Filtro from "../../components/Filtro";
 import SearchBar from "../../components/SearchBar";
 import ExercicioItem from "./components/exercicio-item";
 import ExercicioSelecionado from "./components/exercicio-selecionado";
-import { adicionarTreinoNaRotina, adicionarTreinoAoPlano, atualizarTreinoNoPlano, atualizarTreinoDaRotinaEdicao } from "../../redux/treino/actions";
+import { adicionarTreinoNaRotina, adicionarTreinoAoPlano, atualizarTreinoNoPlano, atualizarTreinoDaRotinaEdicao } from "../../redux/treino/slices";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
 import FooterButton from "../../components/FooterButton";
@@ -103,13 +103,17 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
 
     if (idPlano !== null) {
       if (treinoEmEdicao) {
-        dispatch(atualizarTreinoNoPlano(idPlano, {
-          ...treinoEmEdicao,
-          foco: nomeTreino || treinoEmEdicao.foco,
-          exercicios: exerciciosFormatados
-        }, rotinaAtual));
+        dispatch(atualizarTreinoNoPlano({
+          idPlano,
+          treinoEditado: {
+            ...treinoEmEdicao,
+            foco: nomeTreino || treinoEmEdicao.foco,
+            exercicios: exerciciosFormatados
+          },
+          rotinaAtual
+        }));
       } else {
-        dispatch(adicionarTreinoAoPlano(idPlano, nomeTreino, selecionados, rotinaAtual));
+        dispatch(adicionarTreinoAoPlano({ idPlano, nomeTreino, exerciciosSelecionados: selecionados, rotinaAtual }));
       }
     } else if (treinoEmEdicao) {
       dispatch(atualizarTreinoDaRotinaEdicao({

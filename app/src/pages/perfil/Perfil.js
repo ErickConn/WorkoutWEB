@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './components/perfil.module.css';
-import { fetchTreinoList } from '../../redux/treino/actions'; // Action já estava aqui
+import { fetchTreinoList } from '../../redux/treino/slices'; // Action já estava aqui
 import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';

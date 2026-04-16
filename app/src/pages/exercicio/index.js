@@ -3,7 +3,7 @@ import styles from './exercicio.module.css';
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchTreinoList } from "../../redux/treino/actions";
+import { fetchTreinoList } from "../../redux/treino/slices";
 import { fetchProgresso } from "../../redux/progresso/actions";
 import { carregarRegistrosUsuario } from "../../redux/progresso/actions"; 
 

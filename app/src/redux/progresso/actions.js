@@ -2,7 +2,7 @@ import { FETCH_PROGRESSO_REQUEST, FETCH_PROGRESSO_SUCCESS, FETCH_PROGRESSO_FAILU
 import axios from 'axios';
 import { getUserIdFromEmail } from '../../utils/userAuth';
 
-const API_URL = "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
 
 export const fetchProgresso = () => {
   return (dispatch) => {

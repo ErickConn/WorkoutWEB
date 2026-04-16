@@ -1,7 +1,18 @@
-import { createStore, applyMiddleware } from "redux";
-import { thunk } from "redux-thunk";
-import rootReducer from './root-reducer';
+import { configureStore } from "@reduxjs/toolkit";
+import treinoReducer from "./treino/slices";
+import userReducer from './user/reduce';
+import { biometriaReducer } from './Biometria/reduce';
+import exercicioReducer from "./exercicio/reducer";
+import progressoReducer from "./progresso/reducer";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = configureStore({
+    reducer: {
+        treinoReducer,
+        userReducer,
+        biometriaReducer,
+        exercicioReducer,
+        progressoReducer
+    }
+})
 
 export default store;

@@ -1,5 +1,0 @@
-export const MAKE_REQUEST = 'MAKE_REQUEST';
-export const FAIL_REQUEST = 'FAIL_REQUEST';
-export const GET_TREINO_LIST = 'GET_TREINO_LIST';
-export const GET_EXERCICIO_LIST = 'GET_EXERCICIO_LIST';
-export const EDITAR_PLANO = 'EDITAR_PLANO';

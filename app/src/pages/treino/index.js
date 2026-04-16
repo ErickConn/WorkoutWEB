@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styles from './treino.module.css';
 import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTreinoList, finalizarTreino } from "../../redux/treino/actions";
+import { fetchTreinoList, finalizarTreino } from "../../redux/treino/slices";
 // Certifique-se de que essa action envia os dados para o treinoReducer
 import { fetchProgresso } from "../../redux/progresso/actions"; 
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";

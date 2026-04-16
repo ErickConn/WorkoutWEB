@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../index.module.css';
 import { useNavigate } from 'react-router-dom';
-import { removerPlano, removerTreinoDaRotinaEdicao, removerTreinoDaAPI, setPlanoAtivo } from '../../../redux/treino/actions';
+import { removerPlano, removerTreinoDaRotinaEdicao, removerTreinoDaAPI, setPlanoAtivo } from '../../../redux/treino/slices';
 import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import EditarPlanoModal from './EditarPlanoModal';
@@ -76,7 +76,7 @@ export default function CardTreino({
       if (isPreview) {
         dispatch(removerTreinoDaRotinaEdicao(dia));
       } else {
-        dispatch(removerTreinoDaAPI(treinoId, dia, rotina));
+        dispatch(removerTreinoDaAPI({ idPlano: treinoId, diaParaRemover: dia, rotinaAtual: rotina }));
       }
     }
   };

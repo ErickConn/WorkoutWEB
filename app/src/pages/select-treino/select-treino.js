@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import styles from "./components/select-treino.module.css";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTreinoList, setTreinoAtivo } from '../../redux/treino/actions';
+import { fetchTreinoList, setTreinoAtivo } from '../../redux/treino/slices';
 import RoutineCard from './components/routinecard';
 import LastWorkout from './components/lastworkout.js';
 import HighlightWorkoutCard from './components/HighlightWorkoutCard.js';
