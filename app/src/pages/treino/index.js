@@ -93,9 +93,33 @@ export default function Treino() {
               <span className={styles.badgeText}>{rotinaHoje?.dia}</span>
             </div>
           </div>
-          <div className={styles.progressBarBg}>
-            <div className={styles.progressBarFill} style={{ width: '40%' }}></div>
-          </div>
+          {(() => {
+            const dataAtual = new Date().toISOString().split('T')[0];
+            const totalExercicios = rotinaHoje?.exercicios?.length || 0;
+            const concluidos = totalExercicios > 0
+              ? rotinaHoje.exercicios.filter(ex =>
+                  registrosUsuario?.some(r =>
+                    String(r.exercicioId) === String(ex.id) &&
+                    r.data === dataAtual &&
+                    r.dia === rotinaHoje.dia &&
+                    r.idPlano === planoAtivo.id &&
+                    r.concluido
+                  )
+                ).length
+              : 0;
+            const porcentagem = totalExercicios > 0 ? Math.round((concluidos / totalExercicios) * 100) : 0;
+            return (
+              <>
+                <div className={styles.progressStats}>
+                  <span>{concluidos}/{totalExercicios} exercícios</span>
+                  <span>{porcentagem}%</span>
+                </div>
+                <div className={styles.progressBarBg}>
+                  <div className={styles.progressBarFill} style={{ width: `${porcentagem}%` }}></div>
+                </div>
+              </>
+            );
+          })()}
         </Link>
 
         <Link to='/biblioteca-treino' className={styles.planCard}>
