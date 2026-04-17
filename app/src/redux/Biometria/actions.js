@@ -51,6 +51,7 @@ export const createBiometria = (biometriaData) => {
             
             if (biometriaData.usuario && biometriaData.usuario.id) {
                 await axios.post(`${API_URL}/historico_usuario`, {
+                    id: String(biometriaData.usuario.id),
                     userId: String(biometriaData.usuario.id),
                     nivel_atividade: "moderado",
                     historico_peso: [],

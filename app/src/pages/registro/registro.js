@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createBiometria } from '../../redux/Biometria/actions';
+import { createBiometria, fetchBiometriaList } from '../../redux/Biometria/actions';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
 
 export default function Registro() {
@@ -12,15 +12,35 @@ export default function Registro() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const biometria = useSelector((state) => state.biometriaReducer.biometria);
+
+    useEffect(() => {
+        dispatch(fetchBiometriaList());
+    }, [dispatch]);
+
     const handleRegistro = (e) => {
         e.preventDefault();
 
+        const emailFormatado = email.toLowerCase();
+        
+        // Verifica se o e-mail já existe na base de dados (ignorando a caixa)
+        const emailJaExiste = biometria.some(
+            (item) => item.usuario.email === emailFormatado
+        );
+
+        if (emailJaExiste) {
+            alert('Este e-mail já está sendo utilizado. Por favor, use outro e-mail ou faça login na sua conta.');
+            return;
+        }
+
         // O objeto deve ser criado DENTRO da função disparada ao enviar o formulário
+        const novoId = String(Date.now());
         const biometriaItem = {
+            id: novoId,
             usuario: {
-                id: Date.now(),
+                id: novoId,
                 nome: name,
-                email: email.toLowerCase(),
+                email: emailFormatado,
                 password: password,
                 role: 'aluno',
 
@@ -59,7 +79,7 @@ export default function Registro() {
                             <div className={styles.formGroup}>
                                 <div className={styles.labelRow}>
                                     <label htmlFor="name" className={styles.label}>
-                                        Full Name
+                                        Nome Completo
                                     </label>
                                 </div>
                                 <input
@@ -76,7 +96,7 @@ export default function Registro() {
                             <div className={styles.formGroup}>
                                 <div className={styles.labelRow}>
                                     <label htmlFor="email" className={styles.label}>
-                                        Email Address
+                                        Endereço de E-mail
                                     </label>
                                 </div>
                                 <input
@@ -93,7 +113,7 @@ export default function Registro() {
                             <div className={styles.formGroup}>
                                 <div className={styles.labelRow}>
                                     <label htmlFor="password" className={styles.label}>
-                                        Password
+                                        Senha
                                     </label>
                                 </div>
                                 <input
@@ -108,15 +128,15 @@ export default function Registro() {
                             </div>
 
                             <button type="submit" className={styles.submitBtn}>
-                                Register
+                                Cadastrar
                             </button>
                         </form>
 
                         {/* Opcional: Link para voltar ao login se o usuário já tiver conta */}
                         <p className={styles.registerPrompt} style={{ textAlign: 'center', marginTop: '1rem', fontSize: '14px' }}>
-                            Already have an account?{' '}
+                            Já tem uma conta?{' '}
                             <a className={styles.registerLink} href="/" style={{ color: 'var(--tertiary)', fontWeight: 'bold', textDecoration: 'none' }}>
-                                Log In
+                                Entrar
                             </a>
                         </p>
                     </main>

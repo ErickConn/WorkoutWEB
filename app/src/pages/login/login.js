@@ -56,7 +56,7 @@ const handleLogin = (e) => {
               <div className={styles.formGroup}>
                 <div className={styles.labelRow}>
                   <label htmlFor="email" className={styles.label}>
-                    Email Address
+                    Endereço de E-mail
                   </label>
                 </div>
                 <input
@@ -73,10 +73,10 @@ const handleLogin = (e) => {
               <div className={styles.formGroup}>
                 <div className={styles.labelRow}>
                   <label htmlFor="password" className={styles.label}>
-                    Password
+                    Senha
                   </label>
                   <a className={styles.forgotLink} href="#forgot">
-                    Forgot?
+                    Esqueceu a senha?
                   </a>
                 </div>
                 <input
@@ -96,14 +96,14 @@ const handleLogin = (e) => {
                 type="submit"
                 disabled={loading}
               >
-                {loading ? 'Carregando Dados...' : 'Log In'}
+                {loading ? 'Carregando Dados...' : 'Entrar'}
               </button>
             </form>
             
             <p className={styles.registerPrompt}>
-              Don't have an account?{' '}
+              Não tem uma conta?{' '}
               <a className={styles.registerLink} href="/registro">
-                Sign Up
+                Cadastre-se
               </a>
             </p>
           </main>
@@ -113,13 +113,13 @@ const handleLogin = (e) => {
       {/* Footer */}
       <footer className={styles.footer}>
         <p className={styles.disclaimer}>
-          By authenticating, you agree to our{' '}
-          <span className={styles.disclaimerLink}>Terms</span> and{' '}
-          <span className={styles.disclaimerLink}>Privacy Protocol</span>.
+          Ao autenticar, você concorda com nossos{' '}
+          <span className={styles.disclaimerLink}>Termos</span> e{' '}
+          <span className={styles.disclaimerLink}>Política de Privacidade</span>.
         </p>
         <div className={styles.statusIndicator}>
           <div className={styles.statusDot}></div>
-          <span className={styles.statusText}>System Operational</span>
+          <span className={styles.statusText}>Sistema Operacional</span>
         </div>
       </footer>
     </div>
