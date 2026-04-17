@@ -28,15 +28,28 @@ export default function CardTreino({
   const [showTreinoModal, setShowTreinoModal] = useState(false);
   const [treinoEmEdicao, setTreinoEmEdicao] = useState(null);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
+  const [nomeCriador, setNomeCriador] = useState(null);
 
   useEffect(() => {
-    const carregarUsuario = async () => {
+    const carregarDados = async () => {
       const usuario = await getLoggedUser();
       setUsuarioLogado(usuario);
+
+      if (userId && categoria === 'modelo') {
+        try {
+          const API_URL = process.env.REACT_APP_API_URL || 'https://json-server-wweb.onrender.com';
+          const { default: axios } = await import('axios');
+          const { data: biometria } = await axios.get(`${API_URL}/biometria`);
+          const criador = biometria.find(b => String(b.usuario?.id) === String(userId));
+          if (criador) setNomeCriador(criador.usuario.nome);
+        } catch (err) {
+          console.error('Erro ao buscar criador do plano:', err);
+        }
+      }
     };
 
-    carregarUsuario();
-  }, []);
+    carregarDados();
+  }, [userId, categoria]);
 
   const podeModificar = Boolean(
     usuarioLogado &&
@@ -115,6 +128,9 @@ export default function CardTreino({
             <h3 className={styles.cardName}>{titulo || "Novo Plano"}</h3>
           </div>
           <p className={styles.cardDetails}>{rotina.length} treinos • {nivel}</p>
+          {categoria === 'modelo' && nomeCriador && (
+            <p className={styles.cardCriador}>👤 Criado por <strong>{nomeCriador}</strong></p>
+          )}
 
           {!isPreview && podeModificar && (
             <div className={styles.cardActions}>
