@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
-import { fetchBiometriaList } from '../../redux/Biometria/actions';
+import { fetchBiometriaList } from '../../redux/Biometria/slice';
 
 export default function Login() {
   const [email, setEmail] = useState('');

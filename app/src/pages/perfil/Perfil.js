@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './components/perfil.module.css';
 import { fetchTreinoList } from '../../redux/treino/slices'; // Action já estava aqui
-import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/actions';
+import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';

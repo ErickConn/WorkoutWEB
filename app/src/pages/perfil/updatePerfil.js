@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateBiometria } from '../../redux/Biometria/actions';
+import { updateBiometria } from '../../redux/Biometria/slice';
 import styles from '../login/login.module.css'; // Reaproveitando o CSS do Login/Registro
 
 export default function UpdateUsuario() {
@@ -55,7 +55,7 @@ export default function UpdateUsuario() {
             };
 
             // Dispara a atualização no Redux
-            dispatch(updateBiometria(usuarioAtual.id, biometriaAtualizada));
+            dispatch(updateBiometria({ id: usuarioAtual.id, updatedData: biometriaAtualizada }));
 
             // CRÍTICO: Se o email mudou, precisamos atualizar a "Sessão" no navegador
             localStorage.setItem('usuarioLogadoEmail', emailFormatado);

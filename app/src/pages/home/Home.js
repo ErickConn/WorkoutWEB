@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'; // Adicionado useMemo
 import { useDispatch, useSelector } from 'react-redux';
-import { updateBiometria } from '../../redux/Biometria/actions';
+import { updateBiometria } from '../../redux/Biometria/slice';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './components/home.module.css';
@@ -89,7 +89,7 @@ export default function Home({ show, handleClose }) {
                     }
                 }
             };
-            dispatch(updateBiometria(usuarioAtual.id, biometriaAtualizada));
+            dispatch(updateBiometria({ id: usuarioAtual.id, updatedData: biometriaAtualizada }));
             handleClose(); 
         }
     };

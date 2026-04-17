@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createBiometria, fetchBiometriaList } from '../../redux/Biometria/actions';
+import { createBiometria, fetchBiometriaList } from '../../redux/Biometria/slice';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
 
 export default function Registro() {
