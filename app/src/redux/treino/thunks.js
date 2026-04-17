@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getUserIdFromEmail, getLoggedUser } from '../../utils/userAuth';
 import { confirmarConclusaoTreinoGeral } from '../progresso/actions';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://my-json-server.typicode.com/ErickConn/JSON-Server-WWEB";
+const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
 
 const ensurePlanEditable = async (idPlano) => {
     const usuario = await getLoggedUser();
@@ -256,10 +256,10 @@ export const finalizarTreino = () => {
                 console.warn("Nenhum plano ativo ou rotina encontrada para finalizar treino.");
                 return;
             }
-            const currentIndex = planoAtivo.rotina.findIndex(t => t.ativo);
+            let currentIndex = planoAtivo.rotina.findIndex(t => t.ativo);
+            if (currentIndex === -1) currentIndex = 0;
             const diaAtual = planoAtivo.rotina[currentIndex].dia;
 
-            // Gera/consolida a presença do usuário no DB para garantir a auditoria da sessão
             await dispatch(confirmarConclusaoTreinoGeral(diaAtual));
 
             const nextIndex = (currentIndex + 1) % planoAtivo.rotina.length;

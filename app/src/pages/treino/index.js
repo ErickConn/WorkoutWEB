@@ -21,6 +21,7 @@ export default function Treino() {
   const historico = useSelector(state => state.progressoReducer.historico);
   const registrosUsuario = useSelector(state => state.progressoReducer.registrosUsuario);
   const loadingProgresso = useSelector(state => state.progressoReducer.loading);
+  const progressoLoaded = useSelector(state => state.progressoReducer.loaded);
 
   const loading = loadingTreino || loadingProgresso;
 
@@ -30,15 +31,15 @@ export default function Treino() {
       dispatch(fetchTreinoList());
     }
 
-    if (!historico || historico.length === 0) {
+    if (!progressoLoaded) {
       dispatch(fetchProgresso());
     }
 
-    if (!registrosUsuario || registrosUsuario.length === 0) {
+    if (!progressoLoaded) {
       dispatch(carregarRegistrosUsuario());
     }
 
-  }, [dispatch, planos, historico, registrosUsuario]);
+  }, [dispatch, planos, progressoLoaded]);
 
   const handleFinalizar = async () => {
     try {

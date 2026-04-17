@@ -1,7 +1,7 @@
 import {  MAKE_REQUEST_EXERCICIO, FAIL_REQUEST_EXERCICIO, GET_EXERCICIO_LIST, SET_EXERCICIO_LIST } from "./actionType";
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://my-json-server.typicode.com/ErickConn/JSON-Server-WWEB";
+const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
 
 // Simulação de fetch inicial
 export const fetchExercicioList = () => {

@@ -10,21 +10,48 @@ export default function RegistroCard({ exercicioOriginal, isLoading }) {
 
   const [series, setSeries] = useState([]);
 
+  // Inicializa as séries APENAS quando não há nada digitado ainda
   useEffect(() => {
     if (isLoading) return;
 
-    if (exercicioOriginal?.seriesRealizadas?.length > 0) {
-      setSeries(exercicioOriginal.seriesRealizadas);
-    } else {
-      setSeries(
-        Array.from({ length: numSeries }, () => ({
+    setSeries(prev => {
+      // Se já tem séries (usuário digitando), não sobrescreve
+      const temSeriesLocais = prev.length > 0;
+      if (temSeriesLocais) return prev;
+
+      // Inicializa com dados do banco se existirem
+      if (exercicioOriginal?.seriesRealizadas?.length > 0) {
+        return exercicioOriginal.seriesRealizadas;
+      }
+
+      // Inicializa vazio conforme o número de séries padrão
+      return Array.from({ length: numSeries }, () => ({
+        carga: "",
+        reps: "",
+        concluida: false
+      }));
+    });
+  }, [isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Sincroniza com o banco SOMENTE quando o exercício muda (navegação entre exercícios)
+  const exercicioIdRef = React.useRef(null);
+  useEffect(() => {
+    if (isLoading) return;
+    const novoId = exercicioOriginal?.id;
+    if (novoId !== exercicioIdRef.current) {
+      exercicioIdRef.current = novoId;
+      if (exercicioOriginal?.seriesRealizadas?.length > 0) {
+        setSeries(exercicioOriginal.seriesRealizadas);
+      } else {
+        setSeries(Array.from({ length: numSeries }, () => ({
           carga: "",
           reps: "",
           concluida: false
-        }))
-      );
+        })));
+      }
     }
-  }, [exercicioOriginal, numSeries, isLoading]);
+  }, [exercicioOriginal?.id, isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const handleSerieChange = (index, field, value) => {
     const novasSeries = [...series];

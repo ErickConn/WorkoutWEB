@@ -18,8 +18,8 @@ export default function TreinoCard({ rotina, idPlano }) {
     const registroHoje = registrosUsuario?.find(r =>
       String(r.exercicioId) === String(ex.id) && 
       r.data === dataAtual && 
-      (!r.dia || r.dia === rotina.dia) && 
-      (!r.idPlano || r.idPlano === idPlano)
+      (r.dia === rotina.dia) && 
+      (r.idPlano === idPlano)
     );
 
     const seriesRealizadas = registroHoje?.seriesRealizadas || [];

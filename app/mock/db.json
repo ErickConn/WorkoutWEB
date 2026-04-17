@@ -24,6 +24,25 @@
           "nivel_experiencia": "Intermediário"
         }
       }
+    },
+    {
+      "id": "abc123xyz",
+      "usuario": {
+        "id": "99999",
+        "nome": "Usuário Teste (Aluno)",
+        "email": "aluno@championsbody.com",
+        "password": "123",
+        "role": "aluno",
+        "perfil_biometrico": {
+          "peso_kg": 65.0,
+          "altura_cm": 160,
+          "idade": 22,
+          "sexo": "feminino",
+          "nivel_atividade": "leve"
+        },
+        "analise_metabolica": null,
+        "experiencia_usuario": null
+      }
     }
   ],
   "historico_usuario": [
@@ -53,12 +72,12 @@
           "treinos": [
             {
               "data": "2026-01-01",
-              "dia": "A",
+              "dia": "Único",
               "idPlano": "1712245560",
               "exercicios": [
                 {
                   "id": "301",
-                  "dia": "A",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -85,7 +104,7 @@
                 },
                 {
                   "id": "101",
-                  "dia": "A",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -114,12 +133,12 @@
             },
             {
               "data": "2026-01-03",
-              "dia": "B",
+              "dia": "Único",
               "idPlano": "1712245560",
               "exercicios": [
                 {
                   "id": "201",
-                  "dia": "B",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -146,7 +165,7 @@
                 },
                 {
                   "id": "103",
-                  "dia": "B",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -175,12 +194,12 @@
           "treinos": [
             {
               "data": "2026-01-08",
-              "dia": "A",
+              "dia": "Único",
               "idPlano": "1712245560",
               "exercicios": [
                 {
                   "id": "301",
-                  "dia": "A",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -207,7 +226,7 @@
                 },
                 {
                   "id": "101",
-                  "dia": "A",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -241,12 +260,12 @@
           "treinos": [
             {
               "data": "2026-01-12",
-              "dia": "A",
+              "dia": "Único",
               "idPlano": "1712245560",
               "exercicios": [
                 {
                   "id": "301",
-                  "dia": "A",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -273,7 +292,7 @@
                 },
                 {
                   "id": "101",
-                  "dia": "A",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -300,7 +319,7 @@
                 },
                 {
                   "id": "103",
-                  "dia": "A",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -324,12 +343,12 @@
             },
             {
               "data": "2026-01-16",
-              "dia": "B",
+              "dia": "Único",
               "idPlano": "1712245560",
               "exercicios": [
                 {
                   "id": "201",
-                  "dia": "B",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -356,7 +375,7 @@
                 },
                 {
                   "id": "102",
-                  "dia": "B",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -378,7 +397,7 @@
                 },
                 {
                   "id": "301",
-                  "dia": "B",
+                  "dia": "Único",
                   "concluido": true,
                   "seriesRealizadas": [
                     {
@@ -529,7 +548,56 @@
             }
           ]
         }
-      ]
+      ],
+      "userId": "12345"
+    },
+    {
+      "id": "99999",
+      "nivel_atividade": "leve",
+      "historico_peso": [
+        {
+          "semana": 1,
+          "data": "2026-04-10",
+          "peso_kg": 66.0
+        },
+        {
+          "semana": 2,
+          "data": "2026-04-17",
+          "peso_kg": 65.0
+        }
+      ],
+      "historico_carga": [
+        {
+          "semana": 16,
+          "treinos": [
+            {
+              "data": "2026-04-16",
+              "dia": "A",
+              "idPlano": "vEcgSUyFfyk",
+              "exercicios": [
+                {
+                  "id": "101",
+                  "dia": "A",
+                  "concluido": true,
+                  "seriesRealizadas": [
+                    {
+                      "carga": "10",
+                      "reps": "12",
+                      "concluida": true
+                    },
+                    {
+                      "carga": "10",
+                      "reps": "10",
+                      "concluida": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "userId": "99999"
     }
   ],
   "planos": [
@@ -734,6 +802,5 @@
       "equipamento": "Barra",
       "nivel": "Avançado"
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }

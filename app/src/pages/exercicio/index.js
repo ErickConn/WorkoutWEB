@@ -23,6 +23,7 @@ export default function Exercicio() {
   const historico = useSelector(state => state.progressoReducer.historico);
   const registrosUsuario = useSelector(state => state.progressoReducer.registrosUsuario);
   const loadingProgresso = useSelector(state => state.progressoReducer.loading);
+  const progressoLoaded = useSelector(state => state.progressoReducer.loaded);
 
   const loading = loadingTreino || loadingProgresso;
 
@@ -32,15 +33,15 @@ export default function Exercicio() {
       dispatch(fetchTreinoList());
     }
     
-    if (!historico || historico.length === 0) {
+    if (!progressoLoaded) {
       dispatch(fetchProgresso());
     }
 
     // A Action crucial que formata as séries para o RegistroCard ler
-    if (!registrosUsuario || registrosUsuario.length === 0) {
+    if (!progressoLoaded) {
       dispatch(carregarRegistrosUsuario());
     }
-  }, [dispatch, planos, historico, registrosUsuario]); 
+  }, [dispatch, planos, progressoLoaded]); 
 
   // 3. USO DO OPTIONAL CHAINING (?.) PARA NÃO QUEBRAR DURANTE O LOADING
   const planoAtivo = planos?.find(p => p.ativo);
@@ -53,8 +54,8 @@ export default function Exercicio() {
   
   const todosRegistrosDoExercicio = registrosUsuario?.filter(r =>
     String(r.exercicioId) === String(id) && 
-    (!r.dia || r.dia === rotinaHoje?.dia) && 
-    (!r.idPlano || r.idPlano === planoAtivo?.id)
+    (r.dia === rotinaHoje?.dia) && 
+    (r.idPlano === planoAtivo?.id)
   );
 
   const registroHoje = todosRegistrosDoExercicio?.find(r => r.data === dataAtual);
