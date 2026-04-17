@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTreinoList, setTreinoAtivo } from '../../redux/treino/slices';
 import RoutineCard from './components/routinecard';
-import LastWorkout from './components/lastworkout.js';
+import HeaderBack from '../../components/HeaderBack';
 import HighlightWorkoutCard from './components/HighlightWorkoutCard.js';
 import Spinner from '../../components/Spinner';
 
@@ -35,14 +35,15 @@ export default function Selecttreino() {
             console.error("O clique falhou porque o dia está vazio!");
             return;
         }
-        await dispatch(setTreinoAtivo(dia));
+        dispatch(setTreinoAtivo(dia));
         navigate('/treino');
     };
 
     const colors = [styles['bg-blue-light'], styles['bg-purple-light'], styles['bg-green-light']];
 
     return (
-        <Container className="py-4" style={{ maxWidth: '1200px' }}>
+        <Container className="py-4" style={{ maxWidth: '1200px', marginTop: '80px' }}>
+            <HeaderBack title="Seu Plano de Treino" subtitle="Selecione o treino que deseja realizar hoje!" />
             <main>
                 <div className={`${styles['banner-blue']} mb-4`}>
                     <h2>Escolha Seu Treino</h2>
@@ -90,6 +91,6 @@ export default function Selecttreino() {
                     linkTo="/plano"
                 />
             </main>
-        </Container>
+        </Container >
     );
 }
