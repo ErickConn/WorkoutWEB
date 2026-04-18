@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProgresso } from "../../redux/progresso/actions";
+import { fetchProgresso } from "../../redux/progresso/slices";
 import styles from "./progresso.module.css";
 import ProgressChart from "./components/progress-chart";
 import ProgressReport from "./components/progress-report";
@@ -18,6 +18,7 @@ export default function Progresso() {
   if (loading) return <p>Carregando dados de progresso...</p>;
   if (error) return <p>Erro: {error}</p>;
   if (!historico || !historico.length) return <p>Nenhum dado encontrado.</p>;
+  console.log("Estado progresso:", { historico, loading, error });
 
   // Pegando o usuario exemplo
   const usuario = historico[0];
@@ -63,7 +64,8 @@ export default function Progresso() {
       }, 0);
     }, 0);
   });
-
+  console.log("Pesos:", pesos, "Cargas:", cargas, "Datas:", datas);
+  
   // Peso inicial e atual a partir do array (com fallback para 0 se o array estiver vazio)
   const pesoInicial = pesos.length > 0 ? pesos[0] : 0;
   const pesoAtual = pesos.length > 0 ? pesos[pesos.length - 1] : 0;
