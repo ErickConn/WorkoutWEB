@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./biblioteca.module.css";
 import HeaderBack from "../../components/HeaderBack";
-import { fetchExercicioList } from '../../redux/exercicio/actions';
+import { fetchExercicioList } from '../../redux/exercicio/slices';
 import ListaExercicios from "./components/lista-exercicios";
 import NovoExercicioModal from "./modals/modalNovoExercicio";
 import EditarExercicioModal from "./modals/modalEditarExercicio";
@@ -31,9 +31,10 @@ export default function BibliotecaExercicios() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  // Filtros
   const grupos = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
   const [grupoAtivo, setGrupoAtivo] = useState("Todos");
-  // futuro: níveis disponíveis
+  
   const niveis = ["Todos", "Iniciante", "Intermediário", "Avançado"];
   const [nivelAtivo, setNivelAtivo] = useState("Todos");
 

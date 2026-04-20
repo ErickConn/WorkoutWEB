@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import styles from '../biblioteca.module.css';
 import formatarNomeExercicio from '../utils/formatarNome';
 

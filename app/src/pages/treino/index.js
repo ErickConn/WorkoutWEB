@@ -3,7 +3,7 @@ import styles from './treino.module.css';
 import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTreinoList, finalizarTreino } from "../../redux/treino/slices";
-import { fetchProgresso, carregarRegistrosUsuario } from "../../redux/progresso/actions";
+import { fetchProgresso, carregarRegistrosUsuario } from "../../redux/progresso/slices";
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 import FooterButton from "../../components/FooterButton";
 import Button from "../../components/Button";

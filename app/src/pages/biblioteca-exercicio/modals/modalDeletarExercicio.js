@@ -1,25 +1,16 @@
 import React from "react";
 import { Modal, Button as BootstrapButton } from "react-bootstrap";
 import styles from "../biblioteca.module.css";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setExercicioList } from "../../../redux/exercicio/actions";
+import { useDispatch} from "react-redux";
+import { deleteExercicio } from "../../../redux/exercicio/slices";
 
 export default function DeletarExercicioModal({ show, handleClose, exercicio }) {
   const dispatch = useDispatch();
-  const { exercicios } = useSelector(state => state.exercicioReducer);
 
   const handleConfirmar = async () => {
-    try {
-      await axios.delete(`https://json-server-wweb.onrender.com/biblioteca_exercicios/${exercicio.id}`);
-      const novaLista = exercicios.filter(ex => ex.id !== exercicio.id);
-      dispatch(setExercicioList(novaLista));
-      console.log(`Exercício com ID ${exercicio.id} excluído com sucesso.`);
-      handleClose();
-    } catch (err) {
-      console.error("Erro ao excluir exercício:", err);
-      alert("Não foi possível excluir o exercício.");
-    }
+    dispatch(deleteExercicio(exercicio.id));
+    console.log(`Exercício com ID ${exercicio.id} excluído com sucesso.`);
+    handleClose();
   };
 
   if (!exercicio) return null;

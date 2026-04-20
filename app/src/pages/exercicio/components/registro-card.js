@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styles from '../exercicio.module.css';
-import { salvarRegistroExercicio } from "../../../redux/progresso/actions";
+import { salvarRegistroExercicio } from "../../../redux/progresso/slices";
 
 export default function RegistroCard({ exercicioOriginal, isLoading }) {
   const dispatch = useDispatch();

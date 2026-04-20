@@ -4,8 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { fetchTreinoList } from "../../redux/treino/slices";
-import { fetchProgresso } from "../../redux/progresso/actions";
-import { carregarRegistrosUsuario } from "../../redux/progresso/actions";
+import { fetchProgresso, carregarRegistrosUsuario } from "../../redux/progresso/slices";
 
 import HeaderBack from "../../components/HeaderBack";
 import RegistroCard from "./components/registro-card";

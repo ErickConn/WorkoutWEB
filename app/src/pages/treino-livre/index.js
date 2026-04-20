@@ -9,7 +9,7 @@ import { adicionarTreinoNaRotina, adicionarTreinoAoPlano, atualizarTreinoNoPlano
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
 import FooterButton from "../../components/FooterButton";
-import { fetchExercicioList } from "../../redux/exercicio/actions";
+import { fetchExercicioList } from "../../redux/exercicio/slices";
 
 export default function TreinoLivreModal({ show, handleClose, rotina = null, idPlano = null, treinoEmEdicao = null }) {
   const [busca, setBusca] = useState("");

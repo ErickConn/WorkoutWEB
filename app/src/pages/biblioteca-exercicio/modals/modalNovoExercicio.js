@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Button as BootstrapButton } from "react-bootstrap";
 import styles from "../biblioteca.module.css";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setExercicioList } from "../../../redux/exercicio/actions";
+import { useDispatch, useSelector} from "react-redux";
+import { createExercicio } from "../../../redux/exercicio/slices";
 import formatarNomeExercicio from "../utils/formatarNome";
 
 export default function NovoExercicioModal({ show, handleClose }) {
@@ -17,7 +16,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
 
   const handleSalvar = async () => {
     console.log("Salvando novo exercício com dados:", { nome, grupo, equipamento, nivel });
-    if (!nome || !grupo || !equipamento) {
+    if (!nome || !grupo || !equipamento || !nivel) {
       alert("Preencha todos os campos!");
       return;
     }
@@ -37,21 +36,17 @@ export default function NovoExercicioModal({ show, handleClose }) {
       nome: formatarNomeExercicio(nome),
       grupo: formatarNomeExercicio(grupo),
       equipamento: formatarNomeExercicio(equipamento),
-      nivel_experiencia: nivel || "Iniciante" // padrão para Iniciante se não for selecionado
+      nivel_experiencia: nivel || "Iniciante"
     };
-
-    try {
-      console.log("Enviando para API:", novoExercicio);
-      const res = await axios.post( "https://json-server-wweb.onrender.com/biblioteca_exercicios", novoExercicio );
-      dispatch(setExercicioList([...exercicios, res.data]));
-      handleClose();
-      setNome("");
-      setGrupo("");
-      setEquipamento("");
-      console.log("Novo exercício adicionado:", res.data);
-    } catch (err) {
-      console.error("Erro ao adicionar exercício:", err.response?.data || err.message);
-    }
+    
+    console.log("Enviando para API:", novoExercicio);
+    dispatch(createExercicio(novoExercicio));
+    handleClose();
+    setNome("");
+    setGrupo("");
+    setEquipamento("");
+    setNivel("");
+    console.log("Novo exercício adicionado:", novoExercicio);
   };
 
   return (

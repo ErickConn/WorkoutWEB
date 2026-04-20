@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button as BootstrapButton } from "react-bootstrap";
 import styles from "../biblioteca.module.css";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setExercicioList } from "../../../redux/exercicio/actions";
+import { useDispatch} from "react-redux";
+import { updateExercicio } from "../../../redux/exercicio/slices";
+
 
 export default function EditarExercicioModal({ show, handleClose, exercicio }) {
   const dispatch = useDispatch();
-  const { exercicios } = useSelector(state => state.exercicioReducer);
 
   const [nome, setNome] = useState("");
   const [grupo, setGrupo] = useState("");
@@ -17,7 +16,7 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
   // Quando abrir o modal, preencher os campos com os dados atuais
   useEffect(() => {
     if (exercicio) {
-      console.log("Carregando dados do exercício para edição:", exercicio);
+      console.log("Carregando dados para edição:", exercicio);
       setNome(exercicio.nome);
       setGrupo(exercicio.grupo);
       setEquipamento(exercicio.equipamento);
@@ -33,21 +32,10 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
 
     const exercicioAtualizado = { ...exercicio, nome, grupo, equipamento, nivel_experiencia };
 
-    try {
-      await axios.put(
-        `https://json-server-wweb.onrender.com/biblioteca_exercicios/${exercicio.id}`,
-        exercicioAtualizado
-      );
-      const novaLista = exercicios.map(ex =>
-        ex.id === exercicio.id ? exercicioAtualizado : ex
-      );
-      dispatch(setExercicioList(novaLista));
-      console.log(`Exercício com ID ${exercicio.id} atualizado com sucesso.`);
-      handleClose();
-    } catch (err) {
-      console.error("Erro ao editar exercício:", err.response?.data || err.message);
-      alert("Não foi possível editar o exercício.");
-    }
+    console.log("Disparando edição:", exercicioAtualizado);
+    dispatch(updateExercicio(exercicioAtualizado));
+    console.log(`Exercício com ID ${exercicio.id} atualizado com sucesso.`);
+    handleClose();
   };
 
   return (
