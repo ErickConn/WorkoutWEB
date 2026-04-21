@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Form, Badge, Stack } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { atualizarExercicioTreino } from "../../../redux/progresso/actions";
+import { atualizarExercicioTreino } from "../../../redux/progresso/slices";
 
 export default function ExerciseCard({ id, nome, series = "-", reps = "-", cargaRealizada, concluido }) {
   const dispatch = useDispatch();

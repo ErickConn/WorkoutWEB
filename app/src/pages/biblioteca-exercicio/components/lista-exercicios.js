@@ -1,7 +1,7 @@
 import CardExercicio from "./card-exercicio";
 import styles from "../biblioteca.module.css";
 
-export default function ListaExercicios({ titulo, dados, onAdd, onEdit, onDelete  }) {
+export default function ListaExercicios({ titulo, dados, onEdit, onDelete  }) {
   if (!dados || dados.length === 0) return null;
 
   return (

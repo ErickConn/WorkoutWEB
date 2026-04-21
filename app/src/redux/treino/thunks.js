@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 import { getUserIdFromEmail, getLoggedUser } from '../../utils/userAuth';
-import { confirmarConclusaoTreinoGeral } from '../progresso/actions';
+import { confirmarConclusaoTreinoGeral } from '../progresso/slices';
 
 const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
 

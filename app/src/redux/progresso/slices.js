@@ -11,7 +11,6 @@ export const fetchProgresso = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userId = String(await getUserIdFromEmail());
-      console.log("Buscando progresso para userId:", userId);
       const { data: historicos } = await axios.get(`${API_URL}/historico_usuario`);
       const historicoUsuario = historicos.find(h => String(h.userId) === userId);
       return historicoUsuario ? [historicoUsuario] : [];
@@ -27,7 +26,6 @@ export const carregarRegistrosUsuario = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userId = String(await getUserIdFromEmail());
-      console.log("Buscando progresso do usuário:", userId);
       const { data: historicos } = await axios.get(`${API_URL}/historico_usuario`);
       const historicoUsuario = historicos.find(h => String(h.userId) === userId);
 
@@ -139,6 +137,92 @@ export const salvarRegistroExercicio = createAsyncThunk(
       dispatch(carregarRegistrosUsuario());
     } catch (err) {
       return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Thunk para atualizar exercício do treino
+export const atualizarExercicioTreino = createAsyncThunk(
+  "progresso/atualizarExercicioTreino",
+  async ({ idExercicio, dadosAtualizados }, { getState, dispatch }) => {
+    const dataAtual = new Date().toISOString().split("T")[0];
+    const { registrosUsuario } = getState().progresso;
+    const { planos } = getState().treino;
+    const planoAtivo = planos?.find(p => p.ativo);
+    const idPlano = planoAtivo?.id;
+    const rotinaHoje = planoAtivo?.rotina?.find(t => t.ativo) || planoAtivo?.rotina?.[0];
+    const diaTreino = rotinaHoje?.dia;
+
+    const registroHoje = registrosUsuario?.find(r =>
+      String(r.exercicioId) === String(idExercicio) &&
+      r.data === dataAtual &&
+      r.dia === diaTreino &&
+      r.idPlano === idPlano
+    );
+
+    const series = registroHoje?.seriesRealizadas || [];
+    await dispatch(salvarRegistroExercicio({
+      exercicioId: idExercicio,
+      seriesRealizadas: series,
+      forceConcluido: dadosAtualizados.concluido
+    }));
+  }
+);
+
+// Thunk para confirmar conclusão geral do treino
+export const confirmarConclusaoTreinoGeral = createAsyncThunk(
+  "progresso/confirmarConclusaoTreinoGeral",
+  async (diaTreino, { getState }) => {
+    const userId = String(await getUserIdFromEmail());
+    const dataAtual = new Date().toISOString().split("T")[0];
+    const { planos } = getState().treino;
+    const planoAtivo = planos?.find(p => p.ativo);
+    const idPlano = planoAtivo?.id;
+
+    const historicoUsuario = await getHistoricoByUserId(userId);
+
+    if (!historicoUsuario) {
+      await axios.post(`${API_URL}/historico_usuario`, {
+        userId,
+        nivel_atividade: "moderado",
+        historico_peso: [],
+        historico_carga: [{
+          semana: Math.ceil((new Date() - new Date("2026-01-01")) / (7 * 24 * 60 * 60 * 1000)),
+          treinos: [{
+            data: dataAtual,
+            dia: diaTreino,
+            idPlano,
+            exercicios: []
+          }]
+        }]
+      });
+      return;
+    }
+
+    let historicoCarga = historicoUsuario.historico_carga || [];
+    const semanaAtualNum = Math.ceil((new Date() - new Date("2026-01-01")) / (7 * 24 * 60 * 60 * 1000));
+    let semanaAtual = historicoCarga.find(hc => hc.semana === semanaAtualNum);
+
+    if (!semanaAtual) {
+      semanaAtual = { semana: semanaAtualNum, treinos: [] };
+      historicoCarga.push(semanaAtual);
+    }
+
+    let treinoAtual = semanaAtual.treinos.find(t =>
+      t.data === dataAtual && t.dia === diaTreino && t.idPlano === idPlano
+    );
+
+    if (!treinoAtual) {
+      semanaAtual.treinos.push({
+        data: dataAtual,
+        dia: diaTreino,
+        idPlano,
+        exercicios: []
+      });
+
+      await axios.patch(`${API_URL}/historico_usuario/${historicoUsuario.id}`, {
+        historico_carga: historicoCarga
+      });
     }
   }
 );

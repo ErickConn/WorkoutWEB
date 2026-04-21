@@ -66,10 +66,12 @@ export default function BibliotecaExercicios() {
     const bateBusca = nomeOuTitulo.toLowerCase().includes(busca.toLowerCase());
     const grupo = ex.grupo || "";
     const bateGrupo = grupoAtivo === "Todos" || grupo === grupoAtivo;
-    const nivel = ex.nivel || "";
+    const nivel = ex.nivel_experiencia || "";
     const bateNivel = nivelAtivo === "Todos" || nivel === nivelAtivo;
-    
-    console.log("Filtrando por:", { nomeOuTitulo, bateBusca, grupo, bateGrupo, nivel, bateNivel });
+    console.log(`Exercício: "${nomeOuTitulo}", Grupo: "${grupo}", Nível: "${nivel}"`);
+    if (bateBusca && bateGrupo && bateNivel) {
+      console.log(`Filtrando exercício: "${nomeOuTitulo}", Busca: ${bateBusca}, Grupo: ${grupo} (${bateGrupo}), Nível: ${nivel} (${bateNivel})`);
+    }
     return bateBusca && bateGrupo && bateNivel;
   });
   
@@ -126,7 +128,6 @@ export default function BibliotecaExercicios() {
       <ListaExercicios
         titulo="Exercícios"
         dados={exerciciosFiltrados}
-        //onAdd={adicionarExercicio}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
@@ -145,7 +146,7 @@ export default function BibliotecaExercicios() {
       {exerciciosFiltrados.length === 0 && (
         <div className={styles.emptyState}>
           <p>
-            Nenhum exercício encontrado para <strong>{grupoAtivo}</strong> com busca <strong>"{busca}"</strong>.
+            Nenhum exercício encontrado para <strong>{grupoAtivo}</strong> e <strong>{nivelAtivo}</strong> com busca <strong>"{busca}"</strong>.
           </p>
         </div>
       )}
