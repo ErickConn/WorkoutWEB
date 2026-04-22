@@ -1,19 +1,4 @@
-const { MongoClient } = require('mongodb');
+import mongoose from 'mongoose';
 
-async function runGetStarted() {
-  // Replace the uri string with your connection string
-  const uri = 'mongodb://127.0.0.1:32923/?directConnection=true';
-  const client = new MongoClient(uri);
-
-  try {
-    const database = client.db('sample_mflix');
-    const movies = database.collection('movies');
-
-    const query = { title: 'Back to the Future' };
-    const movie = await movies.findOne(query);
-    console.log(movie);
-  } finally {
-    await client.close();
-  }
-}
-runGetStarted().catch(console.dir);
+await mongoose.connect('mongodb://127.0.0.1:32923/?directConnection=true')
+  .then(() => console.log('MongoDB connected')).catch((err) => console.log(err));
