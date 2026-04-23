@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
+
+  server:
+    container_name: server
+    restart: always
+    build:
+      context: ./backend
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://root:example@mongo:27017/workout?authSource=admin
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/

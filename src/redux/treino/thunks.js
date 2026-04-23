@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getUserIdFromEmail, getLoggedUser } from '../../utils/userAuth';
 import { confirmarConclusaoTreinoGeral } from '../progresso/slices';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
 
 const ensurePlanEditable = async (idPlano) => {
     const usuario = await getLoggedUser();
