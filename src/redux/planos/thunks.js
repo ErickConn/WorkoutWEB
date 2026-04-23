@@ -1,14 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { getUserIdFromEmail, getLoggedUser, getLoggedUserEmail } from '../../utils/userAuth';
+import { getUserIdFromEmail, getLoggedUser } from '../../utils/userAuth';
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
-// Helper: busca ou cria o user no backend pelo email
 export const getOrCreateBackendUser = async () => {
-    const email = getLoggedUserEmail();
-    if (!email) throw new Error("Usuário não autenticado");
-    const { data: user } = await axios.get(`${API_URL}/users/email/${email}`);
+    const user = getLoggedUser();
     return user;
 };
 
@@ -111,17 +108,16 @@ export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, {
     }
 });
 
-// Ativa um plano: 1 PATCH no user em vez de N PATCHes nos planos
 export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idPlano, { rejectWithValue }) => {
     try {
         const backendUser = await getOrCreateBackendUser();
 
-        await axios.patch(`${API_URL}/users/${backendUser.id}`, {
-            activePlanId: idPlano,
-            activeDay: null  // Reseta o dia ativo ao trocar de plano
-        });
+        // await axios.patch(`${API_URL}/users/${backendUser.id}`, {
+        //     activePlanId: idPlano,
+        //     activeDay: null
+        // });
 
-        return { idPlano, userId: backendUser.id };
+        return { idPlano };
     } catch (err) {
         return rejectWithValue(err.message);
     }

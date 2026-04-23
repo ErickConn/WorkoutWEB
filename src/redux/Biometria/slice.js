@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
+const API_URL = "https://json-server-wweb.onrender.com";
 
 // Async Thunks
 export const fetchBiometriaList = createAsyncThunk(
@@ -22,7 +22,7 @@ export const createBiometria = createAsyncThunk(
         try {
             const res = await axios.post(`${API_URL}/biometria`, biometriaData);
             const newBiometria = res.data;
-            
+
             if (biometriaData.usuario && biometriaData.usuario.id) {
                 await axios.post(`${API_URL}/historico_usuario`, {
                     id: String(biometriaData.usuario.id),
@@ -45,14 +45,14 @@ export const updateBiometria = createAsyncThunk(
         try {
             const res = await axios.patch(`${API_URL}/biometria/${id}`, updatedData);
             const updatedBiometria = res.data;
-            
+
             if (updatedBiometria.usuario?.perfil_biometrico?.peso_kg) {
                 const userId = updatedBiometria.usuario.id;
                 const newWeight = updatedBiometria.usuario.perfil_biometrico.peso_kg;
-                
+
                 const { data: historicos } = await axios.get(`${API_URL}/historico_usuario`);
                 const userHistory = historicos.find(h => String(h.userId) === String(userId));
-                
+
                 if (userHistory) {
                     const dataAtual = new Date().toISOString().split('T')[0];
                     let historicoPeso = userHistory.historico_peso || [];
@@ -128,7 +128,7 @@ const biometriaSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            
+
             // createBiometria
             .addCase(createBiometria.pending, (state) => {
                 state.loading = true;
@@ -142,7 +142,7 @@ const biometriaSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            
+
             // updateBiometria
             .addCase(updateBiometria.pending, (state) => {
                 state.loading = true;
@@ -159,7 +159,7 @@ const biometriaSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            
+
             // getBiometriaItem
             .addCase(getBiometriaItem.pending, (state) => {
                 state.loading = true;
@@ -173,7 +173,7 @@ const biometriaSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            
+
             // deleteBiometria
             .addCase(deleteBiometria.pending, (state) => {
                 state.loading = true;
