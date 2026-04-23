@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import styles from './treino.module.css';
 import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTreinoList, finalizarTreino } from "../../redux/treino/slices";
+import { fetchPlanoList } from "../../redux/planos/slices";
+import { finalizarTreino } from "../../redux/treinos/slices";
 import { fetchProgresso, carregarRegistrosUsuario } from "../../redux/progresso/slices";
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 import FooterButton from "../../components/FooterButton";
@@ -13,8 +14,8 @@ import TreinoCard from "./components/treino-card";
 export default function Treino() {
   const dispatch = useDispatch();
 
-  const planos = useSelector(state => state.treinoReducer.planos);
-  const loadingTreino = useSelector(state => state.treinoReducer.loading);
+  const planos = useSelector(state => state.planosReducer.planos);
+  const loadingTreino = useSelector(state => state.planosReducer.loading);
 
   console.log(planos);
 
@@ -28,7 +29,7 @@ export default function Treino() {
   useEffect(() => {
 
     if (!planos || planos.length === 0) {
-      dispatch(fetchTreinoList());
+      dispatch(fetchPlanoList());
     }
 
     if (!progressoLoaded) {

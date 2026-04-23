@@ -5,7 +5,7 @@ import Filtro from "../../components/Filtro";
 import SearchBar from "../../components/SearchBar";
 import ExercicioItem from "./components/exercicio-item";
 import ExercicioSelecionado from "./components/exercicio-selecionado";
-import { adicionarTreinoNaRotina, adicionarTreinoAoPlano, atualizarTreinoNoPlano, atualizarTreinoDaRotinaEdicao } from "../../redux/treino/slices";
+import { adicionarTreinoNaRotina, atualizarTreinoDaRotinaEdicao, adicionarTreinoAoPlano, atualizarTreinoNoPlano } from "../../redux/treinos/slices";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
 import FooterButton from "../../components/FooterButton";
@@ -23,7 +23,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
 
   const dispatch = useDispatch();
   const exercicios = useSelector(state => state.exercicioReducer.exercicios);
-  const planoEmEdicaoRotina = useSelector(state => state.treinoReducer.planoEmEdicao).rotina;
+  const planoEmEdicaoRotina = useSelector(state => state.treinosReducer.planoEmEdicao).rotina;
 
   const exerciciosById = useMemo(() => new Map((exercicios || []).map(ex => [String(ex.id), ex])), [exercicios]);
 

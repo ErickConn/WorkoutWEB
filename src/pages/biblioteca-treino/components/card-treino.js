@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../index.module.css';
 import { useNavigate } from 'react-router-dom';
-import { removerPlano, removerTreinoDaRotinaEdicao, removerTreinoDaAPI, setPlanoAtivo } from '../../../redux/treino/slices';
+import { removerPlano, setPlanoAtivo } from '../../../redux/planos/slices';
+import { removerTreinoDaAPI, removerTreinoDaRotinaEdicao } from '../../../redux/treinos/slices';
 import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import EditarPlanoModal from './EditarPlanoModal';

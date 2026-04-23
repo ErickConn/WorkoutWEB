@@ -4,7 +4,7 @@ import FooterButton from "../../components/FooterButton";
 import SearchBar from "../../components/SearchBar";
 import Filtro from "../../components/Filtro";
 import ListaTreinos from "./components/lista-treinos";
-import { fetchTreinoList } from '../../redux/treino/slices';
+import { fetchPlanoList } from '../../redux/planos/slices';
 import { useSelector, useDispatch } from 'react-redux';
 
 import React, { useState, useEffect } from "react";
@@ -14,11 +14,11 @@ export default function BibliotecaTreino() {
   const [busca, setBusca] = useState("");
   const [nivelAtivo, setNivelAtivo] = useState("Todos");
   const dispatch = useDispatch();
-  const todosOsTreinos = useSelector(rootReducer => rootReducer.treinoReducer.planos);
-  const loading = useSelector(rootReducer => rootReducer.treinoReducer.loading);
+  const todosOsTreinos = useSelector(rootReducer => rootReducer.planosReducer.planos);
+  const loading = useSelector(rootReducer => rootReducer.planosReducer.loading);
 
   useEffect(() => {
-    dispatch(fetchTreinoList());
+    dispatch(fetchPlanoList());
   }, [dispatch])
 
   if (loading) {

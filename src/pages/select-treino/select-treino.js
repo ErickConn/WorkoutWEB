@@ -3,7 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import styles from "./components/select-treino.module.css";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTreinoList, setTreinoAtivo } from '../../redux/treino/slices';
+import { fetchPlanoList } from '../../redux/planos/slices';
+import { setTreinoAtivo } from '../../redux/treinos/slices';
 import RoutineCard from './components/routinecard';
 import HeaderBack from '../../components/HeaderBack';
 import HighlightWorkoutCard from './components/HighlightWorkoutCard.js';
@@ -13,12 +14,12 @@ export default function Selecttreino() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const planos = useSelector(state => state.treinoReducer.planos) || [];
-    const loading = useSelector(state => state.treinoReducer.loading);
+    const planos = useSelector(state => state.planosReducer.planos) || [];
+    const loading = useSelector(state => state.planosReducer.loading);
     const treino = planos.find(p => p.ativo) || planos[0];
 
     useEffect(() => {
-        dispatch(fetchTreinoList());
+        dispatch(fetchPlanoList());
     }, [dispatch]);
 
     if (loading || !treino || !treino.rotina) {

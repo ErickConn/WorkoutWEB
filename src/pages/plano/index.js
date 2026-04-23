@@ -5,7 +5,7 @@ import TreinoLivreModal from "../treino-livre";
 import styles from "./index.module.css";
 import FooterButton from "../../components/FooterButton";
 import HeaderBack from "../../components/HeaderBack";
-import { salvarPlanoCompleto } from "../../redux/treino/slices";
+import { salvarPlanoCompleto } from "../../redux/planos/slices";
 import { useNavigate } from "react-router-dom";
 
 export default function PaginaPlano() {
@@ -16,7 +16,7 @@ export default function PaginaPlano() {
   const [categoriaPlano, setCategoriaPlano] = useState("");
   
   const dispatch = useDispatch();
-  const { planoEmEdicao } = useSelector(state => state.treinoReducer);
+  const { planoEmEdicao } = useSelector(state => state.treinosReducer);
 
   const cardTemporario = planoEmEdicao.rotina.length > 0 ? [{
     id: 'temp-preview',

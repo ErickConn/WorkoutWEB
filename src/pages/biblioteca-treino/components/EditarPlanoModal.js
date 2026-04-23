@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button as BootstrapButton } from 'react-bootstrap';
 import { useDispatch } from "react-redux";
-import { editarPlano } from "../../../redux/treino/slices";
+import { editarPlano } from "../../../redux/planos/slices";
 import styles from '../index.module.css';
 
 export default function EditarPlanoModal({ show, handleClose, plano }) {

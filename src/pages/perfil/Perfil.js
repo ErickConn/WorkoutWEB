@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './components/perfil.module.css';
-import { fetchTreinoList } from '../../redux/treino/slices'; // Action já estava aqui
+import { fetchPlanoList } from '../../redux/planos/slices';
 import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
@@ -26,17 +26,15 @@ export default function Perfil() {
 
     const estadoCompleto = useSelector(state => state);
     console.log("🔍 ESTADO COMPLETO DO REDUX:", estadoCompleto);
-    // REDUX STATES
     const biometria = useSelector(state => state.biometriaReducer.biometria);
     const loading = useSelector(state => state.biometriaReducer.loading);
-    const treinosData = useSelector(state => state.treinoReducer?.planos);
+    const treinosData = useSelector(state => state.planosReducer?.planos);
     const treinos = treinosData || [];
     console.log("📊 TREINOS DO REDUX:", treinos);
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
     const handleShowDeleteModal = () => {
-        // A trava de segurança do Admin continua aqui, antes mesmo de abrir o modal!
         if (meusDados?.usuario?.role === 'admin') {
             alert('Ação bloqueada: O perfil de Administrador Mestre não pode ser deletado.');
             return;
@@ -44,13 +42,11 @@ export default function Perfil() {
         setShowDeleteModal(true);
     };
 
-    // 2. Dispara as ações para buscar Biometria E Treinos quando a tela carrega
     useEffect(() => {
         dispatch(fetchBiometriaList());
-        dispatch(fetchTreinoList());
+        dispatch(fetchPlanoList());
     }, [dispatch]);
 
-    // Sempre que a lista de 'biometria' atualizar do Redux, procuramos nosso usuário
     useEffect(() => {
         const emailLogado = localStorage.getItem('usuarioLogadoEmail');
 
@@ -79,7 +75,6 @@ export default function Perfil() {
         }
     };
 
-    // Telas de Loading e Erro
     if (loading) {
         return (
             <div className={styles.mainContainer}>
@@ -89,7 +84,6 @@ export default function Perfil() {
         );
     }
 
-    // Se o array estiver vazio ou se não encontrou o usuário logado
     if (!meusDados || !meusDados.usuario.perfil_biometrico) {
         return (
             <>
@@ -110,13 +104,11 @@ export default function Perfil() {
         );
     }
 
-    // 3. Procura qual plano de treino está com ativo para este usuário
     const userIdAtivo = meusDados?.usuario?.id;
     const planoAtivo = treinos.find(
         (treino) => treino.ativo === true || (userIdAtivo && treino.activeUserIds?.[userIdAtivo])
     );
 
-    // Renderização Principal 
     return (
         <>
             <OffCanvasNavBar />
@@ -154,7 +146,6 @@ export default function Perfil() {
                 <PlanDetailsCard
                     nivelAtividade={meusDados.usuario.perfil_biometrico.nivel_atividade}
 
-                    // 4. Aqui nós usamos o nome do plano ativo. Se não tiver nenhum ativo, mostra um texto padrão
                     planoAtual={planoAtivo ? planoAtivo.titulo : "Nenhum plano ativo"}
                 />
 

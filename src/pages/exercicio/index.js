@@ -3,7 +3,7 @@ import styles from './exercicio.module.css';
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchTreinoList } from "../../redux/treino/slices";
+import { fetchPlanoList } from "../../redux/planos/slices";
 import { fetchProgresso, carregarRegistrosUsuario } from "../../redux/progresso/slices";
 
 import HeaderBack from "../../components/HeaderBack";
@@ -15,8 +15,8 @@ export default function Exercicio() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const planos = useSelector(state => state.treinoReducer.planos);
-  const loadingTreino = useSelector(state => state.treinoReducer.loading);
+  const planos = useSelector(state => state.planosReducer.planos);
+  const loadingTreino = useSelector(state => state.planosReducer.loading);
 
   const historico = useSelector(state => state.progressoReducer.historico);
   const registrosUsuario = useSelector(state => state.progressoReducer.registrosUsuario);
@@ -27,7 +27,7 @@ export default function Exercicio() {
 
   useEffect(() => {
     if (!planos || planos.length === 0) {
-      dispatch(fetchTreinoList());
+      dispatch(fetchPlanoList());
     }
 
     if (!progressoLoaded) {

@@ -70,7 +70,7 @@ export default function RegistroCard({ exercicioOriginal, isLoading }) {
     novasSeries[index] = { ...serieAtual, concluida: true };
     setSeries(novasSeries);
 
-    dispatch(salvarRegistroExercicio(exercicioOriginal.id, novasSeries));
+    dispatch(salvarRegistroExercicio({ exercicioId: exercicioOriginal.id, seriesRealizadas: novasSeries }));
   };
 
   const todasSeriesConcluidas = series.length > 0 && series.every(s => s.concluida);

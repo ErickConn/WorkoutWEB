@@ -61,7 +61,7 @@ export const salvarRegistroExercicio = createAsyncThunk(
       const userId = String(await getUserIdFromEmail());
       const dataAtual = new Date().toISOString().split("T")[0];
 
-      const { planos } = getState().treino;
+      const { planos } = getState().planosReducer;
       const planoAtivo = planos?.find(p => p.ativo);
       const rotinaHoje = planoAtivo?.rotina?.find(treino => treino.ativo) || planoAtivo?.rotina?.[0];
       const diaTreino = rotinaHoje?.dia;
@@ -147,7 +147,7 @@ export const atualizarExercicioTreino = createAsyncThunk(
   async ({ idExercicio, dadosAtualizados }, { getState, dispatch }) => {
     const dataAtual = new Date().toISOString().split("T")[0];
     const { registrosUsuario } = getState().progresso;
-    const { planos } = getState().treino;
+    const { planos } = getState().planosReducer;
     const planoAtivo = planos?.find(p => p.ativo);
     const idPlano = planoAtivo?.id;
     const rotinaHoje = planoAtivo?.rotina?.find(t => t.ativo) || planoAtivo?.rotina?.[0];
@@ -175,7 +175,7 @@ export const confirmarConclusaoTreinoGeral = createAsyncThunk(
   async (diaTreino, { getState }) => {
     const userId = String(await getUserIdFromEmail());
     const dataAtual = new Date().toISOString().split("T")[0];
-    const { planos } = getState().treino;
+    const { planos } = getState().planosReducer;
     const planoAtivo = planos?.find(p => p.ativo);
     const idPlano = planoAtivo?.id;
 
