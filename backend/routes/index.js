@@ -2,6 +2,8 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/', (req, res) => res.send('Backend rodando'));
+router.get('/', async (req, res) => {
+    res.send('Backend rodando');
+});
 
 export default router;
