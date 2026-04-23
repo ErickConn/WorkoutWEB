@@ -1,6 +1,12 @@
+import 'dotenv/config';
 import mongoose from 'mongoose';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/workout';
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error('MONGO_URI is not defined. Set it in .env or as an environment variable.');
+  process.exit(1);
+}
 
 await mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected'))

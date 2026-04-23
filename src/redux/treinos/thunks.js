@@ -2,38 +2,25 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 import { getUserIdFromEmail } from '../../utils/userAuth';
 import { confirmarConclusaoTreinoGeral } from '../progresso/slices';
-import { ensurePlanEditable, removerPlano } from '../planos/thunks';
+import { ensurePlanEditable, removerPlano, getOrCreateBackendUser } from '../planos/thunks';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 export const setTreinoAtivo = createAsyncThunk('treinos/setTreinoAtivo', async (dia, { rejectWithValue }) => {
     try {
-        const userId = await getUserIdFromEmail();
-        if (!userId) {
-            return rejectWithValue("Usuário não autenticado");
-        }
+        const backendUser = await getOrCreateBackendUser();
 
-        const { data: planos } = await axios.get(`${API_URL}/planos`);
-        const planoAtivo = planos.find(p => p.activeUserIds && p.activeUserIds[userId]);
-
-        if (!planoAtivo) {
+        if (!backendUser.activePlanId) {
             console.warn("Nenhum plano ativo encontrado para selecionar o treino.");
             return rejectWithValue("Nenhum plano ativo encontrado.");
         }
 
-        const activeDayByUser = {
-            ...(planoAtivo.activeDayByUser || {}),
-            [userId]: dia
-        };
-
-        await axios.patch(`${API_URL}/planos/${planoAtivo.id}`, {
-            activeDayByUser
-        });
+        await axios.patch(`${API_URL}/users/${backendUser.id}`, { activeDay: dia });
 
         return {
-            idPlano: planoAtivo.id,
+            idPlano: backendUser.activePlanId,
             dia: dia,
-            userId
+            userId: backendUser.id
         };
 
     } catch (err) {
@@ -81,7 +68,6 @@ export const adicionarTreinoAoPlano = createAsyncThunk('treinos/adicionarTreinoA
                     repsPadrao: repeticoes ?? rest.repsPadrao ?? 12
                 };
             }),
-            id: Date.now().toString(),
             ativo: false
         };
 
@@ -104,7 +90,6 @@ export const atualizarTreinoNoPlano = createAsyncThunk('treinos/atualizarTreinoN
                     foco: treinoEditado.foco || item.foco,
                     exercicios: treinoEditado.exercicios,
                     ativo: treinoEditado.ativo ?? item.ativo,
-                    id: item.id || treinoEditado.id
                 }
                 : item
         );
