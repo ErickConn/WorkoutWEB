@@ -6,8 +6,7 @@ const rotinaSchema = new Schema({
     dia: String,
     foco: String,
     exercicios: [exerciciosSchema],
-    ativo: Boolean
-});
+}, { strict: false });
 
 const Treinos = mongoose.model('treinos', rotinaSchema);
 

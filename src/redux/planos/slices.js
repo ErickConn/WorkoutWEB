@@ -52,17 +52,9 @@ const planosSlice = createSlice({
             .addCase(setPlanoAtivo.fulfilled, (state, action) => {
                 state.loading = false;
                 state.planos.forEach((plano) => {
-                    const isAtivo = Boolean(
-                        plano.activeUserIds && action.payload.userId &&
-                        plano.activeUserIds[action.payload.userId]
-                    );
-                    if (String(plano.id) === String(action.payload.idPlano)) {
-                        if (!plano.activeUserIds) plano.activeUserIds = {};
-                        plano.activeUserIds[action.payload.userId] = true;
-                        plano.ativo = true;
-                    } else if (isAtivo) {
-                        delete plano.activeUserIds[action.payload.userId];
-                        plano.ativo = false;
+                    plano.ativo = String(plano.id) === String(action.payload.idPlano);
+                    if (plano.ativo && plano.rotina) {
+                        plano.rotina.forEach(t => { t.ativo = false; });
                     }
                 });
             })
@@ -75,12 +67,8 @@ const planosSlice = createSlice({
             })
             .addCase(setTreinoAtivo.fulfilled, (state, action) => {
                 const idx = state.planos.findIndex(p => String(p.id) === String(action.payload.idPlano));
-                if (idx !== -1) {
-                    const plano = state.planos[idx];
-                    if (!plano.activeDayByUser) plano.activeDayByUser = {};
-                    plano.activeDayByUser[action.payload.userId] = action.payload.dia;
-                    plano.activeDay = action.payload.dia;
-                    plano.rotina.forEach(t => { t.ativo = String(t.dia) === String(action.payload.dia); });
+                if (idx !== -1 && state.planos[idx].rotina) {
+                    state.planos[idx].rotina.forEach(t => { t.ativo = String(t.dia) === String(action.payload.dia); });
                 }
             })
             .addCase(removerTreinoDaAPI.fulfilled, (state, action) => {

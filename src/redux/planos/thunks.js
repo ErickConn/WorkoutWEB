@@ -2,7 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 import { getUserIdFromEmail, getLoggedUser } from '../../utils/userAuth';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
+
+export const getOrCreateBackendUser = async () => {
+    const user = getLoggedUser();
+    return user;
+};
 
 export const ensurePlanEditable = async (idPlano) => {
     const usuario = await getLoggedUser();
@@ -24,26 +29,28 @@ export const ensurePlanEditable = async (idPlano) => {
 export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_, { rejectWithValue }) => {
     try {
         const userId = await getUserIdFromEmail();
+        const backendUser = await getOrCreateBackendUser();
         const { data: planos } = await axios.get(`${API_URL}/planos`);
+
+        const activePlanId = backendUser.activePlanId ? String(backendUser.activePlanId) : null;
+        const activeDay = backendUser.activeDay || null;
 
         const planosFiltrados = planos
             .map((plano) => {
-                const ativoParaUsuario = plano.activeUserIds && userId && plano.activeUserIds[userId];
-                const activeDay = plano.activeDayByUser?.[userId] || null;
+                const isPlanoAtivo = activePlanId && String(plano.id) === activePlanId;
 
                 const rotinaComAtivo = Array.isArray(plano.rotina)
                     ? plano.rotina.map((treino) => ({
                         ...treino,
-                        ativo: activeDay ? String(treino.dia) === String(activeDay) : Boolean(treino.ativo)
+                        ativo: isPlanoAtivo && activeDay
+                            ? String(treino.dia) === String(activeDay)
+                            : false
                     }))
                     : plano.rotina;
 
                 const planoAjustado = {
                     ...plano,
-                    ativo: Boolean(ativoParaUsuario),
-                    activeDay: activeDay,
-                    activeUserIds: plano.activeUserIds || {},
-                    activeDayByUser: plano.activeDayByUser || {},
+                    ativo: Boolean(isPlanoAtivo),
                     rotina: rotinaComAtivo
                 };
 
@@ -71,8 +78,6 @@ export const salvarPlanoCompleto = createAsyncThunk('planos/salvarPlanoCompleto'
         const planoComUserId = {
             ...plano,
             userId: userId || null,
-            activeUserIds: {},
-            activeDayByUser: {}
         };
 
         const res = await axios.post(`${API_URL}/planos`, planoComUserId);
@@ -86,6 +91,16 @@ export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, {
     try {
         await ensurePlanEditable(id);
         await axios.delete(`${API_URL}/planos/${id}`);
+
+        // Se o plano removido era o ativo, limpa no user
+        const backendUser = await getOrCreateBackendUser();
+        if (backendUser.activePlanId && String(backendUser.activePlanId) === String(id)) {
+            await axios.patch(`${API_URL}/users/${backendUser.id}`, {
+                activePlanId: null,
+                activeDay: null
+            });
+        }
+
         dispatch(fetchPlanoList());
         return id;
     } catch (err) {
@@ -95,32 +110,14 @@ export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, {
 
 export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idPlano, { rejectWithValue }) => {
     try {
-        const userId = await getUserIdFromEmail();
-        if (!userId) {
-            return rejectWithValue("Usuário não autenticado");
-        }
+        const backendUser = await getOrCreateBackendUser();
 
-        const { data: planos } = await axios.get(`${API_URL}/planos`);
-        const planoAtual = planos.find(p => String(p.id) === String(idPlano));
-        if (!planoAtual) {
-            return rejectWithValue("Plano não encontrado");
-        }
+        // await axios.patch(`${API_URL}/users/${backendUser.id}`, {
+        //     activePlanId: idPlano,
+        //     activeDay: null
+        // });
 
-        const desativarPromises = planos
-            .filter(p => String(p.id) !== String(idPlano) && p.activeUserIds && p.activeUserIds[userId])
-            .map(p => {
-                const novosActiveUserIds = { ...p.activeUserIds };
-                delete novosActiveUserIds[userId];
-                return axios.patch(`${API_URL}/planos/${p.id}`, { activeUserIds: novosActiveUserIds });
-            });
-
-        await Promise.all(desativarPromises);
-
-        const novoActiveUserIds = { ...(planoAtual.activeUserIds || {}) };
-        novoActiveUserIds[userId] = true;
-        await axios.patch(`${API_URL}/planos/${idPlano}`, { activeUserIds: novoActiveUserIds });
-
-        return { idPlano, userId };
+        return { idPlano };
     } catch (err) {
         return rejectWithValue(err.message);
     }

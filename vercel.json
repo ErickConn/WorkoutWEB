@@ -1,0 +1,24 @@
+{
+  "rewrites": [
+    {
+      "source": "/planos",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/planos/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/treinos",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/treinos/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

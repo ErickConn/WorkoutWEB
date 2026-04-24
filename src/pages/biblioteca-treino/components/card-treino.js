@@ -38,7 +38,7 @@ export default function CardTreino({
 
       if (userId && categoria === 'modelo') {
         try {
-          const API_URL = process.env.REACT_APP_API_URL || 'https://json-server-wweb.onrender.com';
+          const API_URL = 'https://json-server-wweb.onrender.com';
           const { default: axios } = await import('axios');
           const { data: biometria } = await axios.get(`${API_URL}/biometria`);
           const criador = biometria.find(b => String(b.usuario?.id) === String(userId));
