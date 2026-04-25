@@ -22,9 +22,7 @@ export default function PaginaPlano() {
     id: 'temp-preview',
     titulo: nomePlano,
     rotina: planoEmEdicao.rotina,
-    isPreview: true,
     ativo: false,
-    isCustom: true
 }] : [];
 
   const salvarPlanoFinal = () => {
@@ -43,7 +41,6 @@ export default function PaginaPlano() {
 
   const planoCompleto = {
     ...cardTemporario[0],
-    isPreview: false,
     nivel: nivelPlano,
     categoria: categoriaPlano,
     rotina: cardTemporario[0].rotina.map((treino) => ({

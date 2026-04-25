@@ -59,9 +59,6 @@ const treinosSlice = createSlice({
             const { dia } = action.payload;
             state.planoEmEdicao.rotina = state.planoEmEdicao.rotina.filter(item => item.dia !== dia);
         },
-        removerTreinoDaRotinaEdicao: (state, action) => {
-            state.planoEmEdicao.rotina = state.planoEmEdicao.rotina.filter(item => item.dia !== action.payload);
-        },
         atualizarTreinoDaRotinaEdicao: (state, action) => {
             const idx = state.planoEmEdicao.rotina.findIndex(item => item.dia === action.payload.dia);
             if (idx !== -1) {
@@ -93,7 +90,6 @@ export const {
     adicionarTreinoNaRotina,
     atualizarTreinoDaRotinaEmEdicao,
     removerTreinoDaRotina,
-    removerTreinoDaRotinaEdicao,
     atualizarTreinoDaRotinaEdicao
 } = treinosSlice.actions;
 

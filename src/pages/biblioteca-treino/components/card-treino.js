@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styles from '../index.module.css';
 import { useNavigate } from 'react-router-dom';
 import { removerPlano, setPlanoAtivo } from '../../../redux/planos/slices';
-import { removerTreinoDaAPI, removerTreinoDaRotinaEdicao } from '../../../redux/treinos/slices';
+import { removerTreinoDaAPI } from '../../../redux/treinos/slices';
+import { removerTreinoDaRotina } from '../../../redux/treinos/slices';
 import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import EditarPlanoModal from './EditarPlanoModal';
@@ -12,7 +13,6 @@ import { getLoggedUser } from '../../../utils/userAuth';
 export default function CardTreino({
   id,
   titulo,
-  isPreview = false,
   nivel = "Iniciante",
   categoria = "modelo",
   rotina = [],
@@ -87,8 +87,8 @@ export default function CardTreino({
   const handleRemoverTreinoUnico = (e, treinoId, dia) => {
     e.stopPropagation();
     if (window.confirm(`Remover treino de ${dia}?`)) {
-      if (isPreview) {
-        dispatch(removerTreinoDaRotinaEdicao(dia));
+      if (treinoId === 'temp-preview') {
+        dispatch(removerTreinoDaRotina({ dia }));
       } else {
         dispatch(removerTreinoDaAPI({ idPlano: treinoId, diaParaRemover: dia, rotinaAtual: rotina }));
       }
@@ -116,7 +116,7 @@ export default function CardTreino({
           show={showTreinoModal}
           handleClose={handleCloseTreino}
           rotina={rotina}
-          idPlano={isPreview ? null : id}
+          idPlano={id === 'temp-preview' ? null : id}
           treinoEmEdicao={treinoEmEdicao}
         />
       </div>
@@ -133,7 +133,7 @@ export default function CardTreino({
             <p className={styles.cardCriador}>👤 Criado por <strong>{nomeCriador}</strong></p>
           )}
 
-          {!isPreview && podeModificar && (
+          {id !== 'temp-preview' && podeModificar && (
             <div className={styles.cardActions}>
               <Button
                 variant="outline-primary"
@@ -170,7 +170,7 @@ export default function CardTreino({
                     <p className={styles.focoRotina}>Treino {item.dia} - {item.foco}</p>
                   </div>
 
-                  {podeModificar && (
+                  {(podeModificar || id === 'temp-preview') && (
                     <div className={styles.itemActions}>
                       <Button
                         size="sm"
@@ -210,7 +210,7 @@ export default function CardTreino({
             );
           })}
 
-          {!isPreview && (
+          {id !== 'temp-preview' ? (
             <>
               {podeModificar && (
                 <Button
@@ -223,7 +223,7 @@ export default function CardTreino({
               )}
               <button className={styles.btnIniciar} onClick={handleComecarTreino}>Começar Treino</button>
             </>
-          )}
+          ) : null}
         </div>
       )}
     </div>

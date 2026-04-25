@@ -5,8 +5,6 @@ const { Schema } = mongoose;
 const planosSchema = new Schema({
     titulo: String,
     rotina: [rotinaSchema],
-    isPreview: Boolean,
-    isCustom: Boolean,
     nivel: String,
     categoria: String,
     userId: String,
