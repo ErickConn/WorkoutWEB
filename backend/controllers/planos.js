@@ -17,8 +17,11 @@ const getPlano = async (req, res) => {
             return res.status(404).json({ ok: false, message: "Plano não encontrado" });
         }
         res.json(plano);
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ ok: false, message: "Formato de ID inválido" });
+        }
+        console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao ler plano" });
     }
 }
@@ -62,6 +65,9 @@ const putPlano = async (req, res) => {
         }
         res.json(plano);
     } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ ok: false, message: "Formato de ID inválido" });
+        }
         console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao atualizar plano" });
     }
@@ -75,6 +81,9 @@ const deletePlano = async (req, res) => {
         }
         res.json({ ok: true, message: "Plano deletado com sucesso" });
     } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ ok: false, message: "Formato de ID inválido" });
+        }
         console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao deletar plano" });
     }
