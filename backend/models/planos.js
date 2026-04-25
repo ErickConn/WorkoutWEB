@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-import { rotinaSchema } from './treinos.js';
+import { treinoSchema } from './treinos.js';
 const { Schema } = mongoose;
 
 const planosSchema = new Schema({
     titulo: String,
-    rotina: [rotinaSchema],
+    rotina: [treinoSchema],
     nivel: String,
     categoria: String,
     userId: String,
