@@ -31,6 +31,7 @@ const treinosSlice = createSlice({
                     ativo: false
                 });
             },
+            // Processa os dados que foram enviados separadamente em um único objeto
             prepare: (nomeTreino, exerciciosSelecionados, letra) => ({
                 payload: {
                     dia: letra,
