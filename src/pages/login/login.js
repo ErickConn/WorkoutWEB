@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
-import { fetchBiometriaList } from '../../redux/Biometria/slice';
+import { fetchUsersList, setCurrentUser } from '../../redux/user/slice';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -11,11 +11,11 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const biometria = useSelector(state => state.biometriaReducer.biometria);
-  const loading = useSelector(state => state.biometriaReducer.loading);
+  const users = useSelector(state => state.userReducer.users);
+  const loading = useSelector(state => state.userReducer.loading);
   
   useEffect(() => {
-    dispatch(fetchBiometriaList());
+    dispatch(fetchUsersList());
   }, [dispatch]);
 
   // Função de login corrigida
@@ -23,13 +23,14 @@ export default function Login() {
 const handleLogin = (e) => {
   e.preventDefault();
 
-  const usuarioValido = biometria.find(
+  const usuarioValido = users.find(
     (item) => item.usuario.email === email && item.usuario.password === password
   );
 
   if (usuarioValido) {
     // SALVANDO O USUÁRIO LOGADO NO NAVEGADOR
     localStorage.setItem('usuarioLogadoEmail', usuarioValido.usuario.email); 
+    dispatch(setCurrentUser(usuarioValido));
     navigate('/perfil'); // Redirecione para a rota do perfil
   } else {
     alert('Email ou senha incorretos. Por favor, tente novamente.');

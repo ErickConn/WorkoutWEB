@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './components/perfil.module.css';
 import { fetchPlanoList } from '../../redux/planos/slices';
 import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/slice';
+import { fetchUsersList } from '../../redux/user/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';
@@ -18,24 +19,22 @@ export default function Perfil() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-
     const [meusDados, setMeusDados] = useState(null);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const estadoCompleto = useSelector(state => state);
-    console.log("🔍 ESTADO COMPLETO DO REDUX:", estadoCompleto);
+    const currentUser = useSelector(state => state.userReducer.currentUser);
     const biometria = useSelector(state => state.biometriaReducer.biometria);
-    const loading = useSelector(state => state.biometriaReducer.loading);
+    const loading = useSelector(state => state.biometriaReducer.loading || state.userReducer.loading);
     const treinosData = useSelector(state => state.planosReducer?.planos);
     const treinos = treinosData || [];
-    console.log("📊 TREINOS DO REDUX:", treinos);
+    
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
     const handleShowDeleteModal = () => {
-        if (meusDados?.usuario?.role === 'admin') {
+        if (currentUser?.usuario?.role === 'admin') {
             alert('Ação bloqueada: O perfil de Administrador Mestre não pode ser deletado.');
             return;
         }
@@ -43,24 +42,19 @@ export default function Perfil() {
     };
 
     useEffect(() => {
-        dispatch(fetchBiometriaList());
+        dispatch(fetchUsersList());
         dispatch(fetchPlanoList());
     }, [dispatch]);
 
     useEffect(() => {
-        const emailLogado = localStorage.getItem('usuarioLogadoEmail');
-
-        if (emailLogado && biometria?.length > 0) {
-            const usuarioEncontrado = biometria.find(
-                (item) => item.usuario.email === emailLogado
-            );
-            setMeusDados(usuarioEncontrado);
+        if (currentUser) {
+            setMeusDados(currentUser);
         }
-    }, [biometria]);
+    }, [currentUser]);
 
     const confirmDelete = () => {
-        if (meusDados) {
-            dispatch(deleteBiometria(meusDados.id));
+        if (currentUser) {
+            dispatch(deleteBiometria(currentUser.id));
             localStorage.removeItem('usuarioLogadoEmail');
             navigate('/');
         }

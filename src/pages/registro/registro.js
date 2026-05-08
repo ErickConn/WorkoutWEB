@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createBiometria, fetchBiometriaList } from '../../redux/Biometria/slice';
+import { createUser, fetchUsersList } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
 
 export default function Registro() {
@@ -12,10 +12,10 @@ export default function Registro() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const biometria = useSelector((state) => state.biometriaReducer.biometria);
+    const users = useSelector((state) => state.userReducer.users);
 
     useEffect(() => {
-        dispatch(fetchBiometriaList());
+        dispatch(fetchUsersList());
     }, [dispatch]);
 
     const handleRegistro = (e) => {
@@ -24,7 +24,7 @@ export default function Registro() {
         const emailFormatado = email.toLowerCase();
         
         // Verifica se o e-mail já existe na base de dados (ignorando a caixa)
-        const emailJaExiste = biometria.some(
+        const emailJaExiste = users.some(
             (item) => item.usuario.email === emailFormatado
         );
 
@@ -52,7 +52,7 @@ export default function Registro() {
         };
 
         // 1. Dispara a ação para salvar no Redux
-        dispatch(createBiometria(biometriaItem));
+        dispatch(createUser(biometriaItem));
 
         // 2. A MÁGICA AQUI: Faz o login automático salvando a sessão no navegador!
         localStorage.setItem('usuarioLogadoEmail', email.toLowerCase());

@@ -20,7 +20,7 @@ export default function Home({ show, handleClose }) {
     const [usuarioAtual, setUsuarioAtual] = useState(null);
 
     const dispatch = useDispatch();
-    const biometria = useSelector(state => state.biometriaReducer.biometria);
+    const currentUser = useSelector(state => state.userReducer.currentUser);
 
     // --- LÓGICA DE CÁLCULO AO VIVO (LIVE PREVIEW) ---
     // Usamos useMemo para que o cálculo só ocorra quando um valor mudar
@@ -48,23 +48,19 @@ export default function Home({ show, handleClose }) {
     }, [peso, altura, idade, sexo, nivelAtividade]);
 
     useEffect(() => {
-        const emailLogado = localStorage.getItem('usuarioLogadoEmail');
-        if (emailLogado && biometria?.length > 0) {
-            const usuarioEncontrado = biometria.find(item => item.usuario.email === emailLogado);
-            if (usuarioEncontrado) {
-                setUsuarioAtual(usuarioEncontrado);
-                setId(usuarioEncontrado.id);
-                if (usuarioEncontrado.usuario.perfil_biometrico) {
-                    setIdade(usuarioEncontrado.usuario.perfil_biometrico.idade);
-                    setAltura(usuarioEncontrado.usuario.perfil_biometrico.altura_cm);
-                    setPeso(usuarioEncontrado.usuario.perfil_biometrico.peso_kg);
-                    setNivelAtividade(usuarioEncontrado.usuario.perfil_biometrico.nivel_atividade);
-                    setSexo(usuarioEncontrado.usuario.perfil_biometrico.sexo || 'masculino');
-                    setNivelExperiencia(usuarioEncontrado.usuario.experiencia_usuario.nivel_experiencia || 'iniciante');
-                }
+        if (currentUser) {
+            setUsuarioAtual(currentUser);
+            setId(currentUser.id);
+            if (currentUser.usuario.perfil_biometrico) {
+                setIdade(currentUser.usuario.perfil_biometrico.idade);
+                setAltura(currentUser.usuario.perfil_biometrico.altura_cm);
+                setPeso(currentUser.usuario.perfil_biometrico.peso_kg);
+                setNivelAtividade(currentUser.usuario.perfil_biometrico.nivel_atividade);
+                setSexo(currentUser.usuario.perfil_biometrico.sexo || 'masculino');
+                setNivelExperiencia(currentUser.usuario.experiencia_usuario.nivel_experiencia || 'iniciante');
             }
         }
-    }, [biometria, show]);
+    }, [currentUser, show]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

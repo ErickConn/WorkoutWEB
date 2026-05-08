@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateBiometria } from '../../redux/Biometria/slice';
+import { updateUser } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando o CSS do Login/Registro
 
 export default function UpdateUsuario() {
@@ -15,25 +15,19 @@ export default function UpdateUsuario() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    // Puxando os dados do Redux
-    const biometria = useSelector(state => state.biometriaReducer.biometria);
+    // Puxando o usuário logado do Redux
+    const currentUser = useSelector(state => state.userReducer.currentUser);
 
     // 1. Carrega os dados do usuário logado assim que a tela abre
     useEffect(() => {
-        const emailLogado = localStorage.getItem('usuarioLogadoEmail');
-        
-        if (emailLogado && biometria?.length > 0) {
-            const encontrado = biometria.find(item => item.usuario.email === emailLogado);
-            
-            if (encontrado) {
-                setUsuarioAtual(encontrado);
-                setNome(encontrado.usuario.nome || '');
-                setEmail(encontrado.usuario.email || '');
-                setPassword(encontrado.usuario.password || '');
-                setRole(encontrado.usuario.role || 'aluno');
-            }
+        if (currentUser) {
+            setUsuarioAtual(currentUser);
+            setNome(currentUser.usuario.nome || '');
+            setEmail(currentUser.usuario.email || '');
+            setPassword(currentUser.usuario.password || '');
+            setRole(currentUser.usuario.role || 'aluno');
         }
-    }, [biometria]);
+    }, [currentUser]);
 
     // 2. Função para salvar as alterações
     const handleSubmit = (e) => {
@@ -43,7 +37,7 @@ export default function UpdateUsuario() {
             const emailFormatado = email.toLowerCase();
 
             // Monta o objeto mantendo a biometria, treinos e etc intactos
-            const biometriaAtualizada = {
+            const usuarioAtualizado = {
                 ...usuarioAtual,
                 usuario: {
                     ...usuarioAtual.usuario,
@@ -54,8 +48,8 @@ export default function UpdateUsuario() {
                 }
             };
 
-            // Dispara a atualização no Redux
-            dispatch(updateBiometria({ id: usuarioAtual.id, updatedData: biometriaAtualizada }));
+            // Dispara a atualização no Redux usando userSlice
+            dispatch(updateUser({ id: usuarioAtual.id, updatedData: usuarioAtualizado }));
 
             // CRÍTICO: Se o email mudou, precisamos atualizar a "Sessão" no navegador
             localStorage.setItem('usuarioLogadoEmail', emailFormatado);
