@@ -17,6 +17,18 @@ export const fetchUsersList = createAsyncThunk(
     }
 );
 
+export const loginAuth = createAsyncThunk(
+    'user/login',
+    async (credentials, { rejectWithValue }) => {
+        try {
+            const res = await axios.post(`${API_URL}/login`, credentials);
+            return res.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.message || err.message);
+        }
+    }
+);
+
 export const createUser = createAsyncThunk(
     'user/create',
     async (userData, { rejectWithValue }) => {
@@ -154,6 +166,19 @@ const userSlice = createSlice({
                 }
             })
             .addCase(deleteUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(loginAuth.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(loginAuth.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentUser = action.payload;
+                localStorage.setItem('usuarioLogadoEmail', action.payload.email);
+            })
+            .addCase(loginAuth.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

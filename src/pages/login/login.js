@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
-import { fetchUsersList, setCurrentUser } from '../../redux/user/slice';
+import { loginAuth } from '../../redux/user/slice';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -11,31 +11,17 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const users = useSelector(state => state.userReducer.users);
   const loading = useSelector(state => state.userReducer.loading);
   
-  useEffect(() => {
-    dispatch(fetchUsersList());
-  }, [dispatch]);
-
-  // Função de login corrigida
-  // Dentro do Login.jsx, na função handleLogin:
-const handleLogin = (e) => {
-  e.preventDefault();
-
-  const usuarioValido = users.find(
-    (item) => item.email === email && item.senha === password
-  );
-
-  if (usuarioValido) {
-    // SALVANDO O USUÁRIO LOGADO NO NAVEGADOR
-    localStorage.setItem('usuarioLogadoEmail', usuarioValido.email); 
-    dispatch(setCurrentUser(usuarioValido));
-    navigate('/perfil'); // Redirecione para a rota do perfil
-  } else {
-    alert('Email ou senha incorretos. Por favor, tente novamente.');
-  }
-};
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(loginAuth({ email, senha: password })).unwrap();
+      navigate('/perfil');
+    } catch (err) {
+      alert(typeof err === 'string' ? err : 'Email ou senha incorretos. Por favor, tente novamente.');
+    }
+  };
 
   return (
     <div className={styles.loginWrapper}>

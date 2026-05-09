@@ -15,4 +15,6 @@ routerUser.put('/user/:id', (req, res) => userControllers.putUser(req, res));
 
 routerUser.delete('/user/:id', (req, res) => userControllers.deleteUser(req, res));
 
+routerUser.post('/login', (req, res) => userControllers.loginUser(req, res));
+
 export default routerUser;
