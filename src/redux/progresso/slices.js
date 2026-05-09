@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getUserIdFromEmail } from '../../utils/userAuth';
 import { getHistoricoByUserId } from '../../utils/helpers';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://json-server-wweb.onrender.com";
+const RENDER_API_URL = "https://json-server-wweb.onrender.com";
 
 // Thunk para buscar progresso
 export const fetchProgresso = createAsyncThunk(
@@ -11,7 +11,7 @@ export const fetchProgresso = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userId = String(await getUserIdFromEmail());
-      const { data: historicos } = await axios.get(`${API_URL}/historico_usuario`);
+      const { data: historicos } = await axios.get(`${RENDER_API_URL}/historico_usuario`);
       const historicoUsuario = historicos.find(h => String(h.userId) === userId);
       return historicoUsuario ? [historicoUsuario] : [];
     } catch (err) {
@@ -26,7 +26,7 @@ export const carregarRegistrosUsuario = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userId = String(await getUserIdFromEmail());
-      const { data: historicos } = await axios.get(`${API_URL}/historico_usuario`);
+      const { data: historicos } = await axios.get(`${RENDER_API_URL}/historico_usuario`);
       const historicoUsuario = historicos.find(h => String(h.userId) === userId);
 
       const registros = [];
@@ -81,7 +81,7 @@ export const salvarRegistroExercicio = createAsyncThunk(
       };
 
       if (!historicoUsuario) {
-        await axios.post(`${API_URL}/historico_usuario`, {
+        await axios.post(`${RENDER_API_URL}/historico_usuario`, {
           userId,
           nivel_atividade: "moderado",
           historico_peso: [],
@@ -130,7 +130,7 @@ export const salvarRegistroExercicio = createAsyncThunk(
         }
       }
 
-      await axios.patch(`${API_URL}/historico_usuario/${historicoUsuario.id}`, {
+      await axios.patch(`${RENDER_API_URL}/historico_usuario/${historicoUsuario.id}`, {
         historico_carga: historicoCarga
       });
 
@@ -182,7 +182,7 @@ export const confirmarConclusaoTreinoGeral = createAsyncThunk(
     const historicoUsuario = await getHistoricoByUserId(userId);
 
     if (!historicoUsuario) {
-      await axios.post(`${API_URL}/historico_usuario`, {
+      await axios.post(`${RENDER_API_URL}/historico_usuario`, {
         userId,
         nivel_atividade: "moderado",
         historico_peso: [],
@@ -220,7 +220,7 @@ export const confirmarConclusaoTreinoGeral = createAsyncThunk(
         exercicios: []
       });
 
-      await axios.patch(`${API_URL}/historico_usuario/${historicoUsuario.id}`, {
+      await axios.patch(`${RENDER_API_URL}/historico_usuario/${historicoUsuario.id}`, {
         historico_carga: historicoCarga
       });
     }
