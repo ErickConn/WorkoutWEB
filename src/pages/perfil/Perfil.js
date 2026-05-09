@@ -168,9 +168,9 @@ export default function Perfil() {
                 </Modal.Header>
 
                 <Modal.Body style={{ paddingTop: '0' }}>
-                    <p>Tem certeza de que deseja deletar seu perfil biométrico de forma permanente?</p>
+                    <p>Tem certeza de que deseja deletar seu perfil de usuário de forma permanente?</p>
                     <p style={{ color: 'var(--on-surface-variant)', fontSize: '0.9rem', marginBottom: '0' }}>
-                        Esta ação não pode ser desfeita. Todos os seus dados de metabolismo e experiência serão perdidos e você será redirecionado para a tela de login.
+                        Esta ação não pode ser desfeita. Todos os seus dados de conta, treinos, metabolismo e experiência serão perdidos e você será redirecionado para a tela de login.
                     </p>
                 </Modal.Body>
 

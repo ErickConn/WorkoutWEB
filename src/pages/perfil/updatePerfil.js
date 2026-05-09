@@ -16,7 +16,7 @@ export default function UpdateUsuario() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { showAlert } = useContext(AlertContext);
-    
+
     // Puxando o usuário logado do Redux
     const currentUser = useSelector(state => state.userReducer.currentUser);
 
@@ -26,7 +26,7 @@ export default function UpdateUsuario() {
             setUsuarioAtual(currentUser);
             setNome(currentUser.nome || '');
             setEmail(currentUser.email || '');
-            setPassword(currentUser.senha || '');
+            setPassword('');
             setRole(currentUser.role || 'aluno');
         }
     }, [currentUser]);
@@ -38,13 +38,20 @@ export default function UpdateUsuario() {
         if (usuarioAtual) {
             const emailFormatado = email.toLowerCase();
 
+            // Extrair a senha antiga para evitar enviar o hash de volta
+            const { senha: currentSenha, ...usuarioSemSenha } = usuarioAtual;
+
             const usuarioAtualizado = {
-                ...usuarioAtual,
+                ...usuarioSemSenha,
                 nome: nome,
                 email: emailFormatado,
-                senha: password,
                 role: role
             };
+
+            // Se o usuário digitou uma nova senha, envia a nova senha
+            if (password && password.trim() !== '') {
+                usuarioAtualizado.senha = password;
+            }
 
             const userId = usuarioAtual._id || usuarioAtual.id;
 
@@ -53,7 +60,7 @@ export default function UpdateUsuario() {
 
             // CRÍTICO: Se o email mudou, precisamos atualizar a "Sessão" no navegador
             localStorage.setItem('usuarioLogadoEmail', emailFormatado);
-            
+
             showAlert('Dados da conta atualizados com sucesso!', 'success');
             navigate('/perfil'); // Volta para o painel
         }
@@ -63,7 +70,7 @@ export default function UpdateUsuario() {
         <div className={styles.loginWrapper}>
             <div className={styles.mainContainer}>
                 <div className={styles.formWrapper} style={{ maxWidth: '450px' }}>
-                    
+
                     {/* Cabeçalho */}
                     <header className={styles.header}>
                         <div className={styles.logo}>
@@ -73,11 +80,11 @@ export default function UpdateUsuario() {
                             Atualize suas credenciais de acesso e permissões.
                         </p>
                     </header>
-                    
+
                     {/* Formulário */}
                     <main>
                         <form className={styles.form} onSubmit={handleSubmit}>
-                            
+
                             <div className={styles.formGroup}>
                                 <div className={styles.labelRow}>
                                     <label htmlFor="nome" className={styles.label}>Nome Completo</label>
@@ -91,7 +98,7 @@ export default function UpdateUsuario() {
                                     required
                                 />
                             </div>
-                            
+
                             <div className={styles.formGroup}>
                                 <div className={styles.labelRow}>
                                     <label htmlFor="email" className={styles.label}>E-mail de Acesso</label>
@@ -108,15 +115,15 @@ export default function UpdateUsuario() {
 
                             <div className={styles.formGroup}>
                                 <div className={styles.labelRow}>
-                                    <label htmlFor="password" className={styles.label}>Senha</label>
+                                    <label htmlFor="password" className={styles.label}>Nova Senha (opcional)</label>
                                 </div>
                                 <input
                                     id="password"
                                     className={styles.input}
-                                    type="text" // Você pode usar "password", mas deixei "text" para facilitar seus testes no mock
+                                    type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    required
+                                    placeholder="Deixe em branco para não alterar"
                                 />
                             </div>
 
@@ -140,11 +147,11 @@ export default function UpdateUsuario() {
                             <button type="submit" className={styles.submitBtn} style={{ marginTop: '1.5rem' }}>
                                 Salvar Alterações
                             </button>
-                            
-                            <button 
-                                type="button" 
-                                onClick={() => navigate('/perfil')} 
-                                className={styles.submitBtn} 
+
+                            <button
+                                type="button"
+                                onClick={() => navigate('/perfil')}
+                                className={styles.submitBtn}
                                 style={{ background: 'transparent', color: 'var(--on-surface)', border: '1px solid var(--outline)', marginTop: '0.5rem', boxShadow: 'none' }}
                             >
                                 Cancelar
