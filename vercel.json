@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/login",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/login/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/planos",
       "destination": "/api/index.js"
     },
