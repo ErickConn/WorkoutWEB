@@ -56,6 +56,18 @@ export const updateUser = createAsyncThunk(
     }
 );
 
+export const deleteUser = createAsyncThunk(
+    'user/delete',
+    async (id, { rejectWithValue }) => {
+        try {
+            await axios.delete(`${API_URL}/user/${id}`);
+            return id;
+        } catch (err) {
+            return rejectWithValue(err.message);
+        }
+    }
+);
+
 const initialState = {
     loading: false,
     users: [],
@@ -127,6 +139,21 @@ const userSlice = createSlice({
                 }
             })
             .addCase(updateUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(deleteUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.users = state.users.filter(item => item._id !== action.payload && item.id !== action.payload);
+                if (state.currentUser && (state.currentUser._id === action.payload || state.currentUser.id === action.payload)) {
+                    state.currentUser = null;
+                }
+            })
+            .addCase(deleteUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

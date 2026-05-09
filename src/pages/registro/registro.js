@@ -25,7 +25,7 @@ export default function Registro() {
         
         // Verifica se o e-mail já existe na base de dados (ignorando a caixa)
         const emailJaExiste = users.some(
-            (item) => item.usuario.email === emailFormatado
+            (item) => item.email === emailFormatado
         );
 
         if (emailJaExiste) {

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './components/perfil.module.css';
 import { fetchPlanoList } from '../../redux/planos/slices';
 import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/slice';
-import { fetchUsersList } from '../../redux/user/slice';
+import { fetchUsersList, deleteUser } from '../../redux/user/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';
@@ -58,8 +58,12 @@ export default function Perfil() {
     }, [currentUser, biometria]);
 
     const confirmDelete = () => {
-        if (meusDados && meusDados._id) {
-            dispatch(deleteBiometria(meusDados._id));
+        if (currentUser) {
+            const userId = currentUser._id || currentUser.id;
+            dispatch(deleteUser(userId));
+            if (meusDados && meusDados._id) {
+                dispatch(deleteBiometria(meusDados._id));
+            }
             localStorage.removeItem('usuarioLogadoEmail');
             navigate('/');
         }
