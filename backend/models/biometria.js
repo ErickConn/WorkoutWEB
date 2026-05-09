@@ -19,6 +19,15 @@ const biometriaSchema = new mongoose.Schema({
     }
 });
 
+biometriaSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+    }
+});
+
 const Biometria = mongoose.model('Biometria', biometriaSchema);
 
 export default Biometria;
