@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
@@ -16,7 +16,8 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(loginAuth({ email, senha: password })).unwrap();
+      const emailFormatado = email.toLowerCase();
+      await dispatch(loginAuth({ email: emailFormatado, senha: password })).unwrap();
       navigate('/perfil');
     } catch (err) {
       alert(typeof err === 'string' ? err : 'Email ou senha incorretos. Por favor, tente novamente.');

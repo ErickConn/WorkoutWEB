@@ -64,10 +64,13 @@ const loginUser = async (req, res) => {
     try {
         const { email, senha } = req.body;
         const user = await Usuario.findOne({ email });
-        if (!user) {
+        
+        if (!user || !user.senha) {
             return res.status(401).json({ ok: false, message: "Email ou senha incorretos" });
         }
+
         const isMatch = await bcrypt.compare(senha, user.senha);
+        
         if (!isMatch) {
             return res.status(401).json({ ok: false, message: "Email ou senha incorretos" });
         }

@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { getUserIdFromEmail } from '../../utils/userAuth';
 import { confirmarConclusaoTreinoGeral } from '../progresso/slices';
 import { ensurePlanEditable, removerPlano, getOrCreateBackendUser } from '../planos/thunks';
 
