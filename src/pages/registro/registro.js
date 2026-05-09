@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createBiometria, fetchBiometriaList } from '../../redux/Biometria/slice';
+import { createUser, fetchUsersList } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
 
 export default function Registro() {
@@ -12,10 +12,10 @@ export default function Registro() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const biometria = useSelector((state) => state.biometriaReducer.biometria);
+    const users = useSelector((state) => state.userReducer.users);
 
     useEffect(() => {
-        dispatch(fetchBiometriaList());
+        dispatch(fetchUsersList());
     }, [dispatch]);
 
     const handleRegistro = (e) => {
@@ -24,7 +24,7 @@ export default function Registro() {
         const emailFormatado = email.toLowerCase();
         
         // Verifica se o e-mail já existe na base de dados (ignorando a caixa)
-        const emailJaExiste = biometria.some(
+        const emailJaExiste = users.some(
             (item) => item.usuario.email === emailFormatado
         );
 
@@ -33,29 +33,19 @@ export default function Registro() {
             return;
         }
 
-        // O objeto deve ser criado DENTRO da função disparada ao enviar o formulário
-        const novoId = String(Date.now());
-        const biometriaItem = {
-            id: novoId,
-            usuario: {
-                id: novoId,
-                nome: name,
-                email: emailFormatado,
-                password: password,
-                role: 'aluno',
-
-                // Agora a biometria nasce VAZIA para forçar a criação depois!
-                perfil_biometrico: null,
-                analise_metabolica: null,
-                experiencia_usuario: null
-            }
+        // O objeto agora reflete exatamente o usuarioSchema do MongoDB
+        const novoUsuario = {
+            nome: name,
+            email: emailFormatado,
+            senha: password, // Mongoose model usa 'senha' em vez de 'password'
+            role: 'aluno'
         };
 
         // 1. Dispara a ação para salvar no Redux
-        dispatch(createBiometria(biometriaItem));
+        dispatch(createUser(novoUsuario));
 
         // 2. A MÁGICA AQUI: Faz o login automático salvando a sessão no navegador!
-        localStorage.setItem('usuarioLogadoEmail', email.toLowerCase());
+        localStorage.setItem('usuarioLogadoEmail', emailFormatado);
 
         // 3. Redireciona o usuário direto para a página de perfil (e não mais pro login)
         navigate('/perfil');
