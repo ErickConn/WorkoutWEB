@@ -1,3 +1,6 @@
+import mongoose from 'mongoose';
+import Planos from '../models/planos.js';
+
 const validateEmptyBody = (req, res, next) => {
     if (!req.body || Object.keys(req.body).length === 0) {
         return res.status(400).json({ ok: false, message: "O corpo da requisição não pode estar vazio" });
@@ -51,10 +54,41 @@ const validatePlanoStructure = (req, res, next) => {
     next();
 };
 
-const planosMiddleware = {
-    validateEmptyBody,
-    validatePlanoTitle,
-    validatePlanoStructure
+const validatePlanoId = async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ ok: false, message: "Formato de ID inválido" });
+    }
+    try {
+        const plano = await Planos.findById(req.params.id);
+        if (!plano) {
+            return res.status(404).json({ ok: false, message: "Plano não encontrado" });
+        }
+        next();
+    } catch (error) {
+        res.status(500).json({ ok: false, message: "Erro ao validar o plano" });
+    }
 };
 
-export default planosMiddleware;
+const normalizeUsers = (req, res, next) => {
+    if (req.body) {
+        let usersArray = req.body.userIds || [];
+        if (req.body.userId && !usersArray.includes(req.body.userId)) {
+            usersArray.push(req.body.userId);
+        }
+        if (usersArray.length > 0) {
+            req.body.userIds = usersArray;
+        }
+        delete req.body.userId;
+    }
+    next();
+};
+
+const planosMiddlewares = {
+    validateEmptyBody,
+    validatePlanoTitle,
+    validatePlanoStructure,
+    validatePlanoId,
+    normalizeUsers
+};
+
+export default planosMiddlewares;
