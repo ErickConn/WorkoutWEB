@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { Modal, Button as BootstrapButton } from 'react-bootstrap';
 import styles from './treino-livre.module.css';
 import Filtro from "../../components/Filtro";
@@ -8,6 +8,7 @@ import ExercicioSelecionado from "./components/exercicio-selecionado";
 import { adicionarTreinoNaRotina, atualizarTreinoDaRotinaEdicao, adicionarTreinoAoPlano, atualizarTreinoNoPlano } from "../../redux/treinos/slices";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
+import { AlertContext } from "../../context/AlertContext";
 import FooterButton from "../../components/FooterButton";
 import { fetchExercicioList } from "../../redux/exercicio/slices";
 
@@ -28,6 +29,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
   const exerciciosById = useMemo(() => new Map((exercicios || []).map(ex => [String(ex.id), ex])), [exercicios]);
 
   const rotinaAtual = rotina !== null ? rotina : planoEmEdicaoRotina;
+  const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     if (show && exercicios.length === 0) {
@@ -62,7 +64,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
 
   const adicionarExercicioComSeries = () => {
     if (!series || !repeticoes) {
-      alert("Por favor, preencha séries e repetições");
+      showAlert("Por favor, preencha séries e repetições", 'warning');
       return;
     }
 

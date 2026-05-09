@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ListaTreinos from "../biblioteca-treino/components/lista-treinos";
 import TreinoLivreModal from "../treino-livre";
@@ -7,9 +7,11 @@ import FooterButton from "../../components/FooterButton";
 import HeaderBack from "../../components/HeaderBack";
 import { salvarPlanoCompleto } from "../../redux/planos/slices";
 import { useNavigate } from "react-router-dom";
+import { AlertContext } from "../../context/AlertContext";
 
 export default function PaginaPlano() {
   const navigate = useNavigate();
+  const { showAlert } = useContext(AlertContext);
   const [modalAberto, setModalAberto] = useState(false);
   const [nomePlano, setNomePlano] = useState("");
   const [nivelPlano, setNivelPlano] = useState("");
@@ -27,15 +29,15 @@ export default function PaginaPlano() {
 
   const salvarPlanoFinal = () => {
   if (!nomePlano.trim()) {
-    alert("Por favor, dê um nome ao plano!");
+    showAlert("Por favor, dê um nome ao plano!", 'warning');
     return;
   }
   if (!nivelPlano) {
-    alert("Por favor, selecione o nível do plano!");
+    showAlert("Por favor, selecione o nível do plano!", 'warning');
     return;
   }
   if (!categoriaPlano) {
-    alert("Por favor, selecione a categoria do plano!");
+    showAlert("Por favor, selecione a categoria do plano!", 'warning');
     return;
   }
 
@@ -62,7 +64,7 @@ export default function PaginaPlano() {
   })
   .catch((err) => {
     console.error("Erro ao salvar plano:", err);
-    alert("Erro ao salvar o plano. Tente novamente.");
+    showAlert("Erro ao salvar o plano. Tente novamente.", 'error');
   });
 
 };

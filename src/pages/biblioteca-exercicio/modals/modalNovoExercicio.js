@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Modal, Button as BootstrapButton } from "react-bootstrap";
 import styles from "../biblioteca.module.css";
 import { useDispatch, useSelector} from "react-redux";
 import { createExercicio } from "../../../redux/exercicio/slices";
 import formatarNomeExercicio from "../utils/formatarNome";
+import { AlertContext } from "../../../context/AlertContext";
 
 export default function NovoExercicioModal({ show, handleClose }) {
   const dispatch = useDispatch();
+  const { showAlert } = useContext(AlertContext);
   const { exercicios } = useSelector(state => state.exercicioReducer);
 
   const [nome, setNome] = useState("");
@@ -17,7 +19,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
   const handleSalvar = async () => {
     console.log("Salvando novo exercício com dados:", { nome, grupo, equipamento, nivel });
     if (!nome || !grupo || !equipamento || !nivel) {
-      alert("Preencha todos os campos!");
+      showAlert("Preencha todos os campos!", 'warning');
       return;
     }
 

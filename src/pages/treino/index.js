@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import styles from './treino.module.css';
 import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import { fetchProgresso, carregarRegistrosUsuario } from "../../redux/progresso/
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
 import FooterButton from "../../components/FooterButton";
 import Button from "../../components/Button";
+import { AlertContext } from "../../context/AlertContext";
 import Spinner from "../../components/Spinner";
 import TreinoCard from "./components/treino-card";
 
@@ -23,6 +24,7 @@ export default function Treino() {
   const registrosUsuario = useSelector(state => state.progressoReducer.registrosUsuario);
   const loadingProgresso = useSelector(state => state.progressoReducer.loading);
   const progressoLoaded = useSelector(state => state.progressoReducer.loaded);
+  const { showAlert } = useContext(AlertContext);
 
   const loading = loadingTreino || loadingProgresso;
 
@@ -45,10 +47,10 @@ export default function Treino() {
   const handleFinalizar = async () => {
     try {
       await dispatch(finalizarTreino());
-      alert("Parabéns! Treino Concluido!");
+      showAlert("Parabéns! Treino Concluido!", 'success');
     } catch (err) {
       console.error("Erro ao finalizar treino:", err);
-      alert("Erro ao finalizar treino. Tente novamente.");
+      showAlert("Erro ao finalizar treino. Tente novamente.", 'error');
     }
   };
 

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDispatch } from "react-redux";
 import styles from '../exercicio.module.css';
 import { salvarRegistroExercicio } from "../../../redux/progresso/slices";
+import { AlertContext } from "../../../context/AlertContext";
 
 export default function RegistroCard({ exercicioOriginal, isLoading }) {
   const dispatch = useDispatch();
+  const { showAlert } = useContext(AlertContext);
 
   const numSeries = exercicioOriginal?.seriesPadrao || exercicioOriginal?.series || 3;
 
@@ -62,7 +64,7 @@ export default function RegistroCard({ exercicioOriginal, isLoading }) {
   const handleConcluirSerie = (index) => {
     const serieAtual = series[index];
     if (!serieAtual.carga || !serieAtual.reps) {
-      alert("Preencha carga e repetições.");
+      showAlert("Preencha carga e repetições.", 'warning');
       return;
     }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from '../index.module.css';
 import { useNavigate } from 'react-router-dom';
 import { removerPlano, setPlanoAtivo } from '../../../redux/planos/slices';
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import EditarPlanoModal from './EditarPlanoModal';
 import TreinoLivreModal from '../../treino-livre';
+import { AlertContext } from '../../../context/AlertContext';
 import { getLoggedUser } from '../../../utils/userAuth';
 
 export default function CardTreino({
@@ -23,6 +24,7 @@ export default function CardTreino({
   const [diasExpandidos, setDiasExpandidos] = useState({});
 
   const navigate = useNavigate();
+  const { showAlert } = useContext(AlertContext);
 
   // Estados para os Modais
   const [showEditModal, setShowEditModal] = useState(false);
@@ -90,7 +92,11 @@ export default function CardTreino({
       if (treinoId === 'temp-preview') {
         dispatch(removerTreinoDaRotina({ dia }));
       } else {
-        dispatch(removerTreinoDaAPI({ idPlano: treinoId, diaParaRemover: dia, rotinaAtual: rotina }));
+        dispatch(removerTreinoDaAPI({ idPlano: treinoId, diaParaRemover: dia, rotinaAtual: rotina }))
+          .unwrap()
+          .catch((err) => {
+            showAlert(err || "Erro ao remover treino.", 'error');
+          });
       }
     }
   };

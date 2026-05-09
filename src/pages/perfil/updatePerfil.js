@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateUser } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando o CSS do Login/Registro
+import { AlertContext } from '../../context/AlertContext';
 
 export default function UpdateUsuario() {
     const [nome, setNome] = useState('');
@@ -14,6 +15,7 @@ export default function UpdateUsuario() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { showAlert } = useContext(AlertContext);
     
     // Puxando o usuário logado do Redux
     const currentUser = useSelector(state => state.userReducer.currentUser);
@@ -52,7 +54,7 @@ export default function UpdateUsuario() {
             // CRÍTICO: Se o email mudou, precisamos atualizar a "Sessão" no navegador
             localStorage.setItem('usuarioLogadoEmail', emailFormatado);
             
-            alert('Dados da conta atualizados com sucesso!');
+            showAlert('Dados da conta atualizados com sucesso!', 'success');
             navigate('/perfil'); // Volta para o painel
         }
     };

@@ -17,10 +17,13 @@ import BibliotecaExercicios from './pages/biblioteca-exercicio/biblioteca';
 import Plano from './pages/plano';
 
 import ProtectedRoute from './components/ProtectedRoute';
+import { AlertProvider } from './context/AlertContext';
+import { Alert } from './components/Alert';
 
 function App() {
   return (
-    <>
+    <AlertProvider>
+      <Alert />
       <Routes>
         {/* ROTAS PÚBLICAS */}
         <Route path='/' element={<Login />} />
@@ -40,7 +43,7 @@ function App() {
         <Route path="/progresso" element={<ProtectedRoute><Progresso /></ProtectedRoute>} />
         <Route path='/plano' element={<ProtectedRoute><Plano /></ProtectedRoute>} />
       </Routes>
-    </>
+    </AlertProvider>
   );
 }
 

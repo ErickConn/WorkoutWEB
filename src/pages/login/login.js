@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
 import { loginAuth } from '../../redux/user/slice';
+import { AlertContext } from '../../context/AlertContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ export default function Login() {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { showAlert } = useContext(AlertContext);
   
   const loading = useSelector(state => state.userReducer.loading);
   
@@ -20,7 +22,7 @@ export default function Login() {
       await dispatch(loginAuth({ email: emailFormatado, senha: password })).unwrap();
       navigate('/perfil');
     } catch (err) {
-      alert(typeof err === 'string' ? err : 'Email ou senha incorretos. Por favor, tente novamente.');
+      showAlert(typeof err === 'string' ? err : 'Email ou senha incorretos. Por favor, tente novamente.', 'error');
     }
   };
 

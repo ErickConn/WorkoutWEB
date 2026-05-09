@@ -43,8 +43,7 @@ export const removerTreinoDaAPI = createAsyncThunk('treinos/removerTreinoDaAPI',
 
         return { id: idPlano, dia: diaParaRemover };
     } catch (err) {
-        alert(err.message || "Erro ao remover treino.");
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.message || "Erro ao remover treino.");
     }
 });
 

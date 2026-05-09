@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button as BootstrapButton } from 'react-bootstrap';
 import { useDispatch } from "react-redux";
 import { editarPlano } from "../../../redux/planos/slices";
 import styles from '../index.module.css';
+import { AlertContext } from "../../../context/AlertContext";
 
 export default function EditarPlanoModal({ show, handleClose, plano }) {
     const dispatch = useDispatch();
+    const { showAlert } = useContext(AlertContext);
     const [novoTitulo, setNovoTitulo] = useState("");
     const [novaCategoria, setNovaCategoria] = useState("");
     const [novoNivel, setNovoNivel] = useState("");
@@ -21,7 +23,7 @@ export default function EditarPlanoModal({ show, handleClose, plano }) {
 
     const handleSalvar = async () => {
         if (!novoTitulo.trim()) {
-            alert("O nome do plano não pode estar vazio");
+            showAlert("O nome do plano não pode estar vazio", 'warning');
             return;
         }
 
@@ -37,7 +39,7 @@ export default function EditarPlanoModal({ show, handleClose, plano }) {
             handleClose();
         } catch (err) {
             console.error("Erro ao salvar plano:", err);
-            alert("Erro ao salvar o plano");
+            showAlert("Erro ao salvar o plano", 'error');
         } finally {
             setCarregando(false);
         }

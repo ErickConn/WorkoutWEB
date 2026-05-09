@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createUser, fetchUsersList } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
+import { AlertContext } from '../../context/AlertContext';
 
 export default function Registro() {
     const [name, setName] = useState('');
@@ -11,6 +12,7 @@ export default function Registro() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { showAlert } = useContext(AlertContext);
 
     const users = useSelector((state) => state.userReducer.users);
 
@@ -29,7 +31,7 @@ export default function Registro() {
         );
 
         if (emailJaExiste) {
-            alert('Este e-mail já está sendo utilizado. Por favor, use outro e-mail ou faça login na sua conta.');
+            showAlert('Este e-mail já está sendo utilizado. Por favor, use outro e-mail ou faça login na sua conta.', 'error');
             return;
         }
 

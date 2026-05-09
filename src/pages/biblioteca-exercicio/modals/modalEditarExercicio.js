@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button as BootstrapButton } from "react-bootstrap";
 import styles from "../biblioteca.module.css";
 import { useDispatch} from "react-redux";
 import { updateExercicio } from "../../../redux/exercicio/slices";
+import { AlertContext } from "../../../context/AlertContext";
 
 
 export default function EditarExercicioModal({ show, handleClose, exercicio }) {
   const dispatch = useDispatch();
+  const { showAlert } = useContext(AlertContext);
 
   const [nome, setNome] = useState("");
   const [grupo, setGrupo] = useState("");
@@ -26,7 +28,7 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
 
   const handleSalvar = async () => {
     if (!nome || !grupo || !equipamento) {
-      alert("Preencha todos os campos!");
+      showAlert("Preencha todos os campos!", 'warning');
       return;
     }
 

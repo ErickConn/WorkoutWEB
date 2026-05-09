@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './components/perfil.module.css';
 import { fetchPlanoList } from '../../redux/planos/slices';
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';
 import BiometricsCard from './components/biometriccard.js';
+import { AlertContext } from '../../context/AlertContext';
 import PlanDetailsCard from './components/plandetailscard.js';
 import ExperienceCard from './components/experiencecard.js';
 import UserProfileCard from './components/userprofilecard.js';
@@ -23,6 +24,7 @@ export default function Perfil() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { showAlert } = useContext(AlertContext);
 
     const currentUser = useSelector(state => state.userReducer.currentUser);
     const biometria = useSelector(state => state.biometriaReducer.biometria);
@@ -35,7 +37,7 @@ export default function Perfil() {
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
     const handleShowDeleteModal = () => {
         if (currentUser?.role === 'admin') {
-            alert('Ação bloqueada: O perfil de Administrador Mestre não pode ser deletado.');
+            showAlert('Ação bloqueada: O perfil de Administrador Mestre não pode ser deletado.', 'warning');
             return;
         }
         setShowDeleteModal(true);
