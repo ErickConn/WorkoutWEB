@@ -1,8 +1,8 @@
-import Treinos from '../models/treinos.js';
+import Treino from '../models/treinos.js';
 
 const getAllTreinos = async (req, res) => {
     try {
-        const treinos = await Treinos.find({});
+        const treinos = await Treino.find({});
         res.json(treinos);
     } catch (error) {
         console.log(error);
@@ -12,10 +12,7 @@ const getAllTreinos = async (req, res) => {
 
 const getTreino = async (req, res) => {
     try {
-        const treino = await Treinos.findById(req.params.id);
-        if (!treino) {
-            return res.status(404).json({ ok: false, message: "Treino não encontrado" });
-        }
+        const treino = await Treino.findById(req.params.id);
         res.json(treino);
     } catch (error) {
         console.log(error);
@@ -25,7 +22,7 @@ const getTreino = async (req, res) => {
 
 const createTreino = async (req, res) => {
     try {
-        const treino = await Treinos.create(req.body);
+        const treino = await Treino.create(req.body);
         res.status(201).json(treino);
     } catch (error) {
         console.log(error);
@@ -35,14 +32,11 @@ const createTreino = async (req, res) => {
 
 const patchTreino = async (req, res) => {
     try {
-        const treino = await Treinos.findByIdAndUpdate(
+        const treino = await Treino.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
         );
-        if (!treino) {
-            return res.status(404).json({ ok: false, message: "Treino não encontrado" });
-        }
         res.json(treino);
     } catch (error) {
         console.log(error);
@@ -52,14 +46,11 @@ const patchTreino = async (req, res) => {
 
 const putTreino = async (req, res) => {
     try {
-        const treino = await Treinos.findByIdAndUpdate(
+        const treino = await Treino.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true, overwrite: true }
         );
-        if (!treino) {
-            return res.status(404).json({ ok: false, message: "Treino não encontrado" });
-        }
         res.json(treino);
     } catch (error) {
         console.log(error);
@@ -69,10 +60,7 @@ const putTreino = async (req, res) => {
 
 const deleteTreino = async (req, res) => {
     try {
-        const treino = await Treinos.findByIdAndDelete(req.params.id);
-        if (!treino) {
-            return res.status(404).json({ ok: false, message: "Treino não encontrado" });
-        }
+        const treino = await Treino.findByIdAndDelete(req.params.id);
         res.json({ ok: true, message: "Treino deletado com sucesso" });
     } catch (error) {
         console.log(error);
@@ -80,14 +68,13 @@ const deleteTreino = async (req, res) => {
     }
 }
 
-
 const treinosControllers = {
     getAllTreinos,
     getTreino,
     createTreino,
     patchTreino,
     putTreino,
-    deleteTreino,
+    deleteTreino
 }
 
 export default treinosControllers;

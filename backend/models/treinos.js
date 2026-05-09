@@ -1,14 +1,22 @@
 import mongoose from 'mongoose';
-import { exerciciosSchema } from './exercicios.js'
 const { Schema } = mongoose;
 
-const rotinaSchema = new Schema({
-    dia: String,
+const treinoSchema = new Schema({
     foco: String,
-    exercicios: [exerciciosSchema],
-}, { strict: false });
+    dia: String,
+    exercicios: [{
+        exercicioId: { 
+            type: Schema.Types.ObjectId, 
+            ref: 'Exercicio', 
+            required: false 
+        },
+        id: String,
+        nome: String,
+        grupo: String,
+        seriesPadrao: Number,
+        repsPadrao: Schema.Types.Mixed
+    }],
+});
 
-const Treinos = mongoose.model('treinos', rotinaSchema);
-
-export default Treinos;
-export { rotinaSchema };
+const Treino = mongoose.model('Treino', treinoSchema);
+export default Treino;
