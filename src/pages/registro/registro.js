@@ -33,29 +33,19 @@ export default function Registro() {
             return;
         }
 
-        // O objeto deve ser criado DENTRO da função disparada ao enviar o formulário
-        const novoId = String(Date.now());
-        const biometriaItem = {
-            id: novoId,
-            usuario: {
-                id: novoId,
-                nome: name,
-                email: emailFormatado,
-                password: password,
-                role: 'aluno',
-
-                // Agora a biometria nasce VAZIA para forçar a criação depois!
-                perfil_biometrico: null,
-                analise_metabolica: null,
-                experiencia_usuario: null
-            }
+        // O objeto agora reflete exatamente o usuarioSchema do MongoDB
+        const novoUsuario = {
+            nome: name,
+            email: emailFormatado,
+            senha: password, // Mongoose model usa 'senha' em vez de 'password'
+            role: 'aluno'
         };
 
         // 1. Dispara a ação para salvar no Redux
-        dispatch(createUser(biometriaItem));
+        dispatch(createUser(novoUsuario));
 
         // 2. A MÁGICA AQUI: Faz o login automático salvando a sessão no navegador!
-        localStorage.setItem('usuarioLogadoEmail', email.toLowerCase());
+        localStorage.setItem('usuarioLogadoEmail', emailFormatado);
 
         // 3. Redireciona o usuário direto para a página de perfil (e não mais pro login)
         navigate('/perfil');

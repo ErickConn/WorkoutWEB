@@ -1,5 +1,5 @@
 import express from 'express';
-import treinosControllers from '../controllers/treinos';
+import treinosControllers from '../controllers/treinos.js';
 
 const routerTreinos = express.Router();
 

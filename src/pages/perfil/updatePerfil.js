@@ -22,10 +22,10 @@ export default function UpdateUsuario() {
     useEffect(() => {
         if (currentUser) {
             setUsuarioAtual(currentUser);
-            setNome(currentUser.usuario.nome || '');
-            setEmail(currentUser.usuario.email || '');
-            setPassword(currentUser.usuario.password || '');
-            setRole(currentUser.usuario.role || 'aluno');
+            setNome(currentUser.nome || '');
+            setEmail(currentUser.email || '');
+            setPassword(currentUser.senha || '');
+            setRole(currentUser.role || 'aluno');
         }
     }, [currentUser]);
 
@@ -36,20 +36,18 @@ export default function UpdateUsuario() {
         if (usuarioAtual) {
             const emailFormatado = email.toLowerCase();
 
-            // Monta o objeto mantendo a biometria, treinos e etc intactos
             const usuarioAtualizado = {
                 ...usuarioAtual,
-                usuario: {
-                    ...usuarioAtual.usuario,
-                    nome: nome,
-                    email: emailFormatado,
-                    password: password,
-                    role: role // Salvando o novo nível de acesso
-                }
+                nome: nome,
+                email: emailFormatado,
+                senha: password,
+                role: role
             };
 
+            const userId = usuarioAtual._id || usuarioAtual.id;
+
             // Dispara a atualização no Redux usando userSlice
-            dispatch(updateUser({ id: usuarioAtual.id, updatedData: usuarioAtualizado }));
+            dispatch(updateUser({ id: userId, updatedData: usuarioAtualizado }));
 
             // CRÍTICO: Se o email mudou, precisamos atualizar a "Sessão" no navegador
             localStorage.setItem('usuarioLogadoEmail', emailFormatado);

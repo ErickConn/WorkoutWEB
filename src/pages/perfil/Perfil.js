@@ -34,7 +34,7 @@ export default function Perfil() {
     const handleCloseModal = () => setShowModal(false);
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
     const handleShowDeleteModal = () => {
-        if (currentUser?.usuario?.role === 'admin') {
+        if (currentUser?.role === 'admin') {
             alert('Ação bloqueada: O perfil de Administrador Mestre não pode ser deletado.');
             return;
         }
@@ -43,18 +43,23 @@ export default function Perfil() {
 
     useEffect(() => {
         dispatch(fetchUsersList());
+        dispatch(fetchBiometriaList()); // Adicionado de volta para carregar do DB no refresh
         dispatch(fetchPlanoList());
     }, [dispatch]);
 
     useEffect(() => {
-        if (currentUser) {
-            setMeusDados(currentUser);
+        if (currentUser && biometria?.length > 0) {
+            const userId = currentUser._id || currentUser.id;
+            const dadosBiometria = biometria.find(item => item.id_usuario === String(userId));
+            setMeusDados(dadosBiometria || null);
+        } else {
+            setMeusDados(null);
         }
-    }, [currentUser]);
+    }, [currentUser, biometria]);
 
     const confirmDelete = () => {
-        if (currentUser) {
-            dispatch(deleteBiometria(currentUser.id));
+        if (meusDados && meusDados._id) {
+            dispatch(deleteBiometria(meusDados._id));
             localStorage.removeItem('usuarioLogadoEmail');
             navigate('/');
         }
@@ -78,13 +83,13 @@ export default function Perfil() {
         );
     }
 
-    if (!meusDados || !meusDados.usuario.perfil_biometrico) {
+    if (!meusDados || !meusDados.perfil_biometrico) {
         return (
             <>
                 <OffCanvasNavBar />
                 <main className={styles.containerPerfil} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
                     <h3 style={{ marginBottom: '1rem', color: 'var(--on-surface)' }}>
-                        Olá, {meusDados?.usuario?.nome || 'Atleta'}!
+                        Olá, {currentUser?.nome || 'Atleta'}!
                     </h3>
                     <p style={{ textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem' }}>
                         Seus dados biométricos ainda não foram preenchidos.
@@ -98,7 +103,7 @@ export default function Perfil() {
         );
     }
 
-    const userIdAtivo = meusDados?.usuario?.id;
+    const userIdAtivo = currentUser?._id || currentUser?.id;
     const planoAtivo = treinos.find(
         (treino) => treino.ativo === true || (userIdAtivo && treino.activeUserIds?.[userIdAtivo])
     );
@@ -118,27 +123,27 @@ export default function Perfil() {
                 <UserProfileCard
                     fotoUsuario={fotoUsuario}
                     handleUploadFoto={handleUploadFoto}
-                    nome={meusDados.usuario.nome}
-                    email={meusDados.usuario.email}
-                    iniciais={meusDados.usuario.nome.substring(0, 2).toUpperCase()}
-                    sexo={meusDados.usuario.perfil_biometrico.sexo}
-                    role={meusDados.usuario.role}
+                    nome={currentUser.nome}
+                    email={currentUser.email}
+                    iniciais={currentUser.nome?.substring(0, 2).toUpperCase() || 'US'}
+                    sexo={meusDados.perfil_biometrico?.sexo}
+                    role={currentUser.role}
                 />
 
                 <BiometricsCard
-                    peso={meusDados.usuario.perfil_biometrico.peso_kg}
-                    altura={meusDados.usuario.perfil_biometrico.altura_cm}
-                    idade={meusDados.usuario.perfil_biometrico.idade}
-                    tmb={meusDados.usuario.analise_metabolica.tmb_kcal}
+                    peso={meusDados.perfil_biometrico?.peso_kg}
+                    altura={meusDados.perfil_biometrico?.altura_cm}
+                    idade={meusDados.perfil_biometrico?.idade}
+                    tmb={meusDados.analise_metabolica?.tmb_kcal || 0}
                 />
 
                 <ExperienceCard
-                    nivel={meusDados.usuario.experiencia_usuario.nivel_experiencia}
+                    nivel={meusDados.experiencia_usuario?.nivel_experiencia}
                     descricao="Baseado em seu perfil biométrico e histórico de treinos"
                 />
 
                 <PlanDetailsCard
-                    nivelAtividade={meusDados.usuario.perfil_biometrico.nivel_atividade}
+                    nivelAtividade={meusDados.perfil_biometrico?.nivel_atividade}
 
                     planoAtual={planoAtivo ? planoAtivo.titulo : "Nenhum plano ativo"}
                 />

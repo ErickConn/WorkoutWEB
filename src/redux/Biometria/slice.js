@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
 // Async Thunks
 export const fetchBiometriaList = createAsyncThunk(
@@ -21,18 +21,7 @@ export const createBiometria = createAsyncThunk(
     async (biometriaData, { rejectWithValue }) => {
         try {
             const res = await axios.post(`${API_URL}/biometria`, biometriaData);
-            const newBiometria = res.data;
-
-            if (biometriaData.usuario && biometriaData.usuario.id) {
-                await axios.post(`${API_URL}/historico_usuario`, {
-                    id: String(biometriaData.usuario.id),
-                    userId: String(biometriaData.usuario.id),
-                    nivel_atividade: "moderado",
-                    historico_peso: [],
-                    historico_carga: []
-                });
-            }
-            return newBiometria;
+            return res.data;
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -44,35 +33,7 @@ export const updateBiometria = createAsyncThunk(
     async ({ id, updatedData }, { rejectWithValue }) => {
         try {
             const res = await axios.patch(`${API_URL}/biometria/${id}`, updatedData);
-            const updatedBiometria = res.data;
-
-            if (updatedBiometria.usuario?.perfil_biometrico?.peso_kg) {
-                const userId = updatedBiometria.usuario.id;
-                const newWeight = updatedBiometria.usuario.perfil_biometrico.peso_kg;
-
-                const { data: historicos } = await axios.get(`${API_URL}/historico_usuario`);
-                const userHistory = historicos.find(h => String(h.userId) === String(userId));
-
-                if (userHistory) {
-                    const dataAtual = new Date().toISOString().split('T')[0];
-                    let historicoPeso = userHistory.historico_peso || [];
-
-                    const semanaAtualNum = Math.ceil((new Date() - new Date('2026-01-01')) / (7 * 24 * 60 * 60 * 1000));
-                    const novoRegistro = {
-                        semana: semanaAtualNum,
-                        data: dataAtual,
-                        peso_kg: newWeight
-                    };
-
-                    historicoPeso.push(novoRegistro);
-
-                    await axios.patch(`${API_URL}/historico_usuario/${userHistory.id}`, {
-                        historico_peso: historicoPeso
-                    });
-                }
-            }
-
-            return updatedBiometria;
+            return res.data;
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -150,7 +111,7 @@ const biometriaSlice = createSlice({
             })
             .addCase(updateBiometria.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.biometria.findIndex(item => item.id === action.payload.id);
+                const index = state.biometria.findIndex(item => item._id === action.payload._id || item.id === action.payload.id);
                 if (index !== -1) {
                     state.biometria[index] = action.payload;
                 }

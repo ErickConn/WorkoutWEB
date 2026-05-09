@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'; // Adicionado useMemo
 import { useDispatch, useSelector } from 'react-redux';
-import { updateBiometria } from '../../redux/Biometria/slice';
+import { updateBiometria, createBiometria } from '../../redux/Biometria/slice';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './components/home.module.css';
@@ -21,6 +21,14 @@ export default function Home({ show, handleClose }) {
 
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.userReducer.currentUser);
+    const biometriaList = useSelector(state => state.biometriaReducer.biometria);
+
+    // Encontra a biometria do usuário atual
+    const biometriaAtual = useMemo(() => {
+        if (!currentUser) return null;
+        const currentId = currentUser._id || currentUser.id;
+        return biometriaList.find(item => item.id_usuario === String(currentId));
+    }, [currentUser, biometriaList]);
 
     // --- LÓGICA DE CÁLCULO AO VIVO (LIVE PREVIEW) ---
     // Usamos useMemo para que o cálculo só ocorra quando um valor mudar
@@ -50,42 +58,48 @@ export default function Home({ show, handleClose }) {
     useEffect(() => {
         if (currentUser) {
             setUsuarioAtual(currentUser);
-            setId(currentUser.id);
-            if (currentUser.usuario.perfil_biometrico) {
-                setIdade(currentUser.usuario.perfil_biometrico.idade);
-                setAltura(currentUser.usuario.perfil_biometrico.altura_cm);
-                setPeso(currentUser.usuario.perfil_biometrico.peso_kg);
-                setNivelAtividade(currentUser.usuario.perfil_biometrico.nivel_atividade);
-                setSexo(currentUser.usuario.perfil_biometrico.sexo || 'masculino');
-                setNivelExperiencia(currentUser.usuario.experiencia_usuario.nivel_experiencia || 'iniciante');
+            setId(currentUser._id || currentUser.id);
+            if (biometriaAtual && biometriaAtual.perfil_biometrico) {
+                setIdade(biometriaAtual.perfil_biometrico.idade || 0);
+                setAltura(biometriaAtual.perfil_biometrico.altura_cm || 0);
+                setPeso(biometriaAtual.perfil_biometrico.peso_kg || 0);
+                setNivelAtividade(biometriaAtual.perfil_biometrico.nivel_atividade || 'sedentario');
+                setSexo(biometriaAtual.perfil_biometrico.sexo || 'masculino');
+                setNivelExperiencia(biometriaAtual.experiencia_usuario?.nivel_experiencia || 'iniciante');
             }
         }
-    }, [currentUser, show]);
+    }, [currentUser, biometriaAtual, show]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (usuarioAtual) {
-            const biometriaAtualizada = {
-                ...usuarioAtual,
-                usuario: {
-                    ...usuarioAtual.usuario,
-                    perfil_biometrico: {
-                        idade: Number(idade),
-                        altura_cm: Number(altura),
-                        peso_kg: Number(peso),
-                        nivel_atividade: nivelAtividade,
-                        sexo: sexo
-                    },
-                    analise_metabolica: {
-                        tmb_kcal: calculosAoVivo.tmb,
-                        gasto_energetico_total_kcal: calculosAoVivo.get
-                    },
-                    experiencia_usuario: {
-                        nivel_experiencia: nivelExperiencia
-                    }
+            const currentId = usuarioAtual._id || usuarioAtual.id;
+            
+            const payload = {
+                id_usuario: String(currentId),
+                perfil_biometrico: {
+                    idade: Number(idade),
+                    altura_cm: Number(altura),
+                    peso_kg: Number(peso),
+                    nivel_atividade: nivelAtividade,
+                    sexo: sexo
+                },
+                analise_metabolica: {
+                    tmb_kcal: calculosAoVivo.tmb,
+                    gasto_energetico_total_kcal: calculosAoVivo.get
+                },
+                experiencia_usuario: {
+                    nivel_experiencia: nivelExperiencia,
+                    objetivos: biometriaAtual?.experiencia_usuario?.objetivos || []
                 }
             };
-            dispatch(updateBiometria({ id: usuarioAtual.id, updatedData: biometriaAtualizada }));
+
+            if (biometriaAtual && biometriaAtual._id) {
+                dispatch(updateBiometria({ id: biometriaAtual._id, updatedData: payload }));
+            } else {
+                dispatch(createBiometria(payload));
+            }
+            
             handleClose(); 
         }
     };

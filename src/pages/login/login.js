@@ -24,12 +24,12 @@ const handleLogin = (e) => {
   e.preventDefault();
 
   const usuarioValido = users.find(
-    (item) => item.usuario.email === email && item.usuario.password === password
+    (item) => item.email === email && item.senha === password
   );
 
   if (usuarioValido) {
     // SALVANDO O USUÁRIO LOGADO NO NAVEGADOR
-    localStorage.setItem('usuarioLogadoEmail', usuarioValido.usuario.email); 
+    localStorage.setItem('usuarioLogadoEmail', usuarioValido.email); 
     dispatch(setCurrentUser(usuarioValido));
     navigate('/perfil'); // Redirecione para a rota do perfil
   } else {
