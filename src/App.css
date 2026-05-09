@@ -8,3 +8,12 @@ body {
     color: #333;
     margin: 0;
 }
+
+/* Garante que os modals fiquem sempre acima do header */
+.modal {
+    z-index: 1050 !important;
+}
+
+.modal-backdrop {
+    z-index: 1049 !important;
+}
