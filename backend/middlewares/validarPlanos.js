@@ -1,0 +1,94 @@
+import mongoose from 'mongoose';
+import Planos from '../models/planos.js';
+
+const validateEmptyBody = (req, res, next) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ ok: false, message: "O corpo da requisição não pode estar vazio" });
+    }
+    next();
+};
+
+const validatePlanoTitle = (req, res, next) => {
+    if (!req.body.titulo || typeof req.body.titulo !== 'string') {
+        return res.status(400).json({ ok: false, message: "O título do plano é obrigatório e deve ser do tipo texto (string)" });
+    }
+    next();
+};
+
+const validatePlanoStructure = (req, res, next) => {
+    const { nivel, categoria, rotina } = req.body;
+
+    if (nivel !== undefined && typeof nivel !== 'string') {
+        return res.status(400).json({ ok: false, message: "O campo 'nivel' deve ser do tipo texto (string)" });
+    }
+
+    if (categoria !== undefined && typeof categoria !== 'string') {
+        return res.status(400).json({ ok: false, message: "O campo 'categoria' deve ser do tipo texto (string)" });
+    }
+
+    if (rotina !== undefined && !Array.isArray(rotina)) {
+        return res.status(400).json({ ok: false, message: "O campo 'rotina' deve ser uma lista (array) de treinos" });
+    }
+
+    if (Array.isArray(rotina)) {
+        for (let i = 0; i < rotina.length; i++) {
+            const treino = rotina[i];
+            if (!treino.dia || typeof treino.dia !== 'string') {
+                return res.status(400).json({ ok: false, message: `O treino no índice ${i} deve conter um 'dia' válido` });
+            }
+
+            if (treino.exercicios !== undefined && !Array.isArray(treino.exercicios)) {
+                return res.status(400).json({ ok: false, message: `Os exercícios do treino no índice ${i} devem ser um array` });
+            }
+
+            if (Array.isArray(treino.exercicios)) {
+                for (let j = 0; j < treino.exercicios.length; j++) {
+                    const exercicio = treino.exercicios[j];
+                    if (!exercicio.nome || typeof exercicio.nome !== 'string') {
+                        return res.status(400).json({ ok: false, message: `O exercício no índice ${j} do treino ${i} deve conter um 'nome' válido` });
+                    }
+                }
+            }
+        }
+    }
+    next();
+};
+
+const validatePlanoId = async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ ok: false, message: "Formato de ID inválido" });
+    }
+    try {
+        const plano = await Planos.findById(req.params.id);
+        if (!plano) {
+            return res.status(404).json({ ok: false, message: "Plano não encontrado" });
+        }
+        next();
+    } catch (error) {
+        res.status(500).json({ ok: false, message: "Erro ao validar o plano" });
+    }
+};
+
+const normalizeUsers = (req, res, next) => {
+    if (req.body) {
+        let usersArray = req.body.userIds || [];
+        if (req.body.userId && !usersArray.includes(req.body.userId)) {
+            usersArray.push(req.body.userId);
+        }
+        if (usersArray.length > 0) {
+            req.body.userIds = usersArray;
+        }
+        delete req.body.userId;
+    }
+    next();
+};
+
+const planosMiddlewares = {
+    validateEmptyBody,
+    validatePlanoTitle,
+    validatePlanoStructure,
+    validatePlanoId,
+    normalizeUsers
+};
+
+export default planosMiddlewares;

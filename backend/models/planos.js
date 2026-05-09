@@ -1,26 +1,15 @@
 import mongoose from 'mongoose';
-import { rotinaSchema } from './treinos.js';
 const { Schema } = mongoose;
 
 const planosSchema = new Schema({
     titulo: String,
-    rotina: [rotinaSchema],
-    isPreview: Boolean,
-    isCustom: Boolean,
     nivel: String,
     categoria: String,
-    userId: String,
-}, { strict: false });
-
-planosSchema.set('toJSON', {
-    virtuals: true,
-    transform: (doc, ret) => {
-        ret.id = ret._id.toString();
-        delete ret.__v;
-        return ret;
-    }
+    rotina: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Treino'
+    }],
 });
 
-const Planos = mongoose.model('Planos', planosSchema);
-
-export default Planos;
+const Plano = mongoose.model('Plano', planosSchema);
+export default Plano;

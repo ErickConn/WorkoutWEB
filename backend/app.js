@@ -17,5 +17,4 @@ app.use(routerUser);
 app.use(routerBiometria);
 app.use(router);
 
-
 export default app;

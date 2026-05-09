@@ -1,10 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
-const exerciciosSchema = new Schema({
-    nome: String,
+const exercicioSchema = new Schema({
+    nome: { type: String, required: true },
 });
 
-const Exercicios = mongoose.model('Exercicios', exerciciosSchema);
-
-export default Exercicios;
-export { exerciciosSchema };
+export const Exercicio = mongoose.model('Exercicio', exercicioSchema);
