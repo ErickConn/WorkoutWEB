@@ -18,8 +18,6 @@ export default function Treino() {
   const planos = useSelector(state => state.planosReducer.planos);
   const loadingTreino = useSelector(state => state.planosReducer.loading);
 
-  console.log(planos);
-
   const historico = useSelector(state => state.progressoReducer.historico);
   const registrosUsuario = useSelector(state => state.progressoReducer.registrosUsuario);
   const loadingProgresso = useSelector(state => state.progressoReducer.loading);
@@ -29,20 +27,13 @@ export default function Treino() {
   const loading = loadingTreino || loadingProgresso;
 
   useEffect(() => {
+    dispatch(fetchPlanoList());
 
-    if (!planos || planos.length === 0) {
-      dispatch(fetchPlanoList());
-    }
+    dispatch(fetchProgresso());
 
-    if (!progressoLoaded) {
-      dispatch(fetchProgresso());
-    }
+    dispatch(carregarRegistrosUsuario());
 
-    if (!progressoLoaded) {
-      dispatch(carregarRegistrosUsuario());
-    }
-
-  }, [dispatch, planos, progressoLoaded]);
+  }, []);
 
   const handleFinalizar = async () => {
     try {
@@ -101,14 +92,14 @@ export default function Treino() {
             const totalExercicios = rotinaHoje?.exercicios?.length || 0;
             const concluidos = totalExercicios > 0
               ? rotinaHoje.exercicios.filter(ex =>
-                  registrosUsuario?.some(r =>
-                    String(r.exercicioId) === String(ex.id) &&
-                    r.data === dataAtual &&
-                    r.dia === rotinaHoje.dia &&
-                    r.idPlano === planoAtivo.id &&
-                    r.concluido
-                  )
-                ).length
+                registrosUsuario?.some(r =>
+                  String(r.exercicioId) === String(ex.id) &&
+                  r.data === dataAtual &&
+                  r.dia === rotinaHoje.dia &&
+                  r.idPlano === planoAtivo.id &&
+                  r.concluido
+                )
+              ).length
               : 0;
             const porcentagem = totalExercicios > 0 ? Math.round((concluidos / totalExercicios) * 100) : 0;
             return (
