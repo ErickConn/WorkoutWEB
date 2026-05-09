@@ -18,5 +18,14 @@ const treinoSchema = new Schema({
     }],
 });
 
+treinoSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+    }
+});
+
 const Treino = mongoose.model('Treino', treinoSchema);
 export default Treino;

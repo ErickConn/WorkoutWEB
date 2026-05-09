@@ -69,26 +69,11 @@ const validatePlanoId = async (req, res, next) => {
     }
 };
 
-const normalizeUsers = (req, res, next) => {
-    if (req.body) {
-        let usersArray = req.body.userIds || [];
-        if (req.body.userId && !usersArray.includes(req.body.userId)) {
-            usersArray.push(req.body.userId);
-        }
-        if (usersArray.length > 0) {
-            req.body.userIds = usersArray;
-        }
-        delete req.body.userId;
-    }
-    next();
-};
-
 const planosMiddlewares = {
     validateEmptyBody,
     validatePlanoTitle,
     validatePlanoStructure,
-    validatePlanoId,
-    normalizeUsers
+    validatePlanoId
 };
 
 export default planosMiddlewares;

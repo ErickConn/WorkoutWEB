@@ -19,8 +19,16 @@ export const getUserByEmail = async (email) => {
 
 export const getUserIdFromEmail = async () => {
     const email = getLoggedUserEmail();
-    const user = await getUserByEmail(email);
-    return user?.usuario?.id || null;
+    if (!email) return null;
+    try {
+        const REAL_API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
+        const { data: users } = await axios.get(`${REAL_API_URL}/users`);
+        const user = users.find(u => u.email === email);
+        return user?._id || user?.id || null;
+    } catch (err) {
+        console.error('Erro ao buscar ID do usuário por email:', err);
+        return null;
+    }
 };
 
 export const getLoggedUser = async () => {

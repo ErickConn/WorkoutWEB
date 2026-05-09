@@ -1,12 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { getUserIdFromEmail, getLoggedUser } from '../../utils/userAuth';
+import { getUserIdFromEmail, getLoggedUser, getLoggedUserEmail } from '../../utils/userAuth';
 
 const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
 export const getOrCreateBackendUser = async () => {
-    const user = getLoggedUser();
-    return user;
+    const email = getLoggedUserEmail();
+    if (!email) return null;
+    try {
+        const { data: users } = await axios.get(`${API_URL}/users`);
+        const user = users.find(u => u.email === email);
+        return user || null;
+    } catch (err) {
+        console.error("Erro ao buscar usuario no backend:", err);
+        return null;
+    }
 };
 
 export const ensurePlanEditable = async (idPlano) => {
@@ -32,8 +40,8 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
         const backendUser = await getOrCreateBackendUser();
         const { data: planos } = await axios.get(`${API_URL}/planos`);
 
-        const activePlanId = backendUser.activePlanId ? String(backendUser.activePlanId) : null;
-        const activeDay = backendUser.activeDay || null;
+        const activePlanId = backendUser?.activePlanId ? String(backendUser.activePlanId) : null;
+        const activeDay = backendUser?.activeDay || null;
 
         const planosFiltrados = planos
             .map((plano) => {
@@ -94,8 +102,8 @@ export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, {
 
         // Se o plano removido era o ativo, limpa no user
         const backendUser = await getOrCreateBackendUser();
-        if (backendUser.activePlanId && String(backendUser.activePlanId) === String(id)) {
-            await axios.patch(`${API_URL}/users/${backendUser.id}`, {
+        if (backendUser && backendUser.activePlanId && String(backendUser.activePlanId) === String(id)) {
+            await axios.patch(`${API_URL}/users/${backendUser._id || backendUser.id}`, {
                 activePlanId: null,
                 activeDay: null
             });
@@ -111,11 +119,12 @@ export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, {
 export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idPlano, { rejectWithValue }) => {
     try {
         const backendUser = await getOrCreateBackendUser();
+        if (!backendUser) throw new Error("Usuário não encontrado");
 
-        // await axios.patch(`${API_URL}/users/${backendUser.id}`, {
-        //     activePlanId: idPlano,
-        //     activeDay: null
-        // });
+        await axios.patch(`${API_URL}/users/${backendUser._id || backendUser.id}`, {
+            activePlanId: idPlano,
+            activeDay: null
+        });
 
         return { idPlano };
     } catch (err) {
