@@ -124,6 +124,7 @@ export default function UpdateUsuario() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Deixe em branco para não alterar"
+                                    autoComplete="new-password"
                                 />
                             </div>
 
