@@ -17,6 +17,38 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/user",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/user/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/users",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/users/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/biometria",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/biometria/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/historico_usuario",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/historico_usuario/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

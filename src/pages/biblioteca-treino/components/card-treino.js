@@ -38,11 +38,11 @@ export default function CardTreino({
 
       if (userId && categoria === 'modelo') {
         try {
-          const API_URL = 'https://json-server-wweb.onrender.com';
+          const REAL_API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
           const { default: axios } = await import('axios');
-          const { data: biometria } = await axios.get(`${API_URL}/biometria`);
-          const criador = biometria.find(b => String(b.usuario?.id) === String(userId));
-          if (criador) setNomeCriador(criador.usuario.nome);
+          const { data: users } = await axios.get(`${REAL_API_URL}/users`);
+          const criador = users.find(u => String(u.id) === String(userId) || String(u._id) === String(userId));
+          if (criador) setNomeCriador(criador.nome);
         } catch (err) {
           console.error('Erro ao buscar criador do plano:', err);
         }
