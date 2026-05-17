@@ -7,7 +7,7 @@ import routerTreinos from './routes/treinos.js';
 import routerUser from './routes/user.js';
 import routerBiometria from './routes/biometria.js';
 import router from './routes/index.js';
-import authenticateToken from './middlewares/validarUsuario.js';
+import authenticateToken from './middlewares/verificarToken.js';
 
 const app = express();
 app.use(cors({
