@@ -89,6 +89,10 @@ export default function Perfil() {
         );
     }
 
+    if (!currentUser) {
+        return null;
+    }
+
     if (!meusDados || !meusDados.perfil_biometrico) {
         return (
             <>

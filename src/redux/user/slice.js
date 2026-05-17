@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+
 const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
 // Async Thunks
@@ -25,6 +27,18 @@ export const loginAuth = createAsyncThunk(
             return res.data;
         } catch (err) {
             return rejectWithValue(err.response?.data?.message || err.message);
+        }
+    }
+);
+
+export const logoutAuth = createAsyncThunk(
+    'user/logout',
+    async (_, { rejectWithValue }) => {
+        try {
+            await axios.post(`${API_URL}/logout`);
+            return true;
+        } catch (err) {
+            return rejectWithValue(err.message);
         }
     }
 );
@@ -80,6 +94,7 @@ export const deleteUser = createAsyncThunk(
     }
 );
 
+
 const initialState = {
     loading: false,
     users: [],
@@ -95,6 +110,7 @@ const userSlice = createSlice({
             state.currentUser = action.payload;
         },
         logoutUser: (state) => {
+            // Apenas para limpeza local de emergência (caso não queira esperar a API)
             state.currentUser = null;
             localStorage.removeItem('usuarioLogadoEmail');
         }
@@ -175,12 +191,18 @@ const userSlice = createSlice({
             })
             .addCase(loginAuth.fulfilled, (state, action) => {
                 state.loading = false;
-                state.currentUser = action.payload;
-                localStorage.setItem('usuarioLogadoEmail', action.payload.email);
+                // Como o backend agora retorna { user, token }, precisamos acessar .user
+                state.currentUser = action.payload.user ? action.payload.user : action.payload;
+                const emailToSave = action.payload.user ? action.payload.user.email : action.payload.email;
+                localStorage.setItem('usuarioLogadoEmail', emailToSave);
             })
             .addCase(loginAuth.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            .addCase(logoutAuth.fulfilled, (state) => {
+                state.currentUser = null;
+                localStorage.removeItem('usuarioLogadoEmail');
             });
     }
 });

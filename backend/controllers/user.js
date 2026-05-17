@@ -1,5 +1,11 @@
 import Usuario from "../models/usuario.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+
+const SECRET_KEY = process.env.SECRET_KEY
+
 
 const getAllUser = async (req, res) => {
     try {
@@ -64,20 +70,31 @@ const loginUser = async (req, res) => {
     try {
         const { email, senha } = req.body;
         const user = await Usuario.findOne({ email });
-        
+
         if (!user || !user.senha) {
             return res.status(401).json({ ok: false, message: "Email ou senha incorretos" });
         }
 
         const isMatch = await bcrypt.compare(senha, user.senha);
-        
+
         if (!isMatch) {
             return res.status(401).json({ ok: false, message: "Email ou senha incorretos" });
         }
-        return res.json(user);
+        const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        res.cookie('token', token, { httpOnly: true });
+        return res.json({ user, token });
     } catch (error) {
         console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao fazer login" });
+    }
+}
+const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('token', { httpOnly: true });
+        return res.json({ ok: true, message: "Logout realizado com sucesso" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ ok: false, message: "Erro ao realizar logout" });
     }
 }
 
@@ -87,7 +104,8 @@ const userControllers = {
     createUser,
     updateUser,
     deleteUser,
-    loginUser
+    loginUser,
+    logoutUser
 }
 
 export default userControllers;
