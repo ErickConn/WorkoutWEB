@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 import { confirmarConclusaoTreinoGeral } from '../progresso/slices';
-import { ensurePlanEditable, removerPlano, getOrCreateBackendUser } from '../planos/thunks';
+import { ensurePlanEditable, removerPlano, getOrCreateBackendUser, fetchPlanoList } from '../planos/thunks';
 
 const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
@@ -41,13 +41,14 @@ export const removerTreinoDaAPI = createAsyncThunk('treinos/removerTreinoDaAPI',
         const novaRotina = rotinaAtual.filter(item => item.dia !== diaParaRemover);
         await axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina });
 
+        dispatch(fetchPlanoList());
         return { id: idPlano, dia: diaParaRemover };
     } catch (err) {
         return rejectWithValue(err.message || "Erro ao remover treino.");
     }
 });
 
-export const adicionarTreinoAoPlano = createAsyncThunk('treinos/adicionarTreinoAoPlano', async ({ idPlano, nomeTreino, exerciciosSelecionados, rotinaAtual }, { rejectWithValue }) => {
+export const adicionarTreinoAoPlano = createAsyncThunk('treinos/adicionarTreinoAoPlano', async ({ idPlano, nomeTreino, exerciciosSelecionados, rotinaAtual }, { dispatch, rejectWithValue }) => {
     try {
         await ensurePlanEditable(idPlano);
 
@@ -71,13 +72,14 @@ export const adicionarTreinoAoPlano = createAsyncThunk('treinos/adicionarTreinoA
 
         const novaRotina = [...rotinaAtual, novoTreino];
         const res = await axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina });
+        dispatch(fetchPlanoList());
         return res.data;
     } catch (err) {
         return rejectWithValue(err.message);
     }
 });
 
-export const atualizarTreinoNoPlano = createAsyncThunk('treinos/atualizarTreinoNoPlano', async ({ idPlano, treinoEditado, rotinaAtual }, { rejectWithValue }) => {
+export const atualizarTreinoNoPlano = createAsyncThunk('treinos/atualizarTreinoNoPlano', async ({ idPlano, treinoEditado, rotinaAtual }, { dispatch, rejectWithValue }) => {
     try {
         await ensurePlanEditable(idPlano);
 
@@ -93,6 +95,7 @@ export const atualizarTreinoNoPlano = createAsyncThunk('treinos/atualizarTreinoN
         );
 
         const res = await axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: rotinaAtualizada });
+        dispatch(fetchPlanoList());
         return res.data;
     } catch (err) {
         return rejectWithValue(err.message);

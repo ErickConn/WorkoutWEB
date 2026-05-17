@@ -18,8 +18,10 @@ const validatePlanoTitle = (req, res, next) => {
 const validatePlanoStructure = (req, res, next) => {
     const { nivel, categoria, rotina } = req.body;
 
-    if (nivel !== undefined && typeof nivel !== 'string') {
-        return res.status(400).json({ ok: false, message: "O campo 'nivel' deve ser do tipo texto (string)" });
+    if (nivel !== undefined) {
+        if (typeof nivel !== 'string') {
+            return res.status(400).json({ ok: false, message: "O campo 'nivel' deve ser do tipo texto (string)" });
+        }
     }
 
     if (categoria !== undefined && typeof categoria !== 'string') {
