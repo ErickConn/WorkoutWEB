@@ -1,22 +1,35 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const treinoSchema = new Schema({
-    foco: String,
-    dia: String,
+const treinoSchema = new mongoose.Schema({
+    planoId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Plano',
+        required: true
+    },
+    foco: {
+        type: String,
+        required: true
+    },
+    dia: {
+        type: String,
+        required: true
+    },
     exercicios: [{
-        exercicioId: { 
-            type: Schema.Types.ObjectId, 
-            ref: 'Exercicio', 
-            required: false 
+        idExercicio: {
+            type: String,
+            required: true
         },
-        id: String,
-        nome: String,
-        grupo: String,
-        seriesPadrao: Number,
-        repsPadrao: Schema.Types.Mixed
-    }],
-});
+        numSeries: {
+            type: Number,
+            required: true
+        },
+        numReps: {
+            type: Number,
+            required: true
+        }
+    }]
+}, { timestamps: true });
 
 treinoSchema.set('toJSON', {
     virtuals: true,

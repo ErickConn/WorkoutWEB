@@ -1,18 +1,32 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const planosSchema = new Schema({
-    titulo: String,
-    nivel: String,
-    categoria: String,
-    userId: String,
+const planoSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    titulo: {
+        type: String,
+        required: true
+    },
+    nivel: {
+        type: String,
+        enum: ['iniciante', 'intermediario', 'avancado', 'Iniciante', 'Intermediário', 'Avançado'],
+        required: true
+    },
+    categoria: {
+        type: String,
+        required: true
+    },
     rotina: [{
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Treino'
-    }],
-});
+    }]
+}, { timestamps: true });
 
-planosSchema.set('toJSON', {
+planoSchema.set('toJSON', {
     virtuals: true,
     versionKey: false,
     transform: function (doc, ret) {
@@ -21,5 +35,5 @@ planosSchema.set('toJSON', {
     }
 });
 
-const Plano = mongoose.model('Plano', planosSchema);
+const Plano = mongoose.model('Plano', planoSchema);
 export default Plano;

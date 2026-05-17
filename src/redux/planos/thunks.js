@@ -39,25 +39,65 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
         const userId = await getUserIdFromEmail();
         const backendUser = await getOrCreateBackendUser();
         const { data: planos } = await axios.get(`${API_URL}/planos`);
+        const RENDER_API = "https://json-server-wweb.onrender.com";
+        let exercicioLib = [];
+        try {
+            const { data } = await axios.get(`${RENDER_API}/biblioteca_exercicios`);
+            exercicioLib = data;
+        } catch (e) {
+            console.warn("Não foi possível carregar biblioteca de exercícios:", e.message);
+        }
+        const exercicioMap = {};
+        exercicioLib.forEach(ex => { exercicioMap[String(ex.id)] = ex; });
 
         const activePlanId = backendUser?.activePlanId ? String(backendUser.activePlanId) : null;
         const activeDay = backendUser?.activeDay || null;
 
         const planosFiltrados = planos
             .map((plano) => {
-                const isPlanoAtivo = activePlanId && String(plano.id) === activePlanId;
+                const planoId = String(plano.id || plano._id);
+                const isPlanoAtivo = activePlanId && planoId === activePlanId;
 
                 const rotinaComAtivo = Array.isArray(plano.rotina)
-                    ? plano.rotina.map((treino) => ({
-                        ...treino,
-                        ativo: isPlanoAtivo && activeDay
-                            ? String(treino.dia) === String(activeDay)
-                            : false
-                    }))
+                    ? plano.rotina.map((treino) => {
+                        const exerciciosHidratados = Array.isArray(treino.exercicios)
+                            ? treino.exercicios.map(ex => {
+                                const exId = String(ex.idExercicio || ex.id || '');
+                                const libData = exercicioMap[exId] || {};
+                                return {
+                                    id: exId,
+                                    nome: ex.nome || libData.nome || 'Exercício Desconhecido',
+                                    grupo: ex.grupo || libData.grupo || 'Outros',
+                                    equipamento: ex.equipamento || libData.equipamento || '',
+                                    nivel_experiencia: ex.nivel_experiencia || libData.nivel_experiencia || '',
+                                    seriesPadrao: ex.seriesPadrao || ex.numSeries || libData.seriesPadrao || 3,
+                                    repsPadrao: ex.repsPadrao || ex.numReps || libData.repsPadrao || 12,
+                                };
+                            })
+                            : [];
+
+                        return {
+                            ...treino,
+                            id: treino.id || treino._id,
+                            exercicios: exerciciosHidratados,
+                            ativo: isPlanoAtivo && activeDay
+                                ? String(treino.dia) === String(activeDay)
+                                : false
+                        };
+                    })
                     : plano.rotina;
+
+                const nivelMap = {
+                    'iniciante': 'Iniciante',
+                    'intermediario': 'Intermediário',
+                    'avancado': 'Avançado',
+                };
+                const nivelNormalizado = nivelMap[(plano.nivel || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")] || plano.nivel;
 
                 const planoAjustado = {
                     ...plano,
+                    id: planoId,
+                    nivel: nivelNormalizado,
                     ativo: Boolean(isPlanoAtivo),
                     rotina: rotinaComAtivo
                 };
@@ -66,7 +106,7 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
                     return planoAjustado;
                 }
 
-                if (userId && plano.userId === userId) {
+                if (userId && String(plano.userId) === String(userId)) {
                     return planoAjustado;
                 }
 
@@ -80,7 +120,7 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
     }
 });
 
-export const salvarPlanoCompleto = createAsyncThunk('planos/salvarPlanoCompleto', async (plano, { rejectWithValue }) => {
+export const salvarPlanoCompleto = createAsyncThunk('planos/salvarPlanoCompleto', async (plano, { dispatch, rejectWithValue }) => {
     try {
         const userId = await getUserIdFromEmail();
         const planoComUserId = {
@@ -89,6 +129,7 @@ export const salvarPlanoCompleto = createAsyncThunk('planos/salvarPlanoCompleto'
         };
 
         const res = await axios.post(`${API_URL}/planos`, planoComUserId);
+        dispatch(fetchPlanoList());
         return res.data;
     } catch (err) {
         return rejectWithValue(err.message);
@@ -132,10 +173,11 @@ export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idP
     }
 });
 
-export const editarPlano = createAsyncThunk('planos/editarPlano', async ({ idPlano, dados }, { rejectWithValue }) => {
+export const editarPlano = createAsyncThunk('planos/editarPlano', async ({ idPlano, dados }, { dispatch, rejectWithValue }) => {
     try {
         await ensurePlanEditable(idPlano);
         const res = await axios.patch(`${API_URL}/planos/${idPlano}`, dados);
+        dispatch(fetchPlanoList());
         return res.data;
     } catch (err) {
         return rejectWithValue(err.message);
