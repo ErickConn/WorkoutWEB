@@ -9,6 +9,7 @@ import routerBiometria from './routes/biometria.js';
 import router from './routes/index.js';
 import authenticateToken from './middlewares/verificarToken.js';
 import routerExercicios from './routes/exercicios.js';
+import routerProgresso from './routes/progresso.js';
 
 const app = express();
 app.use(cors({
@@ -23,6 +24,8 @@ app.use(authenticateToken);
 app.use(routerPlanos);
 app.use(routerTreinos);
 app.use(routerBiometria);
+app.use(routerExercicios);
+app.use(routerProgresso);
 app.use(router);
 
 export default app;
