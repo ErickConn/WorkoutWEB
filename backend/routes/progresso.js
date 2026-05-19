@@ -8,6 +8,6 @@ routerProgresso.get("/:userId", progressoControllers.getUserProgress);
 
 routerProgresso.post("/:userId", validarProgresso, progressoControllers.addProgress);
 
-routerProgresso.put("/:userId/:progressId", validarProgresso, progressoControllers.updateProgress);
+routerProgresso.put("/:userId", validarProgresso, progressoControllers.updateProgress);
 
 export default routerProgresso;

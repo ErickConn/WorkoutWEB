@@ -2,36 +2,32 @@ import Progresso from "../models/progresso.js";
 
 const getUserProgress = async (req, res) => {
   try {
-    const progresso = await Progresso.find({ userId: req.params.userId });
+    const progresso = await Progresso.findOne({ userId: req.params.userId });
+    if (!progresso) {
+      return res.status(404).json({ ok: false, message: "Progresso do usuário não encontrado" });
+    }
     res.json(progresso);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, message: "Erro ao listar progresso" });
+    res.status(500).json({ ok: false, message: "Erro ao listar progresso do usuário" });
   }
 };
 
 const addProgress = async (req, res) => {
   try {
-    const { pesoInicial, pesoAtual, frequenciaSemanalTreinos, cargaTotalSemana, idade, altura, nivelExperiencia } = req.body;
-
-    const variacaoPeso = pesoAtual && pesoInicial ? pesoAtual - pesoInicial : null;
+    const { nivel_experiencia, historico_peso, historico_carga } = req.body;
 
     const progresso = await Progresso.create({
       userId: req.params.userId,
-      idade,
-      altura,
-      pesoInicial,
-      pesoAtual,
-      nivelExperiencia,
-      variacaoPeso,
-      frequenciaSemanalTreinos,
-      cargaTotalSemana
+      nivel_experiencia,
+      historico_peso: historico_peso || [],
+      historico_carga: historico_carga || []
     });
 
     res.status(201).json(progresso);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, message: "Erro ao adicionar progresso" });
+    res.status(500).json({ ok: false, message: "Erro ao adicionar progresso do usuário" });
   }
 };
 
@@ -39,15 +35,16 @@ const updateProgress = async (req, res) => {
   try {
     const updateData = { ...req.body };
 
-    if (updateData.pesoAtual && updateData.pesoInicial) {
-      updateData.variacaoPeso = updateData.pesoAtual - updateData.pesoInicial;
-    }
+    const progresso = await Progresso.findOneAndUpdate(
+      { userId: req.params.userId },
+      updateData,
+      { new: true, upsert: true }
+    );
 
-    const progresso = await Progresso.findByIdAndUpdate(req.params.progressId, updateData, { new: true });
     res.json(progresso);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, message: "Erro ao atualizar progresso" });
+    res.status(500).json({ ok: false, message: "Erro ao atualizar progresso do usuário" });
   }
 };
 
