@@ -97,6 +97,7 @@ export default function Treino() {
                   r.data === dataAtual &&
                   r.dia === rotinaHoje.dia &&
                   r.idPlano === planoAtivo.id &&
+                  r.finalizado === false &&
                   r.concluido
                 )
               ).length

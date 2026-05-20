@@ -10,10 +10,11 @@ import router from './routes/index.js';
 import authenticateToken from './middlewares/verificarToken.js';
 import routerExercicios from './routes/exercicios.js';
 import routerProgresso from './routes/progresso.js';
+import routerHistorico from './routes/historico.js';
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000', // A URL do seu frontend React
+    origin: 'http://localhost:3000', // A URL do frontend React
     credentials: true // Necessário para aceitar cookies (como o token)
 }));
 
@@ -26,6 +27,7 @@ app.use(routerTreinos);
 app.use(routerBiometria);
 app.use(routerExercicios);
 app.use(routerProgresso);
+app.use(routerHistorico);
 app.use(router);
 
 export default app;

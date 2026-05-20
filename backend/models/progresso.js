@@ -18,9 +18,18 @@ const progressoSchema = new Schema({
     cargaTotalSemana: { type: Number, min: 0 }, // soma dos pesos levantados nos exercícios
 
     // opcional: vincular ao plano ativo do usuário
-    planoId: { type: String },
+    planoId: { type: Schema.Types.ObjectId, ref: "Plano" },
     diaTreino: { type: String }
 
+});
+
+progressoSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+    }
 });
 
 const Progresso = mongoose.model("Progresso", progressoSchema);

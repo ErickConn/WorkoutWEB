@@ -3,9 +3,21 @@ const { Schema } = mongoose;
 
 const exercicioSchema = new Schema({
     nome: { type: String, required: true },
-    categoria: { type: String }, // peito, pernas, costas...
+    grupo: { type: String }, // Peito, Costas, Pernas, Ombros, Bíceps, Tríceps...
+    equipamento: { type: String }, // Barra, Halteres, Máquina, Peso Corporal...
+    categoria: { type: String }, // categoria alternativa (peito, pernas, costas...)
     descricao: { type: String }, // explicação do movimento
-    dificuldade: { type: String, enum: ["iniciante", "intermediário", "avançado"] },
+    nivel_experiencia: { type: String, enum: ['Iniciante', 'Intermediário', 'Avançado', 'iniciante', 'intermediário', 'avançado'] },
+});
+
+exercicioSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+    }
 });
 
 export const Exercicio = mongoose.model('Exercicio', exercicioSchema);
+export default Exercicio;

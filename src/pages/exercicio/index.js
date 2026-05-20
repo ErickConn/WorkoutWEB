@@ -52,8 +52,8 @@ export default function Exercicio() {
     (r.idPlano === planoAtivo?.id)
   );
 
-  const registroHoje = todosRegistrosDoExercicio?.find(r => r.data === dataAtual);
-  const registrosPassados = todosRegistrosDoExercicio?.filter(r => r.data !== dataAtual);
+  const registroHoje = todosRegistrosDoExercicio?.find(r => r.data === dataAtual && r.finalizado === false);
+  const registrosPassados = todosRegistrosDoExercicio?.filter(r => r.finalizado === true || r.data !== dataAtual);
   const ultimoRegistro = registrosPassados?.sort((a, b) => new Date(b.data) - new Date(a.data))[0];
 
   const seriesRealizadas = registroHoje?.seriesRealizadas || [];

@@ -39,10 +39,9 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
         const userId = await getUserIdFromEmail();
         const backendUser = await getOrCreateBackendUser();
         const { data: planos } = await axios.get(`${API_URL}/planos`);
-        const RENDER_API = "https://json-server-wweb.onrender.com";
         let exercicioLib = [];
         try {
-            const { data } = await axios.get(`${RENDER_API}/biblioteca_exercicios`);
+            const { data } = await axios.get(`${API_URL}/exercicios`);
             exercicioLib = data;
         } catch (e) {
             console.warn("Não foi possível carregar biblioteca de exercícios:", e.message);
@@ -157,17 +156,39 @@ export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, {
     }
 });
 
-export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idPlano, { rejectWithValue }) => {
+export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idPlano, { dispatch, rejectWithValue }) => {
     try {
         const backendUser = await getOrCreateBackendUser();
         if (!backendUser) throw new Error("Usuário não encontrado");
 
-        await axios.patch(`${API_URL}/users/${backendUser._id || backendUser.id}`, {
-            activePlanId: idPlano,
+        const { data: plano } = await axios.get(`${API_URL}/planos/${idPlano}`);
+        let finalPlanId = idPlano;
+        
+        const userIdStr = String(backendUser._id || backendUser.id);
+        
+        if (String(plano.userId) !== userIdStr && plano.categoria === 'modelo') {
+            const planClone = {
+                titulo: plano.titulo,
+                descricao: plano.descricao,
+                nivel: plano.nivel,
+                categoria: "personalizado",
+                userId: userIdStr,
+                rotina: plano.rotina.map(t => {
+                    const { _id, id, createdAt, updatedAt, planoId, ...rest } = t;
+                    return rest;
+                })
+            };
+            const res = await axios.post(`${API_URL}/planos`, planClone);
+            finalPlanId = res.data.id || res.data._id;
+        }
+
+        await axios.patch(`${API_URL}/users/${userIdStr}`, {
+            activePlanId: finalPlanId,
             activeDay: null
         });
 
-        return { idPlano };
+        dispatch(fetchPlanoList());
+        return { idPlano: finalPlanId };
     } catch (err) {
         return rejectWithValue(err.message);
     }

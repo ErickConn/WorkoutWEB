@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
+
 const usuarioSchema = new mongoose.Schema({
-    nome: String,
-    email: String,
-    senha: String,
-    role: String,
-    imagem: String,
-    activePlanId: String,
-    activeDay: String
+    nome: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    senha: { type: String, required: true },
+    role: { type: String, enum: ['admin', 'aluno'], default: 'aluno' },
+    imagem: { type: String },
+    activePlanId: { type: mongoose.Schema.Types.ObjectId, ref: 'Plano', default: null },
+    activeDay: { type: String, default: null }
 });
 
 usuarioSchema.set('toJSON', {
