@@ -5,8 +5,8 @@ const usuarioSchema = new mongoose.Schema({
     senha: String,
     role: String,
     imagem: String,
-    activePlanId: String,
-    activeDay: String
+    activePlanId: { type: mongoose.Schema.Types.ObjectId, ref: 'Plano', default: null },
+    activeDay: { type: String, default: null }
 });
 
 usuarioSchema.set('toJSON', {

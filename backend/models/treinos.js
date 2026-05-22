@@ -4,8 +4,8 @@ const { Schema } = mongoose;
 const treinoSchema = new mongoose.Schema({
     planoId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Plano',
-        required: true
+        ref: 'Plano'
+
     },
     foco: {
         type: String,
@@ -22,11 +22,13 @@ const treinoSchema = new mongoose.Schema({
         },
         numSeries: {
             type: Number,
-            required: true
+            required: true,
+            min: 1
         },
         numReps: {
             type: Number,
-            required: true
+            required: true,
+            min: 1
         }
     }]
 }, { timestamps: true });
@@ -41,4 +43,3 @@ treinoSchema.set('toJSON', {
 });
 
 const Treino = mongoose.model('Treino', treinoSchema);
-export default Treino;

@@ -4,8 +4,8 @@ const { Schema } = mongoose;
 const planoSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: 'Usuario',
+        required: function () { return this.categoria === 'personalizado'; }
     },
     titulo: {
         type: String,
@@ -13,17 +13,19 @@ const planoSchema = new mongoose.Schema({
     },
     nivel: {
         type: String,
-        enum: ['iniciante', 'intermediario', 'avancado', 'Iniciante', 'Intermediário', 'Avançado'],
-        required: true
+        enum: ['Iniciante', 'Intermediario', 'Avançado'],
+        required: true,
     },
     categoria: {
         type: String,
+        enum: ['modelo', 'personalizado'],
         required: true
     },
     rotina: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Treino'
-    }]
+    }],
+    ativo: { type: Boolean, default: false }
 }, { timestamps: true });
 
 planoSchema.set('toJSON', {
@@ -36,4 +38,3 @@ planoSchema.set('toJSON', {
 });
 
 const Plano = mongoose.model('Plano', planoSchema);
-export default Plano;
