@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Usuario from "../models/usuario.js";
 
 const isNonEmptyString = (value) => typeof value === "string" && value.trim().length > 0;
@@ -45,6 +46,7 @@ export const validarProgresso = async (req, res, next) => {
           if (!Array.isArray(treino.exercicios)) {
             return res.status(400).json({ ok: false, message: "exercicios inválidos em treino" });
           }
+          /*
           for (const ex of treino.exercicios) {
             if (!isNonEmptyString(ex.id) || typeof ex.concluido !== "boolean") {
               return res.status(400).json({ ok: false, message: "exercicio inválido em treino" });
@@ -61,6 +63,11 @@ export const validarProgresso = async (req, res, next) => {
                   return res.status(400).json({ ok: false, message: "serie inválida em seriesRealizadas" });
                 }
               }
+            }
+          }*/
+         for (const treinoId of semana.treinos) {
+            if (!mongoose.Types.ObjectId.isValid(treinoId)) {
+              return res.status(400).json({ ok: false, message: "ID de treino inválido em historico_carga" });
             }
           }
         }

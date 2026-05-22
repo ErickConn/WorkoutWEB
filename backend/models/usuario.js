@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { ExercicioTreino } from './exercicios';
 const usuarioSchema = new mongoose.Schema({
     nome: String,
     email: String,
@@ -6,7 +7,23 @@ const usuarioSchema = new mongoose.Schema({
     role: String,
     imagem: String,
     activePlanId: String,
-    activeDay: String
+    activeDay: String,
+    historico_carga: [
+        {
+            planoId: String,
+            dia: String,
+            data: String,
+            exercicios: [
+                ExercicioTreino.schema
+            ] 
+        }
+    ],
+    historico_peso: [
+        {
+            data: String,
+            peso_kg: Number
+        }
+    ]
 });
 
 usuarioSchema.set('toJSON', {

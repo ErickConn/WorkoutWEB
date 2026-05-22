@@ -1,35 +1,19 @@
 import mongoose from "mongoose";
+import { ExercicioTreino } from "./exercicios";
 const { Schema } = mongoose;
 
-const serieSchema = new Schema({
-  carga: { type: Number, min: 0 },
-  repeticoes: { type: Number, min: 0 },
-  concluida: { type: Boolean, default: false },
-}, { _id: false });
-
-const exercicioSchema = new Schema({
-  id: { type: String, required: true },
-  dia: { type: String },
-  concluido: { type: Boolean, default: false },
-  carga_kg: { type: Number, min: 0 },
-  seriesRealizadas: { type: [serieSchema], default: [] },
-}, { _id: false });
-
-const treinoSchema = new Schema({
+const historicoPesoSchema = new Schema({
+  semana: { type: Number, required: true },
   data: { type: String, required: true },
-  dia: { type: String },
-  idPlano: { type: String },
-  exercicios: { type: [exercicioSchema], default: [] },
+  peso_kg: { type: Number, required: true, min: 1 },
 }, { _id: false });
 
 const historicoCargaSchema = new Schema({
   semana: { type: Number, required: true },
-  treinos: { type: [treinoSchema], default: [] },
-}, { _id: false });
+  treinos: [{ type: Schema.Types.ObjectId, ref: "Treino", default: [] }], // referência ao modelo Treino
+  cargaTotalSemana: { type: Number, min: 0 }, // soma das cargas
+  frequenciaSemanal: { type: Number, min: 0 }, // número de treinos concluídos
 
-const historicoPesoSchema = new Schema({
-  data: { type: String, required: true },
-  peso_kg: { type: Number, required: true, min: 1 },
 }, { _id: false });
 
 const progressoSchema = new Schema({

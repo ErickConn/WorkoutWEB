@@ -7,6 +7,8 @@ routerExercicios.get('/exercicios', exerciciosControllers.getAllExercicios);
 
 routerExercicios.get('/exercicios/:id', exerciciosControllers.getExercicio);
 
+routerExercicios.get('/treinos/:treinoId/exercicios', exerciciosControllers.getExerciciosTreino);
+
 routerExercicios.post('/exercicios', exerciciosControllers.createExercicio);
 
 routerExercicios.patch('/exercicios/:id', exerciciosControllers.updateExercicio);
