@@ -43,3 +43,4 @@ treinoSchema.set('toJSON', {
 });
 
 const Treino = mongoose.model('Treino', treinoSchema);
+export default Treino;

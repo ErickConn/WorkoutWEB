@@ -38,3 +38,4 @@ planoSchema.set('toJSON', {
 });
 
 const Plano = mongoose.model('Plano', planoSchema);
+export default Plano;
