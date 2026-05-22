@@ -19,7 +19,8 @@ export default function TreinoCard({ rotina, idPlano }) {
       String(r.exercicioId) === String(ex.id) && 
       r.data === dataAtual && 
       (r.dia === rotina.dia) && 
-      (r.idPlano === idPlano)
+      (r.idPlano === idPlano) &&
+      r.finalizado === false
     );
 
     const seriesRealizadas = registroHoje?.seriesRealizadas || [];
