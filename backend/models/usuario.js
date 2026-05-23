@@ -1,29 +1,13 @@
 import mongoose from 'mongoose';
-import { ExercicioTreino } from './exercicios';
+
 const usuarioSchema = new mongoose.Schema({
-    nome: String,
-    email: String,
-    senha: String,
-    role: String,
-    imagem: String,
-    activePlanId: String,
-    activeDay: String,
-    historico_carga: [
-        {
-            planoId: String,
-            dia: String,
-            data: String,
-            exercicios: [
-                ExercicioTreino.schema
-            ] 
-        }
-    ],
-    historico_peso: [
-        {
-            data: String,
-            peso_kg: Number
-        }
-    ]
+    nome: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    senha: { type: String, required: true },
+    role: { type: String, enum: ['admin', 'aluno'], default: 'aluno' },
+    imagem: { type: String },
+    activePlanId: { type: mongoose.Schema.Types.ObjectId, ref: 'Plano', default: null },
+    activeDay: { type: String, default: null }
 });
 
 usuarioSchema.set('toJSON', {

@@ -23,9 +23,44 @@ const validateTreinoId = async (req, res, next) => {
     }
 };
 
+const validateTreinoStructure = (req, res, next) => {
+    const { foco, dia, exercicios } = req.body;
+
+    if (foco !== undefined && typeof foco !== 'string') {
+        return res.status(400).json({ ok: false, message: "O campo 'foco' deve ser do tipo texto (string)" });
+    }
+
+    if (dia !== undefined && typeof dia !== 'string') {
+        return res.status(400).json({ ok: false, message: "O campo 'dia' deve ser do tipo texto (string)" });
+    }
+
+    if (exercicios !== undefined) {
+        if (!Array.isArray(exercicios)) {
+            return res.status(400).json({ ok: false, message: "O campo 'exercicios' deve ser um array" });
+        }
+
+        for (let i = 0; i < exercicios.length; i++) {
+            const ex = exercicios[i];
+            const exId = ex.idExercicio || ex.id || ex.exercicioId;
+            if (!exId) {
+                return res.status(400).json({ ok: false, message: `O exercício no índice ${i} deve conter um identificador ('idExercicio')` });
+            }
+            if (ex.numSeries !== undefined && (typeof ex.numSeries !== 'number' || ex.numSeries < 1)) {
+                return res.status(400).json({ ok: false, message: `O exercício no índice ${i}: 'numSeries' deve ser um número >= 1` });
+            }
+            if (ex.numReps !== undefined && (typeof ex.numReps !== 'number' || ex.numReps < 1)) {
+                return res.status(400).json({ ok: false, message: `O exercício no índice ${i}: 'numReps' deve ser um número >= 1` });
+            }
+        }
+    }
+
+    next();
+};
+
 const treinosMiddlewares = {
     validateEmptyBody,
-    validateTreinoId
+    validateTreinoId,
+    validateTreinoStructure
 };
 
 export default treinosMiddlewares;

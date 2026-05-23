@@ -4,10 +4,10 @@ import { validarProgresso } from "../middlewares/validarProgresso.js";
 
 const routerProgresso = express.Router();
 
-routerProgresso.get("/:userId", progressoControllers.getUserProgress);
+routerProgresso.get("/progresso/:userId", progressoControllers.getUserProgress);
 
-routerProgresso.post("/:userId", validarProgresso, progressoControllers.addProgress);
+routerProgresso.post("/progresso/:userId", validarProgresso, progressoControllers.addProgress);
 
-routerProgresso.put("/:userId", validarProgresso, progressoControllers.updateProgress);
+routerProgresso.put("/progresso/:userId/:progressId", validarProgresso, progressoControllers.updateProgress);
 
 export default routerProgresso;

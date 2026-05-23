@@ -25,5 +25,14 @@ const progressoSchema = new Schema({
   timestamps: true
 });
 
+progressoSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+    }
+});
+
 const Progresso = mongoose.model("Progresso", progressoSchema);
 export default Progresso;
