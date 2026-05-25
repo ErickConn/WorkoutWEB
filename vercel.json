@@ -57,6 +57,30 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/exercicios",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/exercicios/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/progresso",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/progresso/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/historico",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/historico/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

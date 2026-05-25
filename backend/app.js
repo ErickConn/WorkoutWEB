@@ -14,8 +14,11 @@ import routerHistorico from './routes/historico.js';
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000', // A URL do frontend React
-    credentials: true // Necessário para aceitar cookies (como o token)
+    origin: [
+        'http://localhost:3000',
+        'https://workout-web-three.vercel.app'
+    ],
+    credentials: true
 }));
 
 app.use(cookieParser());

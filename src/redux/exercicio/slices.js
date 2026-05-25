@@ -3,6 +3,9 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
+// Configurar axios para incluir cookies nas requisições
+axios.defaults.withCredentials = true;
+
 // Buscar lista
 export const fetchExercicioList = createAsyncThunk(
   'exercicio/fetchList',
