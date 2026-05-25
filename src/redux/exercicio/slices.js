@@ -73,7 +73,7 @@ const exercicioSlice = createSlice({
       })
       .addCase(fetchExercicioList.fulfilled, (state, action) => {
         state.loading = false;
-        state.exercicios = action.payload;
+        state.exercicios = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchExercicioList.rejected, (state, action) => {
         state.loading = false;
