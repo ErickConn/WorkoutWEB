@@ -63,4 +63,10 @@ const treinosMiddlewares = {
     validateTreinoStructure
 };
 
+const treinosMiddlewares = {
+    validateEmptyBody,
+    validateTreinoId,
+    validateTreinoStructure
+};
+
 export default treinosMiddlewares;

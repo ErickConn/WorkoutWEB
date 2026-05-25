@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = "https://json-server-wweb.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
 // Buscar lista
 export const fetchExercicioList = createAsyncThunk(
   'exercicio/fetchList',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${API_URL}/biblioteca_exercicios`);
+      const res = await axios.get(`${API_URL}/exercicios`);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -21,7 +21,7 @@ export const createExercicio = createAsyncThunk(
   'exercicio/create',
   async (novoExercicio, { rejectWithValue }) => {
     try {
-      const res = await axios.post(`${API_URL}/biblioteca_exercicios`, novoExercicio);
+      const res = await axios.post(`${API_URL}/exercicios`, novoExercicio);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -34,7 +34,7 @@ export const updateExercicio = createAsyncThunk(
   'exercicio/update',
   async (exercicio, { rejectWithValue }) => {
     try {
-      await axios.put(`${API_URL}/biblioteca_exercicios/${exercicio.id}`, exercicio);
+      await axios.put(`${API_URL}/exercicios/${exercicio.id}`, exercicio);
       return exercicio;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -47,7 +47,7 @@ export const deleteExercicio = createAsyncThunk(
   'exercicio/delete',
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`${API_URL}/biblioteca_exercicios/${id}`);
+      await axios.delete(`${API_URL}/exercicios/${id}`);
       return id;
     } catch (err) {
       return rejectWithValue(err.message);

@@ -1,4 +1,4 @@
-import { Exercicio } from "../models/exercicios.js";
+import { Exercicio, ExercicioTreino } from "../models/exercicios.js";
 
 const getAllExercicios = async (req, res) => {
   try {
@@ -20,6 +20,16 @@ const getExercicio = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ ok: false, message: "Erro ao buscar exercício" });
+  }
+};
+
+const getExerciciosTreino = async (req, res) => {
+  try {
+    const exerciciosTreino = await ExercicioTreino.find({ treinoId: req.params.treinoId });
+    res.json(exerciciosTreino);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ ok: false, message: "Erro ao buscar exercícios do treino" });
   }
 };
 
@@ -56,6 +66,7 @@ const deleteExercicio = async (req, res) => {
 const exerciciosControllers = {
   getAllExercicios,
   getExercicio,
+  getExerciciosTreino,
   createExercicio,
   updateExercicio,
   deleteExercicio

@@ -23,7 +23,6 @@ const validatePlanoStructure = (req, res, next) => {
             return res.status(400).json({ ok: false, message: "O campo 'nivel' deve ser do tipo texto (string)" });
         }
     }
-
     if (categoria !== undefined && typeof categoria !== 'string') {
         return res.status(400).json({ ok: false, message: "O campo 'categoria' deve ser do tipo texto (string)" });
     }

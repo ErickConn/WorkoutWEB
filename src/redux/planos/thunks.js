@@ -39,7 +39,6 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
         const userId = await getUserIdFromEmail();
         const backendUser = await getOrCreateBackendUser();
         const { data: planos } = await axios.get(`${API_URL}/planos`);
-
         let exercicioLib = [];
         try {
             const { data } = await axios.get(`${API_URL}/exercicios`);

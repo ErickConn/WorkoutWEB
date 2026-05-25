@@ -5,7 +5,6 @@ const treinoSchema = new mongoose.Schema({
     planoId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Plano'
-
     },
     foco: {
         type: String,

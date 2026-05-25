@@ -1,26 +1,37 @@
 import mongoose from "mongoose";
+import { ExercicioTreino } from "./exercicios";
 const { Schema } = mongoose;
 
+const historicoPesoSchema = new Schema({
+  semana: { type: Number, required: true },
+  data: { type: String, required: true },
+  peso_kg: { type: Number, required: true, min: 1 },
+}, { _id: false });
+
+const historicoCargaSchema = new Schema({
+  semana: { type: Number, required: true },
+  treinos: [{ type: Schema.Types.ObjectId, ref: "Treino", default: [] }], // referência ao modelo Treino
+  cargaTotalSemana: { type: Number, min: 0 }, // soma das cargas
+  frequenciaSemanal: { type: Number, min: 0 }, // número de treinos concluídos
+
+}, { _id: false });
+
 const progressoSchema = new Schema({
-    userId: { type: Schema.Types.ObjectId, ref: "Usuario", required: true },
-    data: { type: Date, default: Date.now },
+  userId: { type: Schema.Types.ObjectId, ref: "Usuario", required: true },
+  nivel_experiencia: { type: String, enum: ["iniciante", "intermediário", "avançado"] , default: "iniciante" },
+  historico_peso: { type: [historicoPesoSchema], default: [] },
+  historico_carga: { type: [historicoCargaSchema], default: [] },
+}, {
+  timestamps: true
+});
 
-    // Dados básicos
-    idade: { type: Number, min: 1 },
-    altura: { type: Number, min: 1 }, // em cm
-    pesoInicial: { type: Number, min: 1 }, // informado no cadastro
-    pesoAtual: { type: Number, min: 1 }, // atualizado ao longo do tempo
-    nivelExperiencia: { type: String, enum: ["iniciante", "intermediário", "avançado"] },
-
-    // Métricas de progresso - melhorar depois
-    variacaoPeso: { type: Number }, // diferença entre pesoAtual e pesoInicial
-    frequenciaSemanalTreinos: { type: Number, min: 0 }, // quantos treinos na semana
-    cargaTotalSemana: { type: Number, min: 0 }, // soma dos pesos levantados nos exercícios
-
-    // opcional: vincular ao plano ativo do usuário
-    planoId: { type: String },
-    diaTreino: { type: String }
-
+progressoSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+    }
 });
 
 const Progresso = mongoose.model("Progresso", progressoSchema);
