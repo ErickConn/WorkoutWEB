@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ExercicioTreino } from "./exercicios";
 const { Schema } = mongoose;
 
 const historicoPesoSchema = new Schema({
