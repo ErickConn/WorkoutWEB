@@ -130,6 +130,18 @@ export default function BibliotecaExercicios() {
         ))}
       </div>
 
+      <div className={styles.filtro}>
+        {equipamentos.map(equipamento => (
+          <button
+            key={equipamento}
+            className={equipamentoAtivo === equipamento ? styles.active : ""}
+            onClick={() => setEquipamentoAtivo(equipamento)}
+          >
+            {equipamento}
+          </button>
+        ))}
+      </div>
+
       <ListaExercicios
         titulo="Exercícios"
         dados={exerciciosFiltrados}
@@ -151,7 +163,7 @@ export default function BibliotecaExercicios() {
       {exerciciosFiltrados.length === 0 && (
         <div className={styles.emptyState}>
           <p>
-            Nenhum exercício encontrado para <strong>{grupoAtivo}</strong> e <strong>{nivelAtivo}</strong> com busca <strong>"{busca}"</strong>.
+            Nenhum exercício encontrado para <strong>{grupoAtivo}</strong>, <strong>{equipamentoAtivo}</strong> e <strong>{nivelAtivo}</strong> com busca <strong>"{busca}"</strong>.
           </p>
         </div>
       )}
