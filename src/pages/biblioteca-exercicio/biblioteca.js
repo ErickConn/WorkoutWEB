@@ -38,6 +38,9 @@ export default function BibliotecaExercicios() {
   const niveis = ["Todos", "Iniciante", "Intermediário", "Avançado"];
   const [nivelAtivo, setNivelAtivo] = useState("Todos");
 
+  const equipamentos = ["Todos", "Barra", "Halteres", "Peso Corporal", "Polia", "Máquina"];
+  const [equipamentoAtivo, setEquipamentoAtivo] = useState("Todos");
+
   const handleDelete = (id) => {
     const exercicio = exercicios.find(ex => ex.id === id);
     console.log("Exercício encontrado para deletar:", exercicio);
@@ -60,7 +63,7 @@ export default function BibliotecaExercicios() {
   if (error) return <p>Erro: {error}</p>;
 
 
-  // filtro atual (grupo + busca) => futuro: (grupo + busca + nível)
+  // filtro atual (grupo + busca) => futuro: (grupo + busca + nível + equipamento)
   const exerciciosFiltrados = exercicios.filter(ex => {
     const nomeOuTitulo = ex.nome || ex.titulo || "";
     const bateBusca = nomeOuTitulo.toLowerCase().includes(busca.toLowerCase());
@@ -68,11 +71,13 @@ export default function BibliotecaExercicios() {
     const bateGrupo = grupoAtivo === "Todos" || grupo === grupoAtivo;
     const nivel = ex.nivel_experiencia || "";
     const bateNivel = nivelAtivo === "Todos" || nivel === nivelAtivo;
-    console.log(`Exercício: "${nomeOuTitulo}", Grupo: "${grupo}", Nível: "${nivel}"`);
-    if (bateBusca && bateGrupo && bateNivel) {
-      console.log(`Filtrando exercício: "${nomeOuTitulo}", Busca: ${bateBusca}, Grupo: ${grupo} (${bateGrupo}), Nível: ${nivel} (${bateNivel})`);
+    const equipamento = ex.equipamento || "";
+    const bateEquipamento = equipamentoAtivo === "Todos" || equipamento === equipamentoAtivo;
+    console.log(`Exercício: "${nomeOuTitulo}", Grupo: "${grupo}", Nível: "${nivel}", Equipamento: "${equipamento}"`);
+    if (bateBusca && bateGrupo && bateNivel && bateEquipamento) {
+      console.log(`Filtrando exercício: "${nomeOuTitulo}", Busca: ${bateBusca}, Grupo: ${grupo} (${bateGrupo}), Nível: ${nivel} (${bateNivel}), Equipamento: ${equipamento} (${bateEquipamento})`);
     }
-    return bateBusca && bateGrupo && bateNivel;
+    return bateBusca && bateGrupo && bateNivel && bateEquipamento;
   });
   
 

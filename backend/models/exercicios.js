@@ -6,7 +6,7 @@ const exercicioSchema = new Schema({
     nome: { type: String, required: true },
     grupo: { type: String }, // peito, pernas, costas...
     nivel_experiencia: { type: String, enum: ['Iniciante', 'Intermediário', 'Avançado', 'iniciante', 'intermediário', 'avançado'] },
-    equipamento: { type: String }, // Barra, Halteres, Máquina, Peso Corporal...
+    equipamento: { type: String, enum: ['Barra', 'Halteres', 'Máquina', 'Peso Corporal', 'Polia', 'barra', 'halteres', 'máquina', 'polia', 'peso corporal'] }, 
     categoria: { type: String }, // categoria alternativa (peito, pernas, costas...)
     descricao: { type: String }, // explicação do movimento
 });

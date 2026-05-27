@@ -21,13 +21,13 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
       console.log("Carregando dados para edição:", exercicio);
       setNome(exercicio.nome);
       setGrupo(exercicio.grupo);
-      setEquipamento(exercicio.equipamento);
+      setEquipamento(exercicio.equipamento || "Peso Corporal");
       setNivel(exercicio.nivel_experiencia || "Iniciante");
     }
   }, [exercicio]);
 
   const handleSalvar = async () => {
-    if (!nome || !grupo || !equipamento) {
+    if (!nome || !grupo || !equipamento || !nivel_experiencia) {
       showAlert("Preencha todos os campos!", 'warning');
       return;
     }
@@ -56,7 +56,14 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
         </div>
         <div className={styles.formGroup}>
           <label>Equipamento</label>
-          <input value={equipamento} onChange={e => setEquipamento(e.target.value)} />
+          <select value={equipamento} onChange={e => setEquipamento(e.target.value)}>
+            <option value="">Selecione...</option>
+            <option value="Barra">Barra</option>
+            <option value="Halteres">Halteres</option>
+            <option value="Peso Corporal">Peso Corporal</option>
+            <option value="Polia">Polia</option>
+            <option value="Máquina">Máquina</option>
+          </select>
         </div>
         <div className={styles.formGroup}>
           <label>Nível de Experiência: </label>

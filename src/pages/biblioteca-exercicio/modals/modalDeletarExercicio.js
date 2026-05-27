@@ -29,6 +29,7 @@ export default function DeletarExercicioModal({ show, handleClose, exercicio }) 
           <p><strong>Nome:</strong> {exercicio.nome}</p>
           <p><strong>Grupo:</strong> {exercicio.grupo}</p>
           <p><strong>Equipamento:</strong> {exercicio.equipamento}</p>
+          <p><strong>Nível:</strong> {exercicio.nivel_experiencia}</p>
         </div>
       </Modal.Body>
       <Modal.Footer>

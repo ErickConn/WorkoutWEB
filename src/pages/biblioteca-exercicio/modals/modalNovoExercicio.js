@@ -37,7 +37,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
       id: novoId,
       nome: formatarNomeExercicio(nome),
       grupo: formatarNomeExercicio(grupo),
-      equipamento: formatarNomeExercicio(equipamento),
+      equipamento: equipamento || "Peso Corporal",
       nivel_experiencia: nivel || "Iniciante"
     };
     
@@ -67,7 +67,14 @@ export default function NovoExercicioModal({ show, handleClose }) {
         </div>
         <div className={styles.formGroup}>
           <label>Equipamento: </label>
-          <input value={equipamento} onChange={e => setEquipamento(e.target.value)} />
+          <select value={equipamento} onChange={e => setEquipamento(e.target.value)}>
+            <option value="">Selecione...</option>
+            <option value="Barra">Barra</option>
+            <option value="Halteres">Halteres</option>
+            <option value="Peso Corporal">Peso Corporal</option>
+            <option value="Polia">Polia</option>
+            <option value="Máquina">Máquina</option>
+          </select>
         </div>
         <div className={styles.formGroup}>
           <label>Nível de Experiência: </label>

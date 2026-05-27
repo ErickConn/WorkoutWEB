@@ -1,6 +1,6 @@
 // backend/middlewares/validarExercicios.js
 export const validarExercicioBio = (req, res, next) => {
-  const { id, nome, grupo, nivel_experiencia } = req.body;
+  const { id, nome, grupo, nivel_experiencia, equipamento } = req.body;
   if (!id || typeof id !== "string") {
     return res.status(400).json({ ok: false, message: "ID do exercício inválido" });
   }
@@ -17,6 +17,12 @@ export const validarExercicioBio = (req, res, next) => {
   const niveisValidos = ["iniciante", "intermediário", "avançado"];
   if (nivel_experiencia && !niveisValidos.includes(nivel_experiencia)) {
     return res.status(400).json({ ok: false, message: "Nível de experiência inválido" });
+  }
+
+  // Validação do equipamento
+  const equipamentosValidos = ["Barra", "Halteres", "Máquina", "Peso Corporal", "Polia"];
+  if (equipamento && !equipamentosValidos.includes(equipamento)) {
+    return res.status(400).json({ ok: false, message: "Equipamento inválido" });
   }
   next();
 };
