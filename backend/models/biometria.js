@@ -14,7 +14,7 @@ const biometriaSchema = new mongoose.Schema({
         nivel_atividade: { type: String, enum: ['sedentario', 'leve', 'moderado', 'intenso', 'muito_intenso'] }
     },
     experiencia_usuario: {
-        nivel_experiencia: { type: String, enum: ['iniciante', 'intermediario', 'avançado'] },
+        nivel_experiencia: { type: String, enum: ['iniciante', 'intermediario', 'avancado'] },
         objetivos: [String]
     },
     analise_metabolica: {
