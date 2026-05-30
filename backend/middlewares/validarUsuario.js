@@ -54,9 +54,9 @@ const validateUserStructure = (req, res, next) => {
         if (typeof email !== 'string' || email.trim() === '') {
             return res.status(400).json({ ok: false, message: "O campo 'email' deve ser um texto válido" });
         }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.com$/;
         if (!emailRegex.test(email)) {
-            return res.status(400).json({ ok: false, message: "Formato de e-mail inválido" });
+            return res.status(400).json({ ok: false, message: "Formato de e-mail inválido. O e-mail deve terminar obrigatoriamente com '.com' (ex: usuario@email.com)" });
         }
     }
 

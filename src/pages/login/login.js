@@ -19,6 +19,10 @@ export default function Login() {
     e.preventDefault();
     try {
       const emailFormatado = email.toLowerCase();
+      if (!emailFormatado.endsWith('.com')) {
+        showAlert('O e-mail deve terminar obrigatoriamente com .com', 'error');
+        return;
+      }
       await dispatch(loginAuth({ email: emailFormatado, senha: password })).unwrap();
       navigate('/perfil');
     } catch (err) {
@@ -58,6 +62,9 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)} // Atualiza o state
                   required
                 />
+                <span style={{ fontSize: '11px', color: 'var(--outline)', marginTop: '4px', marginLeft: '4px' }}>
+                  * O e-mail deve obrigatoriamente terminar com <strong>.com</strong>
+                </span>
               </div>
 
               <div className={styles.formGroup}>

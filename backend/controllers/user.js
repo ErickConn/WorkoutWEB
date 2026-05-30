@@ -6,6 +6,20 @@ dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY
 
+const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    maxAge: 60 * 60 * 1000 // 1h, alinhado com o expiresIn do JWT
+};
+
+// Remove a senha (hash) do objeto antes de enviar ao frontend
+const sanitizeUser = (user) => {
+    const obj = user.toJSON ? user.toJSON() : { ...user };
+    delete obj.senha;
+    return obj;
+};
+
 
 const getAllUser = async (req, res) => {
     try {
@@ -45,15 +59,16 @@ const getMe = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const { senha, ...userData } = req.body;
+        const { senha, role, ...userData } = req.body;
         const hashedPassword = await bcrypt.hash(senha, 10);
-        const user = await Usuario.create({ ...userData, senha: hashedPassword });
+        // Força role 'aluno' no registro — impede escalação de privilégios
+        const user = await Usuario.create({ ...userData, senha: hashedPassword, role: 'aluno' });
         
         // Gerar token e definir cookie para login automático correto
         const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, cookieOptions);
 
-        res.status(201).json(user);
+        res.status(201).json(sanitizeUser(user));
     } catch (error) {
         console.log(error);
         if (error.code === 11000) {
@@ -66,11 +81,15 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const updateData = { ...req.body };
+        // Só admin pode alterar o role — impede escalação de privilégios
+        if (req.userRole !== 'admin') {
+            delete updateData.role;
+        }
         if (updateData.senha) {
             updateData.senha = await bcrypt.hash(updateData.senha, 10);
         }
         const user = await Usuario.findByIdAndUpdate(req.params.id, updateData, { new: true });
-        return res.json(user);
+        return res.json(sanitizeUser(user));
     } catch (error) {
         console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao atualizar user" })
@@ -102,8 +121,8 @@ const loginUser = async (req, res) => {
             return res.status(401).json({ ok: false, message: "Email ou senha incorretos" });
         }
         const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true });
-        return res.json({ user, token });
+        res.cookie('token', token, cookieOptions);
+        return res.json({ user: sanitizeUser(user), token });
     } catch (error) {
         console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao fazer login" });
@@ -111,7 +130,7 @@ const loginUser = async (req, res) => {
 }
 const logoutUser = async (req, res) => {
     try {
-        res.clearCookie('token', { httpOnly: true });
+        res.clearCookie('token', cookieOptions);
         return res.json({ ok: true, message: "Logout realizado com sucesso" });
     } catch (error) {
         console.log(error);

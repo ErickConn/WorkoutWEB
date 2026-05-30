@@ -18,6 +18,10 @@ export default function Registro() {
         e.preventDefault();
 
         const emailFormatado = email.toLowerCase();
+        if (!emailFormatado.endsWith('.com')) {
+            showAlert('O e-mail deve terminar obrigatoriamente com .com', 'error');
+            return;
+        }
         
         const novoUsuario = {
             nome: name,
@@ -85,6 +89,9 @@ export default function Registro() {
                                     onChange={(e) => setEmail(e.target.value)} // Atualiza o state
                                     required
                                 />
+                                <span style={{ fontSize: '11px', color: 'var(--outline)', marginTop: '4px', marginLeft: '4px' }}>
+                                    * O e-mail deve obrigatoriamente terminar com <strong>.com</strong>
+                                </span>
                             </div>
 
                             <div className={styles.formGroup}>
