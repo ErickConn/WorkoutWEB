@@ -50,7 +50,6 @@ export default function Treino() {
   if (loading) {
     return (
       <div className={styles.mainContainer}>
-        <OffCanvasNavBar />
         <Spinner className="vh-100" />
       </div>
     );

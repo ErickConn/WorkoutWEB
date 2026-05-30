@@ -17,7 +17,7 @@ export default function Selecttreino() {
     const planos = useSelector(state => state.planosReducer.planos) || [];
     const loading = useSelector(state => state.planosReducer.loading);
     const treino = planos.find(p => p.ativo) || planos[0];
-
+    
     useEffect(() => {
         dispatch(fetchPlanoList());
     }, [dispatch]);
@@ -54,11 +54,11 @@ export default function Selecttreino() {
                 <div className="mb-4">
                     <HighlightWorkoutCard
                         variant="green"
-                        badgeText="✨ FAVORITO HOJE"
+                        badgeText=" TREINO SELECIONADO"
                         title={`Treino ${treino.rotina.find(item => item.ativo)?.dia || treino.rotina[0]?.dia || ''}`}
                         subtitle={treino.rotina.find(item => item.ativo)?.foco || treino.rotina[0]?.foco}
                         footerText={<span>{treino.rotina.find(item => item.ativo)?.exercicios?.length || treino.rotina[0]?.exercicios?.length || 0} exercícios</span>}
-                        onClick={() => handleSelecionarTreino(treino.rotina.find(item => item.ativo)?.dia || treino.rotina[0]?.dia)}
+                        onClick={() => handleSelecionarTreino(treino.rotina.find(item => item.ativo)?.dia)}
                     />
                 </div>
 
@@ -89,7 +89,7 @@ export default function Selecttreino() {
                     title="Treino Livre"
                     subtitle="Monte sua própria sessão"
                     footerText="Escolha os exercícios que você quer fazer hoje"
-                    linkTo="/plano"
+                    onClick={()=> navigate('/plano')}
                 />
             </main>
         </Container >
