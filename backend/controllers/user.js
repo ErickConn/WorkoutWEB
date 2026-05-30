@@ -30,14 +30,35 @@ const getUser = async (req, res) => {
     }
 }
 
+const getMe = async (req, res) => {
+    try {
+        const user = await Usuario.findById(req.userId);
+        if (!user) {
+            return res.status(404).json({ ok: false, message: "Usuário não encontrado" })
+        }
+        return res.json(user);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ ok: false, message: "Erro ao carregar perfil do usuário" })
+    }
+}
+
 const createUser = async (req, res) => {
     try {
         const { senha, ...userData } = req.body;
         const hashedPassword = await bcrypt.hash(senha, 10);
         const user = await Usuario.create({ ...userData, senha: hashedPassword });
+        
+        // Gerar token e definir cookie para login automático correto
+        const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        res.cookie('token', token, { httpOnly: true });
+
         res.status(201).json(user);
     } catch (error) {
         console.log(error);
+        if (error.code === 11000) {
+            return res.status(400).json({ ok: false, message: "Este e-mail já está em uso." });
+        }
         res.status(500).json({ ok: false, message: "Erro ao criar user" })
     }
 }
@@ -101,6 +122,7 @@ const logoutUser = async (req, res) => {
 const userControllers = {
     getAllUser,
     getUser,
+    getMe,
     createUser,
     updateUser,
     deleteUser,

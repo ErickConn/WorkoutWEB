@@ -19,6 +19,18 @@ export const fetchUsersList = createAsyncThunk(
     }
 );
 
+export const fetchCurrentUser = createAsyncThunk(
+    'user/fetchCurrent',
+    async (_, { rejectWithValue }) => {
+        try {
+            const res = await axios.get(`${API_URL}/user/me`);
+            return res.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.message || err.message);
+        }
+    }
+);
+
 export const loginAuth = createAsyncThunk(
     'user/login',
     async (credentials, { rejectWithValue }) => {
@@ -124,17 +136,20 @@ const userSlice = createSlice({
             .addCase(fetchUsersList.fulfilled, (state, action) => {
                 state.loading = false;
                 state.users = action.payload;
-
-                // Tenta carregar o usuário logado se existir sessão
-                const emailLogado = localStorage.getItem('usuarioLogadoEmail');
-                if (emailLogado) {
-                    const foundUser = action.payload.find(item => item.email === emailLogado);
-                    if (foundUser) {
-                        state.currentUser = foundUser;
-                    }
-                }
             })
             .addCase(fetchUsersList.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(fetchCurrentUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentUser = action.payload;
+            })
+            .addCase(fetchCurrentUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

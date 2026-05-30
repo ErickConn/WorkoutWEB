@@ -23,11 +23,14 @@ export default function Home({ show, handleClose }) {
     const currentUser = useSelector(state => state.userReducer.currentUser);
     const biometriaList = useSelector(state => state.biometriaReducer.biometria);
 
-    // Encontra a biometria do usuário atual
+    // Encontra a biometria do usuário atual (a mais recente)
     const biometriaAtual = useMemo(() => {
         if (!currentUser) return null;
         const currentId = currentUser._id || currentUser.id;
-        return biometriaList.find(item => item.id_usuario === String(currentId));
+        const userBiometrics = biometriaList
+            .filter(item => item.id_usuario === String(currentId))
+            .sort((a, b) => (a.id || a._id || '').localeCompare(b.id || b._id || ''));
+        return userBiometrics.length > 0 ? userBiometrics[userBiometrics.length - 1] : null;
     }, [currentUser, biometriaList]);
 
     // --- LÓGICA DE CÁLCULO AO VIVO (LIVE PREVIEW) ---

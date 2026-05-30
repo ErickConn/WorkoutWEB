@@ -11,19 +11,23 @@ const UserProfileCard = ({ fotoUsuario, handleUploadFoto, nome, email, iniciais,
 
     return (
         <section className={`${styles.cartao} ${styles.cartaoUsuario}`}>
-            <div className={styles.avatar}>
-                <label htmlFor="uploadFoto" style={{ cursor: 'pointer' }}>
+            <div className={styles.avatarContainer}>
+                <label htmlFor="uploadFoto" className={styles.avatarLabel}>
                     {fotoUsuario ? (
                         <img 
-                            src={fotoUsuario} s
+                            src={fotoUsuario} 
                             alt="Avatar do Usuário" 
-                            style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} 
+                            className={styles.avatarImage} 
                         />
                     ) : (
                         <div className={styles.avatarPlaceholder} id="fotoUsuario">
                             {iniciais}
                         </div>
                     )}
+                    <div className={styles.avatarOverlay}>
+                        <span>📷</span>
+                        Alterar
+                    </div>
                 </label>
                 <input 
                     type="file" 

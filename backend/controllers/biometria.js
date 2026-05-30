@@ -1,8 +1,19 @@
 import Biometria from "../models/biometria.js";
+import Usuario from "../models/usuario.js";
 
 const getAllBiometria = async (req, res) => {
     try {
-        const biometria = await Biometria.find({});
+        const requester = await Usuario.findById(req.userId);
+        if (!requester) {
+            return res.status(404).json({ ok: false, message: "Usuário não encontrado" });
+        }
+
+        let biometria;
+        if (requester.role === 'admin') {
+            biometria = await Biometria.find({});
+        } else {
+            biometria = await Biometria.find({ id_usuario: req.userId });
+        }
         res.json(biometria);
     } catch (error) {
         console.log(error);

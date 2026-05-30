@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './components/perfil.module.css';
 import { fetchPlanoList } from '../../redux/planos/slices';
 import { fetchBiometriaList, deleteBiometria } from '../../redux/Biometria/slice';
-import { fetchUsersList, deleteUser } from '../../redux/user/slice';
+import { fetchCurrentUser, deleteUser, updateUser } from '../../redux/user/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';
@@ -44,7 +44,7 @@ export default function Perfil() {
     };
 
     useEffect(() => {
-        dispatch(fetchUsersList());
+        dispatch(fetchCurrentUser());
         dispatch(fetchBiometriaList()); // Adicionado de volta para carregar do DB no refresh
         dispatch(fetchPlanoList());
     }, [dispatch]);
@@ -52,12 +52,23 @@ export default function Perfil() {
     useEffect(() => {
         if (currentUser && biometria?.length > 0) {
             const userId = currentUser._id || currentUser.id;
-            const dadosBiometria = biometria.find(item => item.id_usuario === String(userId));
+            const userBiometrics = biometria
+                .filter(item => item.id_usuario === String(userId))
+                .sort((a, b) => (a.id || a._id || '').localeCompare(b.id || b._id || ''));
+            const dadosBiometria = userBiometrics.length > 0 ? userBiometrics[userBiometrics.length - 1] : null;
             setMeusDados(dadosBiometria || null);
         } else {
             setMeusDados(null);
         }
     }, [currentUser, biometria]);
+
+    useEffect(() => {
+        if (currentUser) {
+            setFotoUsuario(currentUser.imagem || null);
+        } else {
+            setFotoUsuario(null);
+        }
+    }, [currentUser]);
 
     const confirmDelete = () => {
         if (currentUser) {
@@ -76,7 +87,64 @@ export default function Perfil() {
     const handleUploadFoto = (event) => {
         const arquivo = event.target.files[0];
         if (arquivo) {
-            setFotoUsuario(URL.createObjectURL(arquivo));
+            if (!arquivo.type.startsWith('image/')) {
+                showAlert('Por favor, selecione um arquivo de imagem válido.', 'danger');
+                return;
+            }
+
+            const leitor = new FileReader();
+            leitor.readAsDataURL(arquivo);
+            leitor.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 300;
+                    const MAX_HEIGHT = 300;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    setFotoUsuario(base64Image);
+
+                    if (currentUser) {
+                        const userId = currentUser._id || currentUser.id;
+                        const { senha, ...userSemSenha } = currentUser;
+                        const dadosAtualizados = {
+                            ...userSemSenha,
+                            imagem: base64Image
+                        };
+
+                        dispatch(updateUser({ id: userId, updatedData: dadosAtualizados }))
+                            .unwrap()
+                            .then(() => {
+                                showAlert('Foto de perfil atualizada com sucesso!', 'success');
+                            })
+                            .catch((err) => {
+                                console.error('Erro ao salvar foto de perfil:', err);
+                                showAlert('Erro ao salvar foto de perfil no servidor.', 'danger');
+                            });
+                    }
+                };
+            };
         }
     };
 

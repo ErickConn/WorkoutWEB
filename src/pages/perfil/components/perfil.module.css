@@ -36,13 +36,41 @@
     gap: 20px;
 }
 
-.avatar {
-    /* Container do avatar */
+.avatarContainer {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.avatarLabel {
+    display: block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(25, 75, 251, 0.2);
+    border: 3px solid #ffffff;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+    padding: 0;
+}
+
+.avatarLabel:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(25, 75, 251, 0.3);
+}
+
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .avatarPlaceholder {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     background: linear-gradient(135deg, #a742f5, #5a42f5); 
     color: white;
@@ -51,6 +79,35 @@
     justify-content: center;
     font-size: 2rem;
     font-weight: bold;
+}
+
+.avatarOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.avatarLabel:hover .avatarOverlay {
+    opacity: 1;
+}
+
+.avatarOverlay span {
+    font-size: 1.25rem;
+    margin-bottom: 2px;
 }
 
 .informacoesUsuario .nome {

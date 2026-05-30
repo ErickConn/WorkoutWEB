@@ -11,6 +11,7 @@ const authenticateToken = (req, res, next) => {
             return res.status(403).json({ ok: false, message: "Token inválido" });
         }
         req.userId = user.id;
+        req.userRole = user.role;
         next();
     });
 }

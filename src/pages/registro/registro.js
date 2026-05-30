@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createUser, fetchUsersList } from '../../redux/user/slice';
+import { createUser } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
 import { AlertContext } from '../../context/AlertContext';
 
@@ -14,43 +14,28 @@ export default function Registro() {
     const navigate = useNavigate();
     const { showAlert } = useContext(AlertContext);
 
-    const users = useSelector((state) => state.userReducer.users);
-
-    useEffect(() => {
-        dispatch(fetchUsersList());
-    }, [dispatch]);
-
     const handleRegistro = (e) => {
         e.preventDefault();
 
         const emailFormatado = email.toLowerCase();
         
-        // Verifica se o e-mail já existe na base de dados (ignorando a caixa)
-        const emailJaExiste = users.some(
-            (item) => item.email === emailFormatado
-        );
-
-        if (emailJaExiste) {
-            showAlert('Este e-mail já está sendo utilizado. Por favor, use outro e-mail ou faça login na sua conta.', 'error');
-            return;
-        }
-
-        // O objeto agora reflete exatamente o usuarioSchema do MongoDB
         const novoUsuario = {
             nome: name,
             email: emailFormatado,
-            senha: password, // Mongoose model usa 'senha' em vez de 'password'
+            senha: password, 
             role: 'aluno'
         };
 
-        // 1. Dispara a ação para salvar no Redux
-        dispatch(createUser(novoUsuario));
-
-        // 2. A MÁGICA AQUI: Faz o login automático salvando a sessão no navegador!
-        localStorage.setItem('usuarioLogadoEmail', emailFormatado);
-
-        // 3. Redireciona o usuário direto para a página de perfil (e não mais pro login)
-        navigate('/perfil');
+        dispatch(createUser(novoUsuario))
+            .unwrap()
+            .then(() => {
+                localStorage.setItem('usuarioLogadoEmail', emailFormatado);
+                showAlert('Cadastro realizado com sucesso!', 'success');
+                navigate('/perfil');
+            })
+            .catch((err) => {
+                showAlert(err || 'Este e-mail já está sendo utilizado ou ocorreu um erro.', 'error');
+            });
     };
 
     return (
