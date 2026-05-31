@@ -115,7 +115,7 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
 
         return planosFiltrados;
     } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.response?.data?.message || err.message);
     }
 });
 

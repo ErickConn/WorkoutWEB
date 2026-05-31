@@ -43,7 +43,7 @@ export default function CardTreino({
           const REAL_API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
           const { default: axios } = await import('axios');
           // Tenta obter o usuário pelo id via rota autenticada; pode falhar se não houver permissão.
-          const { data: criador } = await axios.get(`${REAL_API_URL}/user/${userId}`, { withCredentials: true });
+          const { data: criador } = await axios.get(`${REAL_API_URL}/public/user/${userId}`);
           if (criador && (criador.nome || criador.nome === '')) setNomeCriador(criador.nome);
         } catch (err) {
           // Falha em buscar o criador — não quebra a UI

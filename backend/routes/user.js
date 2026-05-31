@@ -10,6 +10,9 @@ const routerUser = express.Router();
 routerUser.get('/user/me', authenticateToken, (req, res) => userControllers.getMe(req, res));
 routerUser.get('/users/me', authenticateToken, (req, res) => userControllers.getMe(req, res));
 
+// Rota pública para obter informações não sensíveis de um usuário (ex: nome)
+routerUser.get('/public/user/:id', (req, res) => userControllers.getPublicUser(req, res));
+
 // Apenas administradores podem ver a lista de todos os usuários
 routerUser.get('/user', authenticateToken, autorizar('admin'), (req, res) => userControllers.getAllUser(req, res));
 routerUser.get('/users', authenticateToken, autorizar('admin'), (req, res) => userControllers.getAllUser(req, res));
