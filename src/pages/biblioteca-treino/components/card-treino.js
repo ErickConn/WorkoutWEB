@@ -42,11 +42,12 @@ export default function CardTreino({
         try {
           const REAL_API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
           const { default: axios } = await import('axios');
-          const { data: users } = await axios.get(`${REAL_API_URL}/users`);
-          const criador = users.find(u => String(u.id) === String(userId) || String(u._id) === String(userId));
-          if (criador) setNomeCriador(criador.nome);
+          // Tenta obter o usuário pelo id via rota autenticada; pode falhar se não houver permissão.
+          const { data: criador } = await axios.get(`${REAL_API_URL}/user/${userId}`, { withCredentials: true });
+          if (criador && (criador.nome || criador.nome === '')) setNomeCriador(criador.nome);
         } catch (err) {
-          console.error('Erro ao buscar criador do plano:', err);
+          // Falha em buscar o criador — não quebra a UI
+          console.debug('Não foi possível obter nome do criador:', err.message || err);
         }
       }
     };

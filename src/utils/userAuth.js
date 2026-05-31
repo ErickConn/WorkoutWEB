@@ -9,9 +9,9 @@ export const getLoggedUserEmail = () => {
 export const getUserByEmail = async (email) => {
     if (!email) return null;
     try {
-        const { data: users } = await axios.get(`${REAL_API_URL}/users`);
-        const user = users.find((u) => u.email === email);
-        if (user) {
+        // Rota autenticada que retorna o usuário logado via cookie/token
+        const { data: user } = await axios.get(`${REAL_API_URL}/user/me`, { withCredentials: true });
+        if (user && user.email === email) {
             return { usuario: user };
         }
         return null;
@@ -25,9 +25,9 @@ export const getUserIdFromEmail = async () => {
     const email = getLoggedUserEmail();
     if (!email) return null;
     try {
-        const { data: users } = await axios.get(`${REAL_API_URL}/users`);
-        const user = users.find(u => u.email === email);
-        return user?._id || user?.id || null;
+        const { data: user } = await axios.get(`${REAL_API_URL}/user/me`, { withCredentials: true });
+        if (!user) return null;
+        return user._id || user.id || null;
     } catch (err) {
         console.error('Erro ao buscar ID do usuário por email:', err);
         return null;
@@ -36,7 +36,13 @@ export const getUserIdFromEmail = async () => {
 
 export const getLoggedUser = async () => {
     const email = getLoggedUserEmail();
-    return await getUserByEmail(email);
+    // Se tiver email salvo, tenta obter o usuário autenticado via cookie
+    try {
+        const { data: user } = await axios.get(`${REAL_API_URL}/user/me`, { withCredentials: true });
+        return user ? { usuario: user } : await getUserByEmail(email);
+    } catch (err) {
+        return await getUserByEmail(email);
+    }
 };
 
 export const getLoggedUserRole = async () => {

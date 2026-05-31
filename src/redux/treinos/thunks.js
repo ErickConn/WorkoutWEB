@@ -14,7 +14,7 @@ export const setTreinoAtivo = createAsyncThunk('treinos/setTreinoAtivo', async (
             return rejectWithValue("Nenhum plano ativo encontrado.");
         }
 
-        await axios.patch(`${API_URL}/users/${backendUser._id || backendUser.id}`, { activeDay: dia });
+        await axios.patch(`${API_URL}/user/${backendUser._id || backendUser.id}`, { activeDay: dia }, { withCredentials: true });
 
         return {
             idPlano: backendUser.activePlanId,

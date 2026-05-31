@@ -8,8 +8,8 @@ export const getOrCreateBackendUser = async () => {
     const email = getLoggedUserEmail();
     if (!email) return null;
     try {
-        const { data: users } = await axios.get(`${API_URL}/users`);
-        const user = users.find(u => u.email === email);
+        // Tenta obter o usuário autenticado via cookie/token
+        const { data: user } = await axios.get(`${API_URL}/user/me`, { withCredentials: true });
         return user || null;
     } catch (err) {
         console.error("Erro ao buscar usuario no backend:", err);
@@ -143,10 +143,10 @@ export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, {
         // Se o plano removido era o ativo, limpa no user
         const backendUser = await getOrCreateBackendUser();
         if (backendUser && backendUser.activePlanId && String(backendUser.activePlanId) === String(id)) {
-            await axios.patch(`${API_URL}/users/${backendUser._id || backendUser.id}`, {
+            await axios.patch(`${API_URL}/user/${backendUser._id || backendUser.id}`, {
                 activePlanId: null,
                 activeDay: null
-            });
+            }, { withCredentials: true });
         }
 
         dispatch(fetchPlanoList());
@@ -182,10 +182,10 @@ export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idP
             finalPlanId = res.data.id || res.data._id;
         }
 
-        await axios.patch(`${API_URL}/users/${userIdStr}`, {
+        await axios.patch(`${API_URL}/user/${userIdStr}`, {
             activePlanId: finalPlanId,
             activeDay: null
-        });
+        }, { withCredentials: true });
 
         dispatch(fetchPlanoList());
         return { idPlano: finalPlanId };
