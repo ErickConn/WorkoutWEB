@@ -81,6 +81,14 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/public/user",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/public/user/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

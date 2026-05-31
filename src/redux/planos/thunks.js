@@ -27,7 +27,9 @@ export const ensurePlanEditable = async (idPlano) => {
     const usuarioAtualId = usuario.usuario.id;
     const usuarioAtualRole = usuario.usuario.role;
 
-    if (usuarioAtualRole !== 'admin' && String(plano.userId) !== String(usuarioAtualId)) {
+    // userId pode ser objeto populado { id, nome, imagem } ou string raw
+    const planoCreatorId = plano.userId?.id || plano.userId?._id || plano.userId;
+    if (usuarioAtualRole !== 'admin' && String(planoCreatorId) !== String(usuarioAtualId)) {
         throw new Error("Apenas o criador do plano ou um administrador pode editar ou remover este plano.");
     }
 
@@ -105,7 +107,9 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
                     return planoAjustado;
                 }
 
-                if (userId && String(plano.userId) === String(userId)) {
+                // userId pode ser objeto populado { id, nome, imagem } ou string raw
+                const planoCreatorId = plano.userId?.id || plano.userId?._id || plano.userId;
+                if (userId && String(planoCreatorId) === String(userId)) {
                     return planoAjustado;
                 }
 
@@ -166,7 +170,9 @@ export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idP
         
         const userIdStr = String(backendUser._id || backendUser.id);
         
-        if (String(plano.userId) !== userIdStr && plano.categoria === 'modelo') {
+        // userId pode ser objeto populado { id, nome, imagem } ou string raw
+        const planoCreatorId = plano.userId?.id || plano.userId?._id || plano.userId;
+        if (String(planoCreatorId) !== userIdStr && plano.categoria === 'modelo') {
             const planClone = {
                 titulo: plano.titulo,
                 descricao: plano.descricao,

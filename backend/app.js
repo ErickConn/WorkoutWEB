@@ -14,10 +14,18 @@ import routerHistorico from './routes/historico.js';
 
 const app = express();
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://workout-web-three.vercel.app'
-    ],
+    origin: (origin, callback) => {
+        // Permite: sem origin (curl/Postman), localhost, e qualquer *.vercel.app
+        if (
+            !origin ||
+            /^http:\/\/localhost(:\d+)?$/.test(origin) ||
+            /^https:\/\/[\w-]+\.vercel\.app$/.test(origin)
+        ) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS bloqueado para origem: ${origin}`));
+        }
+    },
     credentials: true
 }));
 
