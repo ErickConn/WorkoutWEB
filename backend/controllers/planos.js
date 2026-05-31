@@ -3,7 +3,7 @@ import Treino from '../models/treinos.js';
 
 const getAllPlanos = async (req, res) => {
     try {
-        const planos = await Planos.find({}).populate('rotina');
+        const planos = await Planos.find({}).populate('rotina').populate('userId', 'nome imagem');
         res.json(planos);
     } catch (error) {
         console.log(error);
@@ -13,7 +13,7 @@ const getAllPlanos = async (req, res) => {
 
 const getPlano = async (req, res) => {
     try {
-        const plano = await Planos.findById(req.params.id).populate('rotina');
+        const plano = await Planos.findById(req.params.id).populate('rotina').populate('userId', 'nome imagem');
         res.json(plano);
     } catch (error) {
         console.log(error);
@@ -77,7 +77,7 @@ const createPlano = async (req, res) => {
             await plano.save();
         }
 
-        const planoPopulated = await plano.populate('rotina');
+        const planoPopulated = await plano.populate('rotina').then(p => p.populate('userId', 'nome imagem'));
 
         res.status(201).json(planoPopulated);
     } catch (error) {
@@ -99,7 +99,7 @@ const patchPlano = async (req, res) => {
             req.params.id,
             updateData,
             { new: true }
-        ).populate('rotina');
+        ).populate('rotina').populate('userId', 'nome imagem');
 
         res.json(plano);
     } catch (error) {
@@ -121,7 +121,7 @@ const putPlano = async (req, res) => {
             req.params.id,
             updateData,
             { new: true, overwrite: true }
-        ).populate('rotina');
+        ).populate('rotina').populate('userId', 'nome imagem');
 
         res.json(plano);
     } catch (error) {

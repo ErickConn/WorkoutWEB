@@ -19,6 +19,8 @@ export default function CardTreino({
   rotina = [],
   userId = null
 }) {
+  // userId pode ser um ObjectId (string) ou um objeto populado { _id, id, nome, imagem }
+  const criadorObj = userId && typeof userId === 'object' ? userId : null;
   const dispatch = useDispatch();
   const [aberto, setAberto] = useState(false);
   const [diasExpandidos, setDiasExpandidos] = useState({});
@@ -31,33 +33,25 @@ export default function CardTreino({
   const [showTreinoModal, setShowTreinoModal] = useState(false);
   const [treinoEmEdicao, setTreinoEmEdicao] = useState(null);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
-  const [nomeCriador, setNomeCriador] = useState(null);
+
+  // Nome e foto do criador vêm do userId já populado pelo backend
+  const nomeCriador = criadorObj?.nome || null;
+  const fotoCriador = criadorObj?.imagem || null;
 
   useEffect(() => {
     const carregarDados = async () => {
       const usuario = await getLoggedUser();
       setUsuarioLogado(usuario);
-
-      if (userId && categoria === 'modelo') {
-        try {
-          const REAL_API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
-          const { default: axios } = await import('axios');
-          // Tenta obter o usuário pelo id via rota autenticada; pode falhar se não houver permissão.
-          const { data: criador } = await axios.get(`${REAL_API_URL}/public/user/${userId}`);
-          if (criador && (criador.nome || criador.nome === '')) setNomeCriador(criador.nome);
-        } catch (err) {
-          // Falha em buscar o criador — não quebra a UI
-          console.debug('Não foi possível obter nome do criador:', err.message || err);
-        }
-      }
     };
-
     carregarDados();
-  }, [userId, categoria]);
+  }, []);
+
+  // Extrai o ID do criador para comparação (userId pode ser objeto populado ou string)
+  const criadorId = criadorObj ? (criadorObj.id || criadorObj._id) : userId;
 
   const podeModificar = Boolean(
     usuarioLogado &&
-    (usuarioLogado.usuario.role === 'admin' || String(usuarioLogado.usuario.id) === String(userId))
+    (usuarioLogado.usuario.role === 'admin' || String(usuarioLogado.usuario.id) === String(criadorId))
   );
 
   // Handlers para EditModal
@@ -137,7 +131,20 @@ export default function CardTreino({
           </div>
           <p className={styles.cardDetails}>{rotina.length} treinos • {nivel}</p>
           {categoria === 'modelo' && nomeCriador && (
-            <p className={styles.cardCriador}>👤 Criado por <strong>{nomeCriador}</strong></p>
+            <div className={styles.cardCriador}>
+              {fotoCriador ? (
+                <img
+                  src={fotoCriador}
+                  alt={nomeCriador}
+                  className={styles.avatarCriador}
+                />
+              ) : (
+                <div className={styles.avatarCriadorFallback}>
+                  {nomeCriador.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span>Criado por <strong>{nomeCriador}</strong></span>
+            </div>
           )}
 
           {id !== 'temp-preview' && podeModificar && (

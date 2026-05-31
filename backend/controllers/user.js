@@ -46,7 +46,7 @@ const getUser = async (req, res) => {
 
 const getPublicUser = async (req, res) => {
     try {
-        const user = await Usuario.findById(req.params.id).select('nome _id');
+        const user = await Usuario.findById(req.params.id).select('nome imagem _id');
         if (!user) {
             return res.status(404).json({ ok: false, message: "User nao encontrado" });
         }
