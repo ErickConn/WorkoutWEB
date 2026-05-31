@@ -71,7 +71,6 @@ export default function EditarPlanoModal({ show, handleClose, plano }) {
                         value={novaCategoria}
                         onChange={(e) => setNovaCategoria(e.target.value)}
                     >
-                        <option value="favorito">Favorito</option>
                         <option value="modelo">Modelo</option>
                         <option value="personalizado">Personalizado</option>
                     </select>
