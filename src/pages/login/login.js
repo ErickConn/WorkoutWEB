@@ -72,9 +72,7 @@ export default function Login() {
                   <label htmlFor="password" className={styles.label}>
                     Senha
                   </label>
-                  <a className={styles.forgotLink} href="#forgot">
-                    Esqueceu a senha?
-                  </a>
+
                 </div>
                 <input
                   id="password"
