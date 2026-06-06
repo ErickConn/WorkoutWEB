@@ -13,7 +13,7 @@ const planoSchema = new mongoose.Schema({
     },
     nivel: {
         type: String,
-        enum: ['Iniciante', 'Intermediario', 'Avançado'],
+        enum: ['Iniciante', 'Intermediário', 'Avançado'],
         required: true,
     },
     categoria: {

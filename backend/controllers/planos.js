@@ -18,7 +18,19 @@ const getAllPlanos = async (req, res) => {
 
 const getPlano = async (req, res) => {
     try {
-        const plano = await Planos.findById(req.params.id).populate('rotina').populate('userId', 'nome imagem');
+        // Fix #8: reutiliza req.plano já validado pelo middleware, evitando query duplicada
+        const plano = req.plano;
+
+        // Fix #3: verifica privacidade — planos personalizados só são visíveis pelo dono ou admin
+        if (plano.categoria === 'personalizado') {
+            const ownerId = String(plano.userId?._id || plano.userId || '');
+            if (ownerId !== String(req.userId) && req.userRole !== 'admin') {
+                return res.status(403).json({ ok: false, message: "Acesso negado: este plano é privado" });
+            }
+        }
+
+        await plano.populate('rotina');
+        await plano.populate({ path: 'userId', select: 'nome imagem' });
         res.json(plano);
     } catch (error) {
         console.log(error);
@@ -78,6 +90,11 @@ const syncTreinos = async (rotinaInput, planoId) => {
 const createPlano = async (req, res) => {
     try {
         const { rotina, ...planoData } = req.body;
+
+        // Fix #4: o userId de planos personalizados sempre vem do token — nunca do body
+        if (planoData.categoria === 'personalizado') {
+            planoData.userId = req.userId;
+        }
 
         const plano = await Planos.create(planoData);
 
@@ -160,13 +177,48 @@ const deletePlano = async (req, res) => {
     }
 }
 
+
+const removerTreinoDaRotina = async (req, res) => {
+    try {
+        const { id, dia } = req.params;
+
+        // Busca o plano com rotina populada para encontrar o treino pelo campo 'dia'
+        const planoPopulado = await Planos.findById(id).populate('rotina');
+
+        if (planoPopulado.rotina.length <= 1) {
+            return res.status(400).json({
+                ok: false,
+                message: "O plano precisa ter pelo menos um treino. Delete o plano inteiro se desejar."
+            });
+        }
+
+        const treinoParaRemover = planoPopulado.rotina.find(t => String(t.dia) === String(dia));
+        if (!treinoParaRemover) {
+            return res.status(404).json({ ok: false, message: `Treino com dia '${dia}' não encontrado neste plano` });
+        }
+
+        // Remove atomicamente: retira o ID do array do plano e apaga o documento Treino
+        await Planos.findByIdAndUpdate(id, { $pull: { rotina: treinoParaRemover._id } });
+        const isUsedElsewhere = await Planos.exists({ rotina: treinoParaRemover._id, _id: { $ne: id } });
+        if (!isUsedElsewhere) {
+            await Treino.findByIdAndDelete(treinoParaRemover._id);
+        }
+
+        res.json({ ok: true, message: "Treino removido com sucesso" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ ok: false, message: "Erro ao remover treino do plano" });
+    }
+};
+
 const planosControllers = {
     getAllPlanos,
     getPlano,
     createPlano,
     patchPlano,
     putPlano,
-    deletePlano
+    deletePlano,
+    removerTreinoDaRotina
 }
 
 export default planosControllers;

@@ -28,29 +28,38 @@ export const setTreinoAtivo = createAsyncThunk('treinos/setTreinoAtivo', async (
     }
 });
 
-export const removerTreinoDaAPI = createAsyncThunk('treinos/removerTreinoDaAPI', async ({ idPlano, diaParaRemover, rotinaAtual }, { dispatch, rejectWithValue }) => {
+export const removerTreinoDaAPI = createAsyncThunk('treinos/removerTreinoDaAPI', async ({ idPlano, diaParaRemover, rotinaAtual, confirmarDelecao = false }, { dispatch, rejectWithValue }) => {
     try {
         if (rotinaAtual.length <= 1) {
-            if (window.confirm("Este é o último treino deste plano. Deseja excluir o plano completo?")) {
-                dispatch(removerPlano(idPlano));
+            if (!confirmarDelecao) {
+                // Fix #7: retorna sinal para o componente exibir modal customizado (sem window.confirm bloqueante)
+                return { action: 'confirm_delete_plan', idPlano, diaParaRemover };
             }
-            return { action: 'removed_full_plan_or_cancelled', idPlano, diaParaRemover };
+            dispatch(removerPlano(idPlano));
+            return { action: 'removed_full_plan', idPlano, diaParaRemover };
         }
 
-        const novaRotina = rotinaAtual.filter(item => item.dia !== diaParaRemover);
-        await axios.patch(`${API_URL}/planos/${idPlano}`, { rotina: novaRotina }, { withCredentials: true });
+        // Fix #10: endpoint atômico — backend busca estado atual e remove pelo dia (sem race condition)
+        await axios.delete(`${API_URL}/planos/${idPlano}/treinos/${diaParaRemover}`, { withCredentials: true });
 
         dispatch(fetchPlanoList());
         return { id: idPlano, dia: diaParaRemover };
     } catch (err) {
-        return rejectWithValue(err.message || "Erro ao remover treino.");
+        return rejectWithValue(err.response?.data?.message || err.message || "Erro ao remover treino.");
     }
 });
 
+
 export const adicionarTreinoAoPlano = createAsyncThunk('treinos/adicionarTreinoAoPlano', async ({ idPlano, nomeTreino, exerciciosSelecionados, rotinaAtual }, { dispatch, rejectWithValue }) => {
     try {
+        // Fix #11: valida o limite de treinos antes de montar a request
+        const MAX_TREINOS = 7;
+        if (rotinaAtual.length >= MAX_TREINOS) {
+            return rejectWithValue(`Limite de ${MAX_TREINOS} treinos por plano atingido.`);
+        }
+
         const letras = ["A", "B", "C", "D", "E", "F", "G"];
-        const letraAtual = letras[rotinaAtual.length] || "?";
+        const letraAtual = letras[rotinaAtual.length];
 
         const novoTreino = {
             dia: letraAtual,

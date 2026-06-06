@@ -22,6 +22,10 @@ const validatePlanoStructure = (req, res, next) => {
         if (typeof nivel !== 'string') {
             return res.status(400).json({ ok: false, message: "O campo 'nivel' deve ser do tipo texto (string)" });
         }
+        const niveisValidos = ['Iniciante', 'Intermediário', 'Avançado'];
+        if (!niveisValidos.includes(nivel)) {
+            return res.status(400).json({ ok: false, message: `O campo 'nivel' deve ser um de: ${niveisValidos.join(', ')}` });
+        }
     }
     if (categoria !== undefined && typeof categoria !== 'string') {
         return res.status(400).json({ ok: false, message: "O campo 'categoria' deve ser do tipo texto (string)" });

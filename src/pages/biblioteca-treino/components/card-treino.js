@@ -10,6 +10,7 @@ import EditarPlanoModal from './EditarPlanoModal';
 import TreinoLivreModal from '../../treino-livre';
 import { AlertContext } from '../../../context/AlertContext';
 import { getLoggedUser } from '../../../utils/userAuth';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 export default function CardTreino({
   id,
@@ -33,6 +34,11 @@ export default function CardTreino({
   const [showTreinoModal, setShowTreinoModal] = useState(false);
   const [treinoEmEdicao, setTreinoEmEdicao] = useState(null);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
+
+  // Estados para os modais de confirmação
+  const [confirmPlano, setConfirmPlano] = useState(false);           // remover plano completo
+  const [confirmTreino, setConfirmTreino] = useState(null);          // { treinoId, dia } para remover treino único
+  const [confirmDeletePlano, setConfirmDeletePlano] = useState(null); // { idPlano, dia } quando é o último treino
 
   // Nome e foto do criador vêm do userId já populado pelo backend
   const nomeCriador = criadorObj?.nome || null;
@@ -76,24 +82,45 @@ export default function CardTreino({
 
   const handleRemoverPlanoCompleto = (e) => {
     e.stopPropagation();
-    if (window.confirm(`Deseja remover permanentemente o plano "${titulo}"?`)) {
-      dispatch(removerPlano(id));
-    }
+    setConfirmPlano(true);
+  };
+
+  const handleConfirmRemoverPlano = () => {
+    setConfirmPlano(false);
+    dispatch(removerPlano(id));
   };
 
   const handleRemoverTreinoUnico = (e, treinoId, dia) => {
     e.stopPropagation();
-    if (window.confirm(`Remover treino de ${dia}?`)) {
-      if (treinoId === 'temp-preview') {
-        dispatch(removerTreinoDaRotina({ dia }));
-      } else {
-        dispatch(removerTreinoDaAPI({ idPlano: treinoId, diaParaRemover: dia, rotinaAtual: rotina }))
-          .unwrap()
-          .catch((err) => {
-            showAlert(err || "Erro ao remover treino.", 'error');
-          });
-      }
+    if (treinoId === 'temp-preview') {
+      dispatch(removerTreinoDaRotina({ dia }));
+    } else {
+      setConfirmTreino({ treinoId, dia });
     }
+  };
+
+  const handleConfirmRemoverTreino = () => {
+    const { treinoId, dia } = confirmTreino;
+    setConfirmTreino(null);
+    dispatch(removerTreinoDaAPI({ idPlano: treinoId, diaParaRemover: dia, rotinaAtual: rotina }))
+      .unwrap()
+      .then((result) => {
+        // Thunk retorna este sinal quando o treino era o último do plano
+        if (result?.action === 'confirm_delete_plan') {
+          setConfirmDeletePlano({ idPlano: result.idPlano, dia: result.diaParaRemover });
+        }
+      })
+      .catch((err) => {
+        showAlert(err || 'Erro ao remover treino.', 'error');
+      });
+  };
+
+  const handleConfirmDeletePlanoFinal = () => {
+    const { idPlano, dia } = confirmDeletePlano;
+    setConfirmDeletePlano(null);
+    dispatch(removerTreinoDaAPI({ idPlano, diaParaRemover: dia, rotinaAtual: rotina, confirmarDelecao: true }))
+      .unwrap()
+      .catch((err) => showAlert(err || 'Erro ao remover plano.', 'error'));
   };
 
   const handleComecarTreino = async (e) => {
@@ -119,6 +146,45 @@ export default function CardTreino({
           rotina={rotina}
           idPlano={id === 'temp-preview' ? null : id}
           treinoEmEdicao={treinoEmEdicao}
+        />
+
+        {/* Modal: confirmar remoção do plano completo */}
+        <ConfirmModal
+          show={confirmPlano}
+          title="Remover plano?"
+          message={`"${titulo}" será excluído permanentemente. Esta ação não pode ser desfeita.`}
+          confirmLabel="Remover"
+          cancelLabel="Cancelar"
+          variant="danger"
+          icon="🗑️"
+          onConfirm={handleConfirmRemoverPlano}
+          onCancel={() => setConfirmPlano(false)}
+        />
+
+        {/* Modal: confirmar remoção de um treino único */}
+        <ConfirmModal
+          show={Boolean(confirmTreino)}
+          title={`Remover treino ${confirmTreino?.dia}?`}
+          message="Este dia de treino será removido do plano."
+          confirmLabel="Remover treino"
+          cancelLabel="Cancelar"
+          variant="danger"
+          icon="⚠️"
+          onConfirm={handleConfirmRemoverTreino}
+          onCancel={() => setConfirmTreino(null)}
+        />
+
+        {/* Modal: último treino — pergunta se quer deletar o plano inteiro */}
+        <ConfirmModal
+          show={Boolean(confirmDeletePlano)}
+          title="Último treino do plano"
+          message="Este é o único treino restante. Deseja excluir o plano inteiro?"
+          confirmLabel="Excluir plano"
+          cancelLabel="Manter plano"
+          variant="danger"
+          icon="🚨"
+          onConfirm={handleConfirmDeletePlanoFinal}
+          onCancel={() => setConfirmDeletePlano(null)}
         />
       </div>
 
