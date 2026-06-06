@@ -13,9 +13,9 @@ import routerProgresso from './routes/progresso.js';
 import routerHistorico from './routes/historico.js';
 
 const app = express();
+
 app.use(cors({
     origin: (origin, callback) => {
-        // Permite: sem origin (curl/Postman), localhost, e qualquer *.vercel.app
         if (
             !origin ||
             /^http:\/\/localhost(:\d+)?$/.test(origin) ||

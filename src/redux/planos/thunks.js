@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { getUserIdFromEmail, getLoggedUser, getLoggedUserEmail } from '../../utils/userAuth';
+import { getUserIdFromEmail, getLoggedUserEmail } from '../../utils/userAuth';
 
 const API_URL = process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
@@ -15,25 +15,6 @@ export const getOrCreateBackendUser = async () => {
         console.error("Erro ao buscar usuario no backend:", err);
         return null;
     }
-};
-
-export const ensurePlanEditable = async (idPlano) => {
-    const usuario = await getLoggedUser();
-    if (!usuario) {
-        throw new Error("Usuário não autenticado");
-    }
-
-    const { data: plano } = await axios.get(`${API_URL}/planos/${idPlano}`);
-    const usuarioAtualId = usuario.usuario.id;
-    const usuarioAtualRole = usuario.usuario.role;
-
-    // userId pode ser objeto populado { id, nome, imagem } ou string raw
-    const planoCreatorId = plano.userId?.id || plano.userId?._id || plano.userId;
-    if (usuarioAtualRole !== 'admin' && String(planoCreatorId) !== String(usuarioAtualId)) {
-        throw new Error("Apenas o criador do plano ou um administrador pode editar ou remover este plano.");
-    }
-
-    return { plano, usuario };
 };
 
 export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_, { rejectWithValue }) => {
@@ -117,11 +98,11 @@ export const salvarPlanoCompleto = createAsyncThunk('planos/salvarPlanoCompleto'
             userId: userId || null,
         };
 
-        const res = await axios.post(`${API_URL}/planos`, planoComUserId);
+        const res = await axios.post(`${API_URL}/planos`, planoComUserId, { withCredentials: true });
         dispatch(fetchPlanoList());
         return res.data;
     } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.response?.data?.message || err.message);
     }
 });
 
@@ -150,12 +131,12 @@ export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idP
         const backendUser = await getOrCreateBackendUser();
         if (!backendUser) throw new Error("Usuário não encontrado");
 
-        const { data: plano } = await axios.get(`${API_URL}/planos/${idPlano}`);
+        const { data: plano } = await axios.get(`${API_URL}/planos/${idPlano}`, { withCredentials: true });
         let finalPlanId = idPlano;
-        
+
         const userIdStr = String(backendUser._id || backendUser.id);
-        
-        // userId pode ser objeto populado { id, nome, imagem } ou string raw
+
+        // Se for plano modelo de outro usuário, clona como personalizado
         const planoCreatorId = plano.userId?.id || plano.userId?._id || plano.userId;
         if (String(planoCreatorId) !== userIdStr && plano.categoria === 'modelo') {
             const planClone = {
@@ -169,7 +150,7 @@ export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idP
                     return rest;
                 })
             };
-            const res = await axios.post(`${API_URL}/planos`, planClone);
+            const res = await axios.post(`${API_URL}/planos`, planClone, { withCredentials: true });
             finalPlanId = res.data.id || res.data._id;
         }
 
