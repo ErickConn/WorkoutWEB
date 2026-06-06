@@ -141,8 +141,7 @@ export const salvarPlanoCompleto = createAsyncThunk('planos/salvarPlanoCompleto'
 
 export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, { dispatch, rejectWithValue }) => {
     try {
-        await ensurePlanEditable(id);
-        await axios.delete(`${API_URL}/planos/${id}`);
+        await axios.delete(`${API_URL}/planos/${id}`, { withCredentials: true });
 
         // Se o plano removido era o ativo, limpa no user
         const backendUser = await getOrCreateBackendUser();
@@ -156,7 +155,7 @@ export const removerPlano = createAsyncThunk('planos/removerPlano', async (id, {
         dispatch(fetchPlanoList());
         return id;
     } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.response?.data?.message || err.message);
     }
 });
 
@@ -202,11 +201,10 @@ export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idP
 
 export const editarPlano = createAsyncThunk('planos/editarPlano', async ({ idPlano, dados }, { dispatch, rejectWithValue }) => {
     try {
-        await ensurePlanEditable(idPlano);
-        const res = await axios.patch(`${API_URL}/planos/${idPlano}`, dados);
+        const res = await axios.patch(`${API_URL}/planos/${idPlano}`, dados, { withCredentials: true });
         dispatch(fetchPlanoList());
         return res.data;
     } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.response?.data?.message || err.message);
     }
 });

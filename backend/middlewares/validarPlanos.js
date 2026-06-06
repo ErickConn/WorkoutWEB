@@ -73,17 +73,39 @@ const validatePlanoId = async (req, res, next) => {
         if (!plano) {
             return res.status(404).json({ ok: false, message: "Plano não encontrado" });
         }
+        // Armazena o plano na requisição para evitar busca dupla em middlewares seguintes
+        req.plano = plano;
         next();
     } catch (error) {
         res.status(500).json({ ok: false, message: "Erro ao validar o plano" });
     }
 };
 
+const validatePlanoOwner = (req, res, next) => {
+    if (!req.userId) {
+        return res.status(401).json({ ok: false, message: "Não autenticado" });
+    }
+    if (req.userRole === 'admin') {
+        return next();
+    }
+    const plano = req.plano;
+    if (!plano) {
+        return res.status(500).json({ ok: false, message: "Plano não carregado no middleware" });
+    }
+    // userId pode ser ObjectId ou objeto populado
+    const criadorId = plano.userId?._id || plano.userId;
+    if (String(criadorId) !== String(req.userId)) {
+        return res.status(403).json({ ok: false, message: "Apenas o criador do plano ou um administrador pode editar ou remover este plano." });
+    }
+    next();
+};
+
 const planosMiddlewares = {
     validateEmptyBody,
     validatePlanoTitle,
     validatePlanoStructure,
-    validatePlanoId
+    validatePlanoId,
+    validatePlanoOwner
 };
 
 export default planosMiddlewares;
