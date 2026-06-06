@@ -5,7 +5,7 @@ import authenticateToken from '../middlewares/verificarToken.js';
 
 const routerPlanos = express.Router();
 
-routerPlanos.get('/planos', planosControllers.getAllPlanos);
+routerPlanos.get('/planos', authenticateToken, planosControllers.getAllPlanos);
 
 routerPlanos.get('/planos/:id', planosMiddlewares.validatePlanoId, planosControllers.getPlano);
 

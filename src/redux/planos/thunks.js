@@ -38,9 +38,9 @@ export const ensurePlanEditable = async (idPlano) => {
 
 export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_, { rejectWithValue }) => {
     try {
-        const userId = await getUserIdFromEmail();
         const backendUser = await getOrCreateBackendUser();
-        const { data: planos } = await axios.get(`${API_URL}/planos`);
+        // O backend já filtra: retorna todos 'modelo' + 'personalizado' do usuário autenticado
+        const { data: planos } = await axios.get(`${API_URL}/planos`, { withCredentials: true });
         let exercicioLib = [];
         try {
             const { data } = await axios.get(`${API_URL}/exercicios`);
@@ -54,68 +54,54 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
         const activePlanId = backendUser?.activePlanId ? String(backendUser.activePlanId) : null;
         const activeDay = backendUser?.activeDay || null;
 
-        const planosFiltrados = planos
-            .map((plano) => {
-                const planoId = String(plano.id || plano._id);
-                const isPlanoAtivo = activePlanId && planoId === activePlanId;
+        const planosFiltrados = planos.map((plano) => {
+            const planoId = String(plano.id || plano._id);
+            const isPlanoAtivo = activePlanId && planoId === activePlanId;
 
-                const rotinaComAtivo = Array.isArray(plano.rotina)
-                    ? plano.rotina.map((treino) => {
-                        const exerciciosHidratados = Array.isArray(treino.exercicios)
-                            ? treino.exercicios.map(ex => {
-                                const exId = String(ex.idExercicio || ex.id || '');
-                                const libData = exercicioMap[exId] || {};
-                                return {
-                                    id: exId,
-                                    nome: ex.nome || libData.nome || 'Exercício Desconhecido',
-                                    grupo: ex.grupo || libData.grupo || 'Outros',
-                                    equipamento: ex.equipamento || libData.equipamento || '',
-                                    nivel_experiencia: ex.nivel_experiencia || libData.nivel_experiencia || '',
-                                    seriesPadrao: ex.seriesPadrao || ex.numSeries || libData.seriesPadrao || 3,
-                                    repsPadrao: ex.repsPadrao || ex.numReps || libData.repsPadrao || 12,
-                                };
-                            })
-                            : [];
+            const rotinaComAtivo = Array.isArray(plano.rotina)
+                ? plano.rotina.map((treino) => {
+                    const exerciciosHidratados = Array.isArray(treino.exercicios)
+                        ? treino.exercicios.map(ex => {
+                            const exId = String(ex.idExercicio || ex.id || '');
+                            const libData = exercicioMap[exId] || {};
+                            return {
+                                id: exId,
+                                nome: ex.nome || libData.nome || 'Exercício Desconhecido',
+                                grupo: ex.grupo || libData.grupo || 'Outros',
+                                equipamento: ex.equipamento || libData.equipamento || '',
+                                nivel_experiencia: ex.nivel_experiencia || libData.nivel_experiencia || '',
+                                seriesPadrao: ex.seriesPadrao || ex.numSeries || libData.seriesPadrao || 3,
+                                repsPadrao: ex.repsPadrao || ex.numReps || libData.repsPadrao || 12,
+                            };
+                        })
+                        : [];
 
-                        return {
-                            ...treino,
-                            id: treino.id || treino._id,
-                            exercicios: exerciciosHidratados,
-                            ativo: isPlanoAtivo && activeDay
-                                ? String(treino.dia) === String(activeDay)
-                                : false
-                        };
-                    })
-                    : plano.rotina;
+                    return {
+                        ...treino,
+                        id: treino.id || treino._id,
+                        exercicios: exerciciosHidratados,
+                        ativo: isPlanoAtivo && activeDay
+                            ? String(treino.dia) === String(activeDay)
+                            : false
+                    };
+                })
+                : plano.rotina;
 
-                const nivelMap = {
-                    'iniciante': 'Iniciante',
-                    'intermediario': 'Intermediário',
-                    'avancado': 'Avançado',
-                };
-                const nivelNormalizado = nivelMap[(plano.nivel || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")] || plano.nivel;
+            const nivelMap = {
+                'iniciante': 'Iniciante',
+                'intermediario': 'Intermediário',
+                'avancado': 'Avançado',
+            };
+            const nivelNormalizado = nivelMap[(plano.nivel || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")] || plano.nivel;
 
-                const planoAjustado = {
-                    ...plano,
-                    id: planoId,
-                    nivel: nivelNormalizado,
-                    ativo: Boolean(isPlanoAtivo),
-                    rotina: rotinaComAtivo
-                };
-
-                if (plano.categoria !== "personalizado") {
-                    return planoAjustado;
-                }
-
-                // userId pode ser objeto populado { id, nome, imagem } ou string raw
-                const planoCreatorId = plano.userId?.id || plano.userId?._id || plano.userId;
-                if (userId && String(planoCreatorId) === String(userId)) {
-                    return planoAjustado;
-                }
-
-                return null;
-            })
-            .filter(Boolean);
+            return {
+                ...plano,
+                id: planoId,
+                nivel: nivelNormalizado,
+                ativo: Boolean(isPlanoAtivo),
+                rotina: rotinaComAtivo
+            };
+        });
 
         return planosFiltrados;
     } catch (err) {
