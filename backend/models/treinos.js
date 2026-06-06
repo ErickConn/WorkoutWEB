@@ -28,7 +28,13 @@ const treinoSchema = new mongoose.Schema({
             type: Number,
             required: true,
             min: 1
-        }
+        },
+        // Snapshot dos dados do exercício no momento em que foi adicionado ao plano.
+        // Mantém a referência mesmo se o exercício for removido do catálogo.
+        nome: { type: String },
+        grupo: { type: String },
+        equipamento: { type: String },
+        nivel_experiencia: { type: String },
     }]
 }, { timestamps: true });
 

@@ -41,7 +41,12 @@ const syncTreinos = async (rotinaInput, planoId) => {
             dataToSave.exercicios = dataToSave.exercicios.map(ex => ({
                 idExercicio: ex.idExercicio || ex.id || ex.exercicioId,
                 numSeries: ex.numSeries || ex.seriesPadrao || 1,
-                numReps: ex.numReps || ex.repsPadrao || 1
+                numReps: ex.numReps || ex.repsPadrao || 1,
+                // Snapshot: persiste os dados descritivos para manter referência mesmo se o exercício for deletado
+                ...(ex.nome && { nome: ex.nome }),
+                ...(ex.grupo && { grupo: ex.grupo }),
+                ...(ex.equipamento && { equipamento: ex.equipamento }),
+                ...(ex.nivel_experiencia && { nivel_experiencia: ex.nivel_experiencia }),
             }));
         }
 
