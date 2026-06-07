@@ -13,8 +13,11 @@ axios.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            localStorage.removeItem('usuarioLogadoEmail');
-            window.location.href = '/';
+            // Não redireciona se o erro 401 ocorrer na própria tentativa de login
+            if (error.config && error.config.url && !error.config.url.includes('/login')) {
+                localStorage.removeItem('usuarioLogadoEmail');
+                window.location.href = '/';
+            }
         }
         return Promise.reject(error);
     }

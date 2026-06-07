@@ -3,6 +3,7 @@ import userControllers from '../controllers/user.js';
 import authenticateToken from '../middlewares/verificarToken.js';
 import autorizar from '../middlewares/autorizar.js';
 import userMiddlewares from '../middlewares/validarUsuario.js';
+import { loginLimiter } from '../middlewares/rateLimiter.js';
 
 const routerUser = express.Router();
 
@@ -32,7 +33,7 @@ routerUser.put('/users/:id', authenticateToken, userMiddlewares.validateUserId, 
 routerUser.delete('/user/:id', authenticateToken, userMiddlewares.validateUserId, userMiddlewares.validateUserOwner, (req, res) => userControllers.deleteUser(req, res));
 routerUser.delete('/users/:id', authenticateToken, userMiddlewares.validateUserId, userMiddlewares.validateUserOwner, (req, res) => userControllers.deleteUser(req, res));
 
-routerUser.post('/login', (req, res) => userControllers.loginUser(req, res));
+routerUser.post('/login', loginLimiter, (req, res) => userControllers.loginUser(req, res));
 routerUser.post('/logout', (req, res) => userControllers.logoutUser(req, res));
 
 export default routerUser;
