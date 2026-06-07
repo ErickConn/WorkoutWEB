@@ -23,8 +23,8 @@ const sanitizeUser = (user) => {
 
 const getAllUser = async (req, res) => {
     try {
-        const user = await Usuario.find({});
-        res.json(user);
+        const users = await Usuario.find({});
+        res.json(users.map(sanitizeUser));
     } catch (error) {
         console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao listar user" });
@@ -37,7 +37,7 @@ const getUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ ok: false, message: "User nao encontrado" })
         }
-        return res.json(user);
+        return res.json(sanitizeUser(user));
     } catch (error) {
         console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao listar user" })
@@ -63,7 +63,7 @@ const getMe = async (req, res) => {
         if (!user) {
             return res.status(404).json({ ok: false, message: "Usuário não encontrado" })
         }
-        return res.json(user);
+        return res.json(sanitizeUser(user));
     } catch (error) {
         console.log(error);
         res.status(500).json({ ok: false, message: "Erro ao carregar perfil do usuário" })
