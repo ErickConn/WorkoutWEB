@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
 import { loginAuth } from '../../redux/user/slice';
 import { AlertContext } from '../../context/AlertContext';
+import { getErrorMessage } from '../../utils/helpers';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -26,7 +27,7 @@ export default function Login() {
       await dispatch(loginAuth({ email: emailFormatado, senha: password })).unwrap();
       navigate('/perfil');
     } catch (err) {
-      showAlert(typeof err === 'string' ? err : 'Email ou senha incorretos. Por favor, tente novamente.', 'error');
+      showAlert(getErrorMessage(err, 'Email ou senha incorretos. Por favor, tente novamente.'), 'error');
     }
   };
 

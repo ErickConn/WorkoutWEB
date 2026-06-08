@@ -11,6 +11,7 @@ import TreinoLivreModal from '../../treino-livre';
 import { AlertContext } from '../../../context/AlertContext';
 import { getLoggedUser } from '../../../utils/userAuth';
 import ConfirmModal from '../../../components/ConfirmModal';
+import { getErrorMessage } from '../../../utils/helpers';
 
 export default function CardTreino({
   id,
@@ -111,7 +112,7 @@ export default function CardTreino({
         }
       })
       .catch((err) => {
-        showAlert(err || 'Erro ao remover treino.', 'error');
+        showAlert(getErrorMessage(err, 'Erro ao remover treino.'), 'error');
       });
   };
 
@@ -120,7 +121,7 @@ export default function CardTreino({
     setConfirmDeletePlano(null);
     dispatch(removerTreinoDaAPI({ idPlano, diaParaRemover: dia, rotinaAtual: rotina, confirmarDelecao: true }))
       .unwrap()
-      .catch((err) => showAlert(err || 'Erro ao remover plano.', 'error'));
+      .catch((err) => showAlert(getErrorMessage(err, 'Erro ao remover plano.'), 'error'));
   };
 
   const handleComecarTreino = async (e) => {

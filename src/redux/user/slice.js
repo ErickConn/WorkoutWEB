@@ -14,7 +14,7 @@ export const fetchUsersList = createAsyncThunk(
             const res = await axios.get(`${API_URL}/user`);
             return res.data;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );
@@ -50,7 +50,7 @@ export const logoutAuth = createAsyncThunk(
             await axios.post(`${API_URL}/logout`);
             return true;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );
@@ -77,7 +77,7 @@ export const createUser = createAsyncThunk(
             }
             return newUser;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );
@@ -89,7 +89,7 @@ export const updateUser = createAsyncThunk(
             const res = await axios.patch(`${API_URL}/user/${id}`, updatedData);
             return res.data;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );
@@ -101,7 +101,7 @@ export const deleteUser = createAsyncThunk(
             await axios.delete(`${API_URL}/user/${id}`);
             return id;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );

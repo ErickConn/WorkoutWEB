@@ -11,6 +11,7 @@ import Button from "../../components/Button";
 import { AlertContext } from "../../context/AlertContext";
 import Spinner from "../../components/Spinner";
 import TreinoCard from "./components/treino-card";
+import { getErrorMessage } from "../../utils/helpers";
 
 export default function Treino() {
   const dispatch = useDispatch();
@@ -37,11 +38,11 @@ export default function Treino() {
 
   const handleFinalizar = async () => {
     try {
-      await dispatch(finalizarTreino());
+      await dispatch(finalizarTreino()).unwrap();
       showAlert("Parabéns! Treino Concluido!", 'success');
     } catch (err) {
       console.error("Erro ao finalizar treino:", err);
-      showAlert("Erro ao finalizar treino. Tente novamente.", 'error');
+      showAlert(getErrorMessage(err, "Erro ao finalizar treino. Tente novamente."), 'error');
     }
   };
 
@@ -123,7 +124,7 @@ export default function Treino() {
               <p className={styles.planName}>{planoAtivo.titulo}</p>
             </div>
             <div className={styles.planTag}>
-              {planoAtivo.categoria || "Personalizado"}
+              {planoAtivo.nivel || "Iniciante"}
             </div>
           </div>
         </Link>

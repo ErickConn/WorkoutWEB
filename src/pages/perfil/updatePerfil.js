@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateUser } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando o CSS do Login/Registro
 import { AlertContext } from '../../context/AlertContext';
+import { getErrorMessage } from '../../utils/helpers';
 
 export default function UpdateUsuario() {
     const [nome, setNome] = useState('');
@@ -56,13 +57,17 @@ export default function UpdateUsuario() {
             const userId = usuarioAtual._id || usuarioAtual.id;
 
             // Dispara a atualização no Redux usando userSlice
-            dispatch(updateUser({ id: userId, updatedData: usuarioAtualizado }));
-
-            // CRÍTICO: Se o email mudou, precisamos atualizar a "Sessão" no navegador
-            localStorage.setItem('usuarioLogadoEmail', emailFormatado);
-
-            showAlert('Dados da conta atualizados com sucesso!', 'success');
-            navigate('/perfil'); // Volta para o painel
+            dispatch(updateUser({ id: userId, updatedData: usuarioAtualizado }))
+                .unwrap()
+                .then(() => {
+                    // CRÍTICO: Se o email mudou, precisamos atualizar a "Sessão" no navegador
+                    localStorage.setItem('usuarioLogadoEmail', emailFormatado);
+                    showAlert('Dados da conta atualizados com sucesso!', 'success');
+                    navigate('/perfil');
+                })
+                .catch((err) => {
+                    showAlert(getErrorMessage(err, 'Erro ao atualizar os dados. Tente novamente.'), 'error');
+                });
         }
     };
 

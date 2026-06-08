@@ -24,7 +24,7 @@ export const setTreinoAtivo = createAsyncThunk('treinos/setTreinoAtivo', async (
 
     } catch (err) {
         console.error("Erro ao atualizar treino ativo no banco:", err);
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.response?.data?.message || err.message);
     }
 });
 
@@ -81,7 +81,7 @@ export const adicionarTreinoAoPlano = createAsyncThunk('treinos/adicionarTreinoA
         dispatch(fetchPlanoList());
         return res.data;
     } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.response?.data?.message || err.message);
     }
 });
 
@@ -102,7 +102,7 @@ export const atualizarTreinoNoPlano = createAsyncThunk('treinos/atualizarTreinoN
         dispatch(fetchPlanoList());
         return res.data;
     } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.response?.data?.message || err.message);
     }
 });
 

@@ -8,6 +8,7 @@ import HeaderBack from "../../components/HeaderBack";
 import { salvarPlanoCompleto } from "../../redux/planos/slices";
 import { useNavigate } from "react-router-dom";
 import { AlertContext } from "../../context/AlertContext";
+import { getErrorMessage } from "../../utils/helpers";
 
 export default function PaginaPlano() {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ export default function PaginaPlano() {
   };
 
   dispatch(salvarPlanoCompleto(planoCompleto))
+  .unwrap()
   .then(()=>{
     setNomePlano("");
     setNivelPlano("");
@@ -64,7 +66,7 @@ export default function PaginaPlano() {
   })
   .catch((err) => {
     console.error("Erro ao salvar plano:", err);
-    showAlert("Erro ao salvar o plano. Tente novamente.", 'error');
+    showAlert(getErrorMessage(err, "Erro ao salvar o plano. Tente novamente."), 'error');
   });
 
 };

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { editarPlano } from "../../../redux/planos/slices";
 import styles from '../index.module.css';
 import { AlertContext } from "../../../context/AlertContext";
+import { getErrorMessage } from "../../../utils/helpers";
 
 export default function EditarPlanoModal({ show, handleClose, plano }) {
     const dispatch = useDispatch();
@@ -35,11 +36,11 @@ export default function EditarPlanoModal({ show, handleClose, plano }) {
                 nivel: novoNivel
             };
 
-            await dispatch(editarPlano({idPlano: plano.id, dados: dados}));
+            await dispatch(editarPlano({idPlano: plano.id, dados: dados})).unwrap();
             handleClose();
         } catch (err) {
             console.error("Erro ao salvar plano:", err);
-            showAlert("Erro ao salvar o plano", 'error');
+            showAlert(getErrorMessage(err, "Erro ao salvar o plano"), 'error');
         } finally {
             setCarregando(false);
         }
