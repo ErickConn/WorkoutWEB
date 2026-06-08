@@ -11,7 +11,7 @@ export const fetchBiometriaList = createAsyncThunk(
             const res = await axios.get(`${API_URL}/biometria`);
             return res.data;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );
@@ -23,7 +23,7 @@ export const createBiometria = createAsyncThunk(
             const res = await axios.post(`${API_URL}/biometria`, biometriaData);
             return res.data;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );
@@ -35,7 +35,7 @@ export const updateBiometria = createAsyncThunk(
             const res = await axios.patch(`${API_URL}/biometria/${id}`, updatedData);
             return res.data;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );
@@ -47,7 +47,7 @@ export const getBiometriaItem = createAsyncThunk(
             const res = await axios.get(`${API_URL}/biometria/${id}`);
             return res.data;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );
@@ -59,7 +59,7 @@ export const deleteBiometria = createAsyncThunk(
             await axios.delete(`${API_URL}/biometria/${id}`);
             return id;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );

@@ -15,7 +15,7 @@ export const fetchProgresso = createAsyncThunk(
       const { data } = await axios.get(`${API_URL}/historico/usuario/${userId}/progresso`);
       return data ? [data] : [];
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
@@ -31,7 +31,7 @@ export const carregarRegistrosUsuario = createAsyncThunk(
       const { data } = await axios.get(`${API_URL}/historico/usuario/${userId}`);
       return data;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
@@ -66,7 +66,7 @@ export const salvarRegistroExercicio = createAsyncThunk(
 
       dispatch(carregarRegistrosUsuario());
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
@@ -120,7 +120,7 @@ export const confirmarConclusaoTreinoGeral = createAsyncThunk(
 
       await dispatch(carregarRegistrosUsuario());
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );

@@ -14,7 +14,7 @@ export const fetchExercicioList = createAsyncThunk(
       const res = await axios.get(`${API_URL}/exercicios`);
       return res.data;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
@@ -27,7 +27,7 @@ export const createExercicio = createAsyncThunk(
       const res = await axios.post(`${API_URL}/exercicios`, novoExercicio);
       return res.data;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
@@ -40,7 +40,7 @@ export const updateExercicio = createAsyncThunk(
       await axios.put(`${API_URL}/exercicios/${exercicio.id}`, exercicio);
       return exercicio;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
@@ -53,7 +53,7 @@ export const deleteExercicio = createAsyncThunk(
       await axios.delete(`${API_URL}/exercicios/${id}`);
       return id;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );

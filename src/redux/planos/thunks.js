@@ -162,7 +162,7 @@ export const setPlanoAtivo = createAsyncThunk('planos/setPlanoAtivo', async (idP
         dispatch(fetchPlanoList());
         return { idPlano: finalPlanId };
     } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.response?.data?.message || err.message);
     }
 });
 
