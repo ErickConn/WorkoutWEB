@@ -61,7 +61,10 @@ export default function RegistroCard({ exercicioOriginal, isLoading }) {
     setSeries(novasSeries);
   };
 
-  const handleConcluirSerie = (index) => {
+  const handleConcluirSerie = (index,e) => {
+
+    if (e && e.preventDefault) e.preventDefault();
+
     const serieAtual = series[index];
     if (!serieAtual.carga || !serieAtual.reps) {
       showAlert("Preencha carga e repetições.", 'warning');
@@ -115,8 +118,9 @@ export default function RegistroCard({ exercicioOriginal, isLoading }) {
             </div>
           </div>
           <button
+            type="button"
             className={serie.concluida ? styles.salvarSerieBtn : styles.concluirSerieBtn}
-            onClick={() => handleConcluirSerie(index)}
+            onClick={(e) => handleConcluirSerie(index, e)}
           >
             {serie.concluida ? 'Atualizar Série' : 'Concluir Série'}
           </button>
