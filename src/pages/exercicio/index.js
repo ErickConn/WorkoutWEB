@@ -47,9 +47,9 @@ export default function Exercicio() {
   const dataAtual = new Date().toISOString().split('T')[0];
 
   const todosRegistrosDoExercicio = registrosUsuario?.filter(r =>
-    String(r.exercicioId) === String(id) &&
-    (r.dia === rotinaHoje?.dia) &&
-    (r.idPlano === planoAtivo?.id)
+    String(r.exercicioId) === String(id) //&&
+    //(r.dia === rotinaHoje?.dia) &&
+    //(r.idPlano === planoAtivo?.id)
   );
 
   const registroHoje = todosRegistrosDoExercicio?.find(r => r.data === dataAtual && r.finalizado === false);
@@ -90,7 +90,7 @@ export default function Exercicio() {
           <div className={styles.column}>
             <SeriesCard
               historico={historicoRealizado}
-              dica={exercicioAtual.dica || "Execute o exercício com técnica correta."}
+              dica={exercicioAtual.dica_tecnica || "Execute o exercício com técnica correta."}
             />
           </div>
 

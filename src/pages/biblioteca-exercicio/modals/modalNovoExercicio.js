@@ -15,6 +15,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
   const [grupo, setGrupo] = useState("");
   const [equipamento, setEquipamento] = useState("");
   const [nivel, setNivel] = useState("");
+  const [dicaTecnica, setDicaTecnica] = useState("");
 
   const handleSalvar = async () => {
     console.log("Salvando novo exercício com dados:", { nome, grupo, equipamento, nivel });
@@ -38,7 +39,8 @@ export default function NovoExercicioModal({ show, handleClose }) {
       nome: formatarNomeExercicio(nome),
       grupo: grupo || "Peito",
       equipamento: equipamento || "Peso Corporal",
-      nivel_experiencia: nivel || "Iniciante"
+      nivel_experiencia: nivel || "Iniciante",
+      dica_tecnica: dicaTecnica || "Sem dica técnica disponível."
     };
     
     console.log("Enviando para API:", novoExercicio);
@@ -48,6 +50,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
     setGrupo("");
     setEquipamento("");
     setNivel("");
+    setDicaTecnica("");
     console.log("Novo exercício adicionado:", novoExercicio);
   };
 
@@ -93,7 +96,16 @@ export default function NovoExercicioModal({ show, handleClose }) {
             <option value="Avançado">Avançado</option>
           </select>
         </div>
-
+        <div className={styles.formGroup}>
+          <label>Dica Técnica: </label>
+          <textarea 
+            value={dicaTecnica} 
+            onChange={e => setDicaTecnica(e.target.value)} 
+            placeholder= "Ex: Mantenha a coluna reta e desça até 90 graus."
+            rows={3}
+            style={{ width: '100%', resize: 'none' }} // Estilo rápido para ajustar a caixa de texto
+          />
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <BootstrapButton variant="secondary" onClick={handleClose}>
