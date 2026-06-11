@@ -151,6 +151,42 @@ const logoutUser = async (req, res) => {
     }
 }
 
+// ── Admin-only controllers ──────────────────────────────────────
+
+const adminUpdateUser = async (req, res) => {
+    try {
+        const updateData = { ...req.body };
+        if (updateData.senha) {
+            updateData.senha = await bcrypt.hash(updateData.senha, 10);
+        }
+        const user = await Usuario.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        if (!user) {
+            return res.status(404).json({ ok: false, message: "Usuário não encontrado" });
+        }
+        return res.json(sanitizeUser(user));
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ ok: false, message: "Erro ao atualizar usuário" });
+    }
+};
+
+const adminDeleteUser = async (req, res) => {
+    try {
+        // Impede que o admin delete a si mesmo
+        if (String(req.userId) === String(req.params.id)) {
+            return res.status(403).json({ ok: false, message: "Você não pode deletar sua própria conta por aqui." });
+        }
+        const user = await Usuario.findByIdAndDelete(req.params.id);
+        if (!user) {
+            return res.status(404).json({ ok: false, message: "Usuário não encontrado" });
+        }
+        return res.json({ ok: true, message: "Usuário deletado com sucesso" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ ok: false, message: "Erro ao deletar usuário" });
+    }
+};
+
 const userControllers = {
     getAllUser,
     getUser,
@@ -160,7 +196,9 @@ const userControllers = {
     updateUser,
     deleteUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    adminUpdateUser,
+    adminDeleteUser
 }
 
 export default userControllers;

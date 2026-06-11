@@ -106,6 +106,32 @@ export const deleteUser = createAsyncThunk(
     }
 );
 
+// ── Admin-only thunks ──────────────────────────────────────────
+
+export const adminUpdateUser = createAsyncThunk(
+    'user/adminUpdate',
+    async ({ id, updatedData }, { rejectWithValue }) => {
+        try {
+            const res = await axios.patch(`${API_URL}/admin/user/${id}`, updatedData);
+            return res.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.message || err.message);
+        }
+    }
+);
+
+export const adminDeleteUser = createAsyncThunk(
+    'user/adminDelete',
+    async (id, { rejectWithValue }) => {
+        try {
+            await axios.delete(`${API_URL}/admin/user/${id}`);
+            return id;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.message || err.message);
+        }
+    }
+);
+
 
 const initialState = {
     loading: false,
@@ -218,6 +244,34 @@ const userSlice = createSlice({
             .addCase(logoutAuth.fulfilled, (state) => {
                 state.currentUser = null;
                 localStorage.removeItem('usuarioLogadoEmail');
+            })
+            // ── Admin thunks ──────────────────────────────────────
+            .addCase(adminUpdateUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(adminUpdateUser.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.users.findIndex(item => item._id === action.payload._id || item.id === action.payload.id);
+                if (index !== -1) {
+                    state.users[index] = action.payload;
+                }
+            })
+            .addCase(adminUpdateUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(adminDeleteUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(adminDeleteUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.users = state.users.filter(item => item._id !== action.payload && item.id !== action.payload);
+            })
+            .addCase(adminDeleteUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     }
 });
