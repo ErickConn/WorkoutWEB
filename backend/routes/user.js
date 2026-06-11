@@ -33,6 +33,10 @@ routerUser.put('/users/:id', authenticateToken, userMiddlewares.validateUserId, 
 routerUser.delete('/user/:id', authenticateToken, userMiddlewares.validateUserId, userMiddlewares.validateUserOwner, (req, res) => userControllers.deleteUser(req, res));
 routerUser.delete('/users/:id', authenticateToken, userMiddlewares.validateUserId, userMiddlewares.validateUserOwner, (req, res) => userControllers.deleteUser(req, res));
 
+// ── Rotas exclusivas de administrador ──────────────────────────
+routerUser.patch('/admin/user/:id', authenticateToken, autorizar('admin'), userMiddlewares.validateUserId, (req, res) => userControllers.adminUpdateUser(req, res));
+routerUser.delete('/admin/user/:id', authenticateToken, autorizar('admin'), userMiddlewares.validateUserId, (req, res) => userControllers.adminDeleteUser(req, res));
+
 routerUser.post('/login', loginLimiter, (req, res) => userControllers.loginUser(req, res));
 routerUser.post('/logout', (req, res) => userControllers.logoutUser(req, res));
 

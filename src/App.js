@@ -15,6 +15,7 @@ import Selecttreino from './pages/select-treino/select-treino';
 import BibliotecaTreino from './pages/biblioteca-treino';
 import BibliotecaExercicios from './pages/biblioteca-exercicio/biblioteca'; 
 import Plano from './pages/plano';
+import AdminUsuarios from './pages/admin/AdminUsuarios';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import { AlertProvider } from './context/AlertContext';
@@ -42,6 +43,9 @@ function App() {
         
         <Route path="/progresso" element={<ProtectedRoute><Progresso /></ProtectedRoute>} />
         <Route path='/plano' element={<ProtectedRoute><Plano /></ProtectedRoute>} />
+
+        {/* ROTAS ADMIN */}
+        <Route path='/admin/usuarios' element={<ProtectedRoute><AdminUsuarios /></ProtectedRoute>} />
       </Routes>
     </AlertProvider>
   );

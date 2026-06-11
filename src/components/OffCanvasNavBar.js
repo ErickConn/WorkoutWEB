@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutAuth } from "../redux/user/slice";
 import "./OffCanvas.css";
 
@@ -14,6 +14,8 @@ export default function OffCanvasNavBar() {
   const expand = "true";
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const currentUser = useSelector(state => state.userReducer.currentUser);
+  const isAdmin = currentUser?.role === 'admin';
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -62,6 +64,11 @@ export default function OffCanvasNavBar() {
                   Biblioteca de Exercício
                 </NavLink>
               </NavDropdown>
+              {isAdmin && (
+                <NavLink className={({ isActive }) => isActive ? "Link active" : "Link"} to='/admin/usuarios'>
+                  👥 Gerenciar Usuários
+                </NavLink>
+              )}
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>

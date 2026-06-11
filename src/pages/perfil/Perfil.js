@@ -14,6 +14,7 @@ import ExperienceCard from './components/experiencecard.js';
 import UserProfileCard from './components/userprofilecard.js';
 import Spinner from '../../components/Spinner.js';
 import Home from '../home/Home.js';
+import { getErrorMessage } from '../../utils/helpers';
 
 export default function Perfil() {
     const [fotoUsuario, setFotoUsuario] = useState(null);
@@ -140,7 +141,7 @@ export default function Perfil() {
                             })
                             .catch((err) => {
                                 console.error('Erro ao salvar foto de perfil:', err);
-                                showAlert('Erro ao salvar foto de perfil no servidor.', 'danger');
+                                showAlert(getErrorMessage(err, 'Erro ao salvar foto de perfil no servidor.'), 'danger');
                             });
                     }
                 };

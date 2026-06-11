@@ -4,6 +4,7 @@ import Treino from '../models/treinos.js';
 const getAllPlanos = async (req, res) => {
     try {
         const userId = req.userId; // populado pelo authenticateToken (pode ser undefined em rotas públicas)
+
         const filtro = userId
             ? { $or: [{ categoria: 'modelo' }, { categoria: 'personalizado', userId }] }
             : { categoria: 'modelo' };

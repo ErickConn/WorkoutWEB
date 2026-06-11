@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { createUser } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
 import { AlertContext } from '../../context/AlertContext';
+import { getErrorMessage } from '../../utils/helpers';
 
 export default function Registro() {
     const [name, setName] = useState('');
@@ -38,7 +39,7 @@ export default function Registro() {
                 navigate('/perfil');
             })
             .catch((err) => {
-                showAlert(err || 'Este e-mail já está sendo utilizado ou ocorreu um erro.', 'error');
+                showAlert(getErrorMessage(err, 'Este e-mail já está sendo utilizado ou ocorreu um erro.'), 'error');
             });
     };
 
