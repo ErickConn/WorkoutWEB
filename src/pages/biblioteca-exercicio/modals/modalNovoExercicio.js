@@ -36,7 +36,7 @@ export default function NovoExercicioModal({ show, handleClose }) {
     const novoExercicio = {
       id: novoId,
       nome: formatarNomeExercicio(nome),
-      grupo: formatarNomeExercicio(grupo),
+      grupo: grupo || "Peito",
       equipamento: equipamento || "Peso Corporal",
       nivel_experiencia: nivel || "Iniciante"
     };
@@ -63,7 +63,15 @@ export default function NovoExercicioModal({ show, handleClose }) {
         </div>
         <div className={styles.formGroup}>
           <label>Grupo Muscular: </label>
-          <input value={grupo} onChange={e => setGrupo(e.target.value)} />
+          <select value={grupo} onChange={e => setGrupo(e.target.value)}>
+            <option value="">Selecione...</option>
+            <option value="Peito">Peito</option>
+            <option value="Costas">Costas</option>
+            <option value="Pernas">Pernas</option>
+            <option value="Ombros">Ombros</option>
+            <option value="Bíceps">Bíceps</option>
+            <option value="Tríceps">Tríceps</option>
+          </select>
         </div>
         <div className={styles.formGroup}>
           <label>Equipamento: </label>
