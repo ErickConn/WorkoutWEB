@@ -5,6 +5,7 @@ import {
     removerPlano,
     setPlanoAtivo,
     editarPlano,
+    trocarExercicioNoPlano,
 } from "./thunks";
 import {
     setTreinoAtivo,
@@ -86,6 +87,11 @@ const planosSlice = createSlice({
             .addCase(atualizarTreinoNoPlano.fulfilled, (state, action) => {
                 const idx = state.planos.findIndex(p => String(p.id) === String(action.payload.id));
                 if (idx !== -1) state.planos[idx] = action.payload;
+            })
+            .addCase(trocarExercicioNoPlano.pending, handlePending)
+            .addCase(trocarExercicioNoPlano.rejected, handleRejected)
+            .addCase(trocarExercicioNoPlano.fulfilled, (state) => {
+                state.loading = false;
             });
     }
 });

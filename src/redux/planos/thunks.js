@@ -175,3 +175,25 @@ export const editarPlano = createAsyncThunk('planos/editarPlano', async ({ idPla
         return rejectWithValue(err.response?.data?.message || err.message);
     }
 });
+
+export const trocarExercicioNoPlano = createAsyncThunk( 'planos/trocarExercicioNoPlano', async ({ idPlano, idRotina, idAntigo, idNovo }, { dispatch, rejectWithValue }) => {
+        try {
+            // Enviamos os IDs para a rota de atualização do plano
+            const payload = {
+                idRotina,
+                idAntigo,
+                idNovo
+            };
+            
+            // Faz a requisição para o back-end atualizar no banco de dados
+            const res = await axios.patch(`${API_URL}/planos/${idPlano}/trocar-exercicio`, payload, { withCredentials: true });
+            
+            // Atualiza a lista global do front-end com os dados novos vindos do servidor
+            dispatch(fetchPlanoList());
+            
+            return res.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.message || err.message);
+        }
+    }
+);
