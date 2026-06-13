@@ -20,6 +20,7 @@ export default function UpdateUsuario() {
 
     // Puxando o usuário logado do Redux
     const currentUser = useSelector(state => state.userReducer.currentUser);
+    const loading = useSelector(state => state.userReducer.loading);
 
     // 1. Carrega os dados do usuário logado assim que a tela abre
     useEffect(() => {
@@ -150,8 +151,8 @@ export default function UpdateUsuario() {
                                 </select>
                             </div>
 
-                            <button type="submit" className={styles.submitBtn} style={{ marginTop: '1.5rem' }}>
-                                Salvar Alterações
+                            <button type="submit" className={styles.submitBtn} style={{ marginTop: '1.5rem' }} disabled={loading}>
+                                {loading ? 'Salvando...' : 'Salvar Alterações'}
                             </button>
 
                             <button

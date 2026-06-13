@@ -14,7 +14,7 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
   const [grupo, setGrupo] = useState("");
   const [equipamento, setEquipamento] = useState("");
   const [nivel_experiencia, setNivel] = useState("");
-  const [dicaTecnica, setDicaTecnica] = useState("");
+  const [dica_tecnica, setDicaTecnica] = useState("");
 
   // Quando abrir o modal, preencher os campos com os dados atuais
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function EditarExercicioModal({ show, handleClose, exercicio }) {
         <div className={styles.formGroup}>
           <label>Dica Técnica: </label>
           <textarea 
-            value={dicaTecnica} 
+            value={dica_tecnica} 
             onChange={e => setDicaTecnica(e.target.value)} 
             rows={3}
             style={{ width: '100%', resize: 'none' }} // Estilo rápido para ajustar a caixa de texto

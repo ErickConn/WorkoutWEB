@@ -24,6 +24,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
 
   const dispatch = useDispatch();
   const exercicios = useSelector(state => state.exercicioReducer.exercicios);
+  const loading = useSelector(state => state.exercicioReducer.loading);
   const planoEmEdicaoRotina = useSelector(state => state.treinosReducer.planoEmEdicao).rotina;
 
   const exerciciosById = useMemo(() => new Map((exercicios || []).map(ex => [String(ex.id), ex])), [exercicios]);
@@ -172,7 +173,9 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
             />
           </div>
           <div className={styles.listaBiblioteca}>
-            {bibliotecaFiltrada.length > 0 ? (
+            {loading ? (
+              <p className={styles.noResults}>Carregando exercícios...</p>
+            ) : bibliotecaFiltrada.length > 0 ? (
               bibliotecaFiltrada.map(ex => (
                 <ExercicioItem
                   key={ex.id}

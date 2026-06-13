@@ -20,6 +20,7 @@ export default function PaginaPlano() {
   
   const dispatch = useDispatch();
   const { planoEmEdicao } = useSelector(state => state.treinosReducer);
+  const loading = useSelector(state => state.planosReducer.loading);
 
   const cardTemporario = planoEmEdicao.rotina.length > 0 ? [{
     id: 'temp-preview',
@@ -121,6 +122,9 @@ export default function PaginaPlano() {
           <ListaTreinos dados={cardTemporario} />
           
          <FooterButton title="Salvar Plano Personalizado" onClick={salvarPlanoFinal}></FooterButton>
+         {loading && (
+            <p style={{ color: '#fff', marginTop: '1rem' }}>Salvando plano...</p>
+         )}
         </div>
       )}
 

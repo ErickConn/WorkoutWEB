@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '../../redux/user/slice';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
@@ -14,6 +14,7 @@ export default function Registro() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { showAlert } = useContext(AlertContext);
+    const loading = useSelector(state => state.userReducer.loading);
 
     const handleRegistro = (e) => {
         e.preventDefault();
@@ -112,8 +113,8 @@ export default function Registro() {
                                 />
                             </div>
 
-                            <button type="submit" className={styles.submitBtn}>
-                                Cadastrar
+                            <button type="submit" className={styles.submitBtn} disabled={loading}>
+                                {loading ? 'Cadastrando...' : 'Cadastrar'}
                             </button>
                         </form>
 
