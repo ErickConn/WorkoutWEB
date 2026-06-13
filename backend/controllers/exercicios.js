@@ -55,11 +55,11 @@ const updateExercicio = async (req, res) => {
 
 const deleteExercicio = async (req, res) => {
   try {
-    await Exercicio.findByIdAndDelete(req.params.id);
-    res.json({ ok: true, message: "Exercício deletado com sucesso" });
+    const exercicio = await Exercicio.findByIdAndUpdate(req.params.id, {ativo: false}, { new: true });
+    res.json({ ok: true, message: "Exercício desativado com sucesso", exercicio });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, message: "Erro ao deletar exercício" });
+    res.status(500).json({ ok: false, message: "Erro ao desativar exercício" });
   }
 };
 

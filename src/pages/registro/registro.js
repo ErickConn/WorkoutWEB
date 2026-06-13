@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '../../redux/user/slice';
+import Spinner from '../../components/Spinner';
 import styles from '../login/login.module.css'; // Reaproveitando os estilos do login
 import { AlertContext } from '../../context/AlertContext';
 import { getErrorMessage } from '../../utils/helpers';
@@ -13,8 +14,12 @@ export default function Registro() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { showAlert } = useContext(AlertContext);
     const loading = useSelector(state => state.userReducer.loading);
+    const { showAlert } = useContext(AlertContext);
+
+    if (loading) {
+        return <Spinner className="vh-100" />;
+    }
 
     const handleRegistro = (e) => {
         e.preventDefault();

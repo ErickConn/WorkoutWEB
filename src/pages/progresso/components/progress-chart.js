@@ -38,6 +38,18 @@ export default function ProgressChart({datas, cargas, pesos}) {
       fill: false
       }]
   };
+  const opcoesPeso = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: false, 
+        title: {
+          display: true,
+          text: 'Massa Corporal (kg)'
+        }
+      }
+    }
+  };
 
   return (
     <div className={styles['chart-area']}>
@@ -59,7 +71,7 @@ export default function ProgressChart({datas, cargas, pesos}) {
         {tipoGrafico === "forca" ? (
           <Bar data={dadosForca} options={opcoesForca} />
         ) : (
-          <Line data={dadosPeso} />
+          <Line data={dadosPeso} options={opcoesPeso} />
         )}
       </div>
       {/* Nota explicativa */}

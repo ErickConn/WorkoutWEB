@@ -6,6 +6,7 @@ import ProgressChart from "./components/progress-chart";
 import ProgressReport from "./components/progress-report";
 import ProgressCard from "./components/progress-card";
 import OffCanvasNavBar from "../../components/OffCanvasNavBar";
+import Spinner from "../../components/Spinner";
 
 export default function Progresso() {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export default function Progresso() {
     dispatch(fetchProgresso());
   }, [dispatch]);
 
-  if (loading) return <p>Carregando dados de progresso...</p>;
+  if (loading) return <Spinner className="vh-100" />;
   if (error) return <p>Erro: {error}</p>;
   if (!historico || !historico.length) return <p>Nenhum dado encontrado.</p>;
   console.log("Estado progresso:", { historico, loading, error });

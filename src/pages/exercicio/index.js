@@ -8,6 +8,7 @@ import { fetchProgresso, carregarRegistrosUsuario } from "../../redux/progresso/
 import { trocarExercicioNoPlano } from "../../redux/planos/slices"; 
 
 import HeaderBack from "../../components/HeaderBack";
+import Spinner from "../../components/Spinner";
 import RegistroCard from "./components/registro-card";
 import SeriesCard from "./components/series-card";
 import SubstitutosCard from "./components/substitutos-card";
@@ -84,7 +85,7 @@ export default function Exercicio() {
     return (
       <div className={styles.container}>
         <HeaderBack title="Carregando..." />
-        <p style={{ textAlign: "center", marginTop: "2rem", color: "#666" }}>Carregando exercício...</p>
+        <Spinner className="vh-100" />
       </div>
     );
   }

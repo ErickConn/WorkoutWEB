@@ -22,7 +22,6 @@ export default function Home({ show, handleClose }) {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.userReducer.currentUser);
     const biometriaList = useSelector(state => state.biometriaReducer.biometria);
-    const loading = useSelector(state => state.biometriaReducer.loading || state.userReducer.loading);
 
     // Encontra a biometria do usuário atual (a mais recente)
     const biometriaAtual = useMemo(() => {
@@ -145,9 +144,9 @@ export default function Home({ show, handleClose }) {
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose} disabled={loading}>Cancelar</Button>
-                <Button variant="primary" className={styles.actionBtn} onClick={handleSubmit} disabled={loading}>
-                    <span>🎯</span> {loading ? 'Salvando...' : 'Salvar'}
+                <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
+                <Button variant="primary" className={styles.actionBtn} onClick={handleSubmit}>
+                    <span>🎯</span> Salvar
                 </Button>
             </Modal.Footer>
         </Modal>

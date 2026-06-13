@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateUser } from '../../redux/user/slice';
+import Spinner from '../../components/Spinner';
 import styles from '../login/login.module.css'; // Reaproveitando o CSS do Login/Registro
 import { AlertContext } from '../../context/AlertContext';
 import { getErrorMessage } from '../../utils/helpers';
@@ -16,11 +17,11 @@ export default function UpdateUsuario() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const loading = useSelector(state => state.userReducer.loading);
     const { showAlert } = useContext(AlertContext);
 
     // Puxando o usuário logado do Redux
     const currentUser = useSelector(state => state.userReducer.currentUser);
-    const loading = useSelector(state => state.userReducer.loading);
 
     // 1. Carrega os dados do usuário logado assim que a tela abre
     useEffect(() => {
@@ -32,6 +33,10 @@ export default function UpdateUsuario() {
             setRole(currentUser.role || 'aluno');
         }
     }, [currentUser]);
+
+    if (loading) {
+        return <Spinner className="vh-100" />;
+    }
 
     // 2. Função para salvar as alterações
     const handleSubmit = (e) => {

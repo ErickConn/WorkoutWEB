@@ -83,9 +83,7 @@ export default function RegistroCard({ exercicioOriginal, isLoading }) {
   if (isLoading || !exercicioOriginal) {
     return (
       <section className={styles.whiteCard}>
-        <p className={styles.loadingText} style={{ textAlign: "center", padding: "20px", color: "#666" }}>
-          Carregando dados do exercício...
-        </p>
+        <Spinner className="vh-100" />
       </section>
     );
   }

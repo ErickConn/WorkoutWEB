@@ -5,6 +5,7 @@ import TreinoLivreModal from "../treino-livre";
 import styles from "./index.module.css";
 import FooterButton from "../../components/FooterButton";
 import HeaderBack from "../../components/HeaderBack";
+import Spinner from "../../components/Spinner";
 import { salvarPlanoCompleto } from "../../redux/planos/slices";
 import { useNavigate } from "react-router-dom";
 import { AlertContext } from "../../context/AlertContext";
@@ -19,8 +20,8 @@ export default function PaginaPlano() {
   const [categoriaPlano, setCategoriaPlano] = useState("");
   
   const dispatch = useDispatch();
-  const { planoEmEdicao } = useSelector(state => state.treinosReducer);
   const loading = useSelector(state => state.planosReducer.loading);
+  const { planoEmEdicao } = useSelector(state => state.treinosReducer);
 
   const cardTemporario = planoEmEdicao.rotina.length > 0 ? [{
     id: 'temp-preview',
@@ -28,6 +29,10 @@ export default function PaginaPlano() {
     rotina: planoEmEdicao.rotina,
     ativo: false,
 }] : [];
+
+  if (loading) {
+    return <Spinner className="vh-100" />;
+  }
 
   const salvarPlanoFinal = () => {
   if (!nomePlano.trim()) {
@@ -121,10 +126,7 @@ export default function PaginaPlano() {
         <div className={styles.previewSection}>
           <ListaTreinos dados={cardTemporario} />
           
-         <FooterButton title="Salvar Plano Personalizado" onClick={salvarPlanoFinal}></FooterButton>
-         {loading && (
-            <p style={{ color: '#fff', marginTop: '1rem' }}>Salvando plano...</p>
-         )}
+         <FooterButton title={loading ? "Salvando..." : "Salvar Plano Personalizado"} onClick={salvarPlanoFinal} disabled={loading}></FooterButton>
         </div>
       )}
 

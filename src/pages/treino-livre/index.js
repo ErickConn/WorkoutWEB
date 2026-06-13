@@ -8,6 +8,7 @@ import ExercicioSelecionado from "./components/exercicio-selecionado";
 import { adicionarTreinoNaRotina, atualizarTreinoDaRotinaEdicao, adicionarTreinoAoPlano, atualizarTreinoNoPlano } from "../../redux/treinos/slices";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../../components/Button";
+import Spinner from "../../components/Spinner";
 import { AlertContext } from "../../context/AlertContext";
 import FooterButton from "../../components/FooterButton";
 import { fetchExercicioList } from "../../redux/exercicio/slices";
@@ -37,6 +38,10 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
       dispatch(fetchExercicioList());
     }
   }, [show, exercicios.length, dispatch]);
+
+  if (show && loading && exercicios.length === 0) {
+    return <Spinner className="vh-100" />;
+  }
 
   useEffect(() => {
     if (!show) return;
@@ -173,9 +178,7 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
             />
           </div>
           <div className={styles.listaBiblioteca}>
-            {loading ? (
-              <p className={styles.noResults}>Carregando exercícios...</p>
-            ) : bibliotecaFiltrada.length > 0 ? (
+            {bibliotecaFiltrada.length > 0 ? (
               bibliotecaFiltrada.map(ex => (
                 <ExercicioItem
                   key={ex.id}

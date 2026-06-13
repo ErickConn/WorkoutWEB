@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./biblioteca.module.css";
 import HeaderBack from "../../components/HeaderBack";
+import Spinner from '../../components/Spinner';
 import { fetchExercicioList } from '../../redux/exercicio/slices';
 import ListaExercicios from "./components/lista-exercicios";
 import NovoExercicioModal from "./modals/modalNovoExercicio";
@@ -59,12 +60,14 @@ export default function BibliotecaExercicios() {
     dispatch(fetchExercicioList());
   }, [dispatch]);
 
-  if (loading) return <p>Carregando página, aguarde...</p>;
+  if (loading) return <Spinner className="vh-100" />;
   if (error) return <p>Erro: {error}</p>;
 
 
-  // filtro atual (grupo + busca) => futuro: (grupo + busca + nível + equipamento)
   const exerciciosFiltrados = exercicios.filter(ex => {
+    // Ignora o exercício se ele foi marcado como desativado (soft delete)
+    if(ex.grupoAtivo === false) return false;
+
     const nomeOuTitulo = ex.nome || ex.titulo || "";
     const bateBusca = nomeOuTitulo.toLowerCase().includes(busca.toLowerCase());
     const grupo = ex.grupo || "";

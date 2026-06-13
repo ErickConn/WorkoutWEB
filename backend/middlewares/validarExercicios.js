@@ -1,4 +1,3 @@
-// backend/middlewares/validarExercicios.js
 export const validarExercicioBio = (req, res, next) => {
   const { id, nome, grupo, nivel_experiencia, equipamento } = req.body;
   if (!id || typeof id !== "string") {
