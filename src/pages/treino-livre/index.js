@@ -34,6 +34,12 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
+    if (show && exercicios.length === 0) {
+      dispatch(fetchExercicioList());
+    }
+  }, [show, exercicios.length, dispatch]);
+
+  useEffect(() => {
     if (!show) return;
 
     if (treinoEmEdicao) {
@@ -49,17 +55,9 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
     }
   }, [show, treinoEmEdicao]);
 
-  useEffect(() => {
-    if (show && exercicios.length === 0) {
-      dispatch(fetchExercicioList());
-    }
-  }, [show, exercicios.length, dispatch]);
-
   if (show && loading && exercicios.length === 0) {
     return <Spinner className="vh-100" />;
   }
-
-
 
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
