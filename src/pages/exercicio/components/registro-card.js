@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import styles from '../exercicio.module.css';
 import { salvarRegistroExercicio } from "../../../redux/progresso/slices";
 import { AlertContext } from "../../../context/AlertContext";
+import Spinner from "../../../components/Spinner";
 
 export default function RegistroCard({ exercicioOriginal, isLoading }) {
   const dispatch = useDispatch();
