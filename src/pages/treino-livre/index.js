@@ -39,10 +39,6 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
     }
   }, [show, exercicios.length, dispatch]);
 
-  if (show && loading && exercicios.length === 0) {
-    return <Spinner className="vh-100" />;
-  }
-
   useEffect(() => {
     if (!show) return;
 
@@ -58,6 +54,10 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
       setSelecionados([]);
     }
   }, [show, treinoEmEdicao]);
+
+  if (show && loading && exercicios.length === 0) {
+    return <Spinner className="vh-100" />;
+  }
 
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
