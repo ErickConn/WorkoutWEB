@@ -273,8 +273,8 @@ export default function CardTreino({
                 </div>
 
                 <div className={styles.listaExerciciosPreview}>
-                  {exerciciosVisiveis.map((ex) => (
-                    <div key={ex.id} className={styles.linhaExercicio}>
+                  {exerciciosVisiveis.map((ex, idx) => (
+                    <div key={ex._id || `${ex.id}-${idx}`} className={styles.linhaExercicio}>
                       <span className={styles.bullet}>•</span>
                       <span className={styles.nomeEx}>{ex.nome}</span>
                       <span className={styles.metaEx}>{ex.seriesPadrao}x{ex.repsPadrao}</span>

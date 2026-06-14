@@ -47,6 +47,7 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
                             const libData = exercicioMap[exId] || {};
                             return {
                                 id: exId,
+                                _id: ex._id ? String(ex._id) : undefined,
                                 nome: ex.nome || libData.nome || 'Exercício Desconhecido',
                                 grupo: ex.grupo || libData.grupo || 'Outros',
                                 equipamento: ex.equipamento || libData.equipamento || '',

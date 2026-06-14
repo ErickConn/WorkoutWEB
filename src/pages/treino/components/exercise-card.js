@@ -8,7 +8,7 @@ export default function ExerciseCard({ id, nome, series = "-", reps = "-", carga
   const dispatch = useDispatch();
 
   const handleToggleDone = () => {
-    dispatch(atualizarExercicioTreino(id, { concluido: !concluido }));
+    dispatch(atualizarExercicioTreino({ idExercicio: id, dadosAtualizados: { concluido: !concluido } }));
   };
 
   return (

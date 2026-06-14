@@ -34,16 +34,6 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
-    if (show && exercicios.length === 0) {
-      dispatch(fetchExercicioList());
-    }
-  }, [show, exercicios.length, dispatch]);
-
-  if (show && loading && exercicios.length === 0) {
-    return <Spinner className="vh-100" />;
-  }
-
-  useEffect(() => {
     if (!show) return;
 
     if (treinoEmEdicao) {
@@ -58,6 +48,18 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
       setSelecionados([]);
     }
   }, [show, treinoEmEdicao]);
+
+  useEffect(() => {
+    if (show && exercicios.length === 0) {
+      dispatch(fetchExercicioList());
+    }
+  }, [show, exercicios.length, dispatch]);
+
+  if (show && loading && exercicios.length === 0) {
+    return <Spinner className="vh-100" />;
+  }
+
+
 
   const filtros = ["Todos", "Peito", "Costas", "Pernas", "Ombros", "Bíceps", "Tríceps"];
 
@@ -179,9 +181,9 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
           </div>
           <div className={styles.listaBiblioteca}>
             {bibliotecaFiltrada.length > 0 ? (
-              bibliotecaFiltrada.map(ex => (
+              bibliotecaFiltrada.map((ex, index) => (
                 <ExercicioItem
-                  key={ex.id}
+                  key={ex._id || `${ex.id}-${index}`}
                   exercicio={ex}
                   onAdd={() => abrirModalSeries(ex)}
                 />
@@ -199,9 +201,9 @@ export default function TreinoLivreModal({ show, handleClose, rotina = null, idP
 
           <div className={styles.listaSelecionados}>
             {selecionados.length > 0 ? (
-              selecionados.map(ex => (
+              selecionados.map((ex, index) => (
                 <ExercicioSelecionado
-                  key={ex.id}
+                  key={ex._id || `${ex.id}-${index}`}
                   exercicio={ex}
                   onRemove={() => removerExercicio(ex.id)}
                 />

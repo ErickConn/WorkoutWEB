@@ -53,9 +53,9 @@ export default function TreinoCard({ rotina, idPlano }) {
           <h3 className={styles.tituloGrupo}>{grupo}</h3>
 
           <div className={styles.listaCards}>
-            {exerciciosAgrupados[grupo].map((ex) => (
+            {exerciciosAgrupados[grupo].map((ex, index) => (
               <ExerciseCard
-                key={ex.id}
+                key={ex._id || `${ex.id}-${index}`}
                 id={ex.id}
                 nome={ex.nome}
                 series={ex.seriesPadrao || ex.series}

@@ -38,10 +38,10 @@ export default function Treino() {
 
   const handleFinalizar = async () => {
     try {
-      await dispatch(finalizarTreino()).unwrap();
+      await dispatch(finalizarTreino());
       showAlert("Parabéns! Treino Concluido!", 'success');
     } catch (err) {
-      console.error("Erro ao finalizar treino:", err);
+      console.log("Erro ao finalizar treino:", err);
       showAlert(getErrorMessage(err, "Erro ao finalizar treino. Tente novamente."), 'error');
     }
   };
