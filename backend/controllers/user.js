@@ -70,6 +70,22 @@ const getMe = async (req, res) => {
     }
 }
 
+// Renova o token JWT lendo o role atualizado do banco (resolve token desatualizado após promoção de role)
+const refreshToken = async (req, res) => {
+    try {
+        const user = await Usuario.findById(req.userId);
+        if (!user) {
+            return res.status(404).json({ ok: false, message: "Usuário não encontrado" });
+        }
+        const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        res.cookie('token', token, cookieOptions);
+        return res.json({ ok: true, role: user.role, user: sanitizeUser(user) });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ ok: false, message: "Erro ao renovar token" });
+    }
+}
+
 const createUser = async (req, res) => {
     try {
         const { senha, role, ...userData } = req.body;
@@ -159,7 +175,11 @@ const adminUpdateUser = async (req, res) => {
         if (updateData.senha) {
             updateData.senha = await bcrypt.hash(updateData.senha, 10);
         }
-        const user = await Usuario.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        const user = await Usuario.findByIdAndUpdate(
+            req.params.id,
+            { $set: updateData },
+            { new: true, runValidators: true }
+        );
         if (!user) {
             return res.status(404).json({ ok: false, message: "Usuário não encontrado" });
         }
@@ -198,7 +218,8 @@ const userControllers = {
     loginUser,
     logoutUser,
     adminUpdateUser,
-    adminDeleteUser
+    adminDeleteUser,
+    refreshToken
 }
 
 export default userControllers;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './admin.module.css';
-import { fetchUsersList, fetchCurrentUser, adminUpdateUser, adminDeleteUser } from '../../redux/user/slice';
+import { fetchUsersList, fetchCurrentUser, adminUpdateUser, adminDeleteUser, refreshToken } from '../../redux/user/slice';
 import OffCanvasNavBar from '../../components/OffCanvasNavBar';
 import ConfirmModal from '../../components/ConfirmModal';
 import EditRoleModal from './components/EditRoleModal';
@@ -29,10 +29,13 @@ export default function AdminUsuarios() {
     // Delete confirmation modal state
     const [deletingUser, setDeletingUser] = useState(null);
 
-    // Load data on mount
+    // Load data on mount — refresh token first to ensure up-to-date role
     useEffect(() => {
-        dispatch(fetchCurrentUser());
-        dispatch(fetchUsersList());
+        dispatch(refreshToken())
+            .finally(() => {
+                dispatch(fetchCurrentUser());
+                dispatch(fetchUsersList());
+            });
     }, [dispatch]);
 
     // Filtered users

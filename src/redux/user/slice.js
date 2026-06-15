@@ -55,6 +55,18 @@ export const logoutAuth = createAsyncThunk(
     }
 );
 
+export const refreshToken = createAsyncThunk(
+    'user/refreshToken',
+    async (_, { rejectWithValue }) => {
+        try {
+            const res = await axios.post(`${API_URL}/refresh-token`);
+            return res.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.message || err.message);
+        }
+    }
+);
+
 export const createUser = createAsyncThunk(
     'user/create',
     async (userData, { rejectWithValue }) => {
@@ -272,6 +284,13 @@ const userSlice = createSlice({
             .addCase(adminDeleteUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            // ── refreshToken ──────────────────────────────────────
+            .addCase(refreshToken.fulfilled, (state, action) => {
+                // Atualiza currentUser com o role mais recente do banco
+                if (action.payload?.user) {
+                    state.currentUser = action.payload.user;
+                }
             });
     }
 });
