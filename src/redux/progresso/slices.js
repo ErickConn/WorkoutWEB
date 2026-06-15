@@ -36,6 +36,22 @@ export const carregarRegistrosUsuario = createAsyncThunk(
   }
 );
 
+// Variánte silenciosa: atualiza registros em background sem acionar o spinner
+export const recarregarRegistrosSilencioso = createAsyncThunk(
+  'progresso/recarregarRegistrosSilencioso',
+  async (_, { rejectWithValue }) => {
+    try {
+      const userId = String(await getUserIdFromEmail());
+      if (!userId || userId === 'null') return [];
+
+      const { data } = await axios.get(`${API_URL}/historico/usuario/${userId}`);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
 // Thunk para salvar registro de exercício (séries, carga, reps)
 export const salvarRegistroExercicio = createAsyncThunk(
   'progresso/salvarRegistroExercicio',
@@ -64,7 +80,8 @@ export const salvarRegistroExercicio = createAsyncThunk(
         concluido
       });
 
-      dispatch(carregarRegistrosUsuario());
+      // Usa a variánte silenciosa para não acionar o spinner de loading
+      dispatch(recarregarRegistrosSilencioso());
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
@@ -129,6 +146,7 @@ const initialState = {
   historico: [],
   registrosUsuario: [],
   loading: false,
+  saving: false,
   loaded: false,
   error: null,
 };
@@ -165,6 +183,18 @@ const progressoSlice = createSlice({
       })
       .addCase(carregarRegistrosUsuario.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      // recarregarRegistrosSilencioso (não afeta loading principal)
+      .addCase(recarregarRegistrosSilencioso.pending, (state) => {
+        state.saving = true;
+      })
+      .addCase(recarregarRegistrosSilencioso.fulfilled, (state, action) => {
+        state.registrosUsuario = action.payload;
+        state.saving = false;
+      })
+      .addCase(recarregarRegistrosSilencioso.rejected, (state, action) => {
+        state.saving = false;
         state.error = action.payload;
       });
   },

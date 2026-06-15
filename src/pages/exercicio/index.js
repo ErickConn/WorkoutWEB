@@ -61,24 +61,28 @@ export default function Exercicio() {
   const seriesRealizadas = registroHoje?.seriesRealizadas || [];
   const historicoRealizado = ultimoRegistro?.seriesRealizadas || [];
 
-  const handleConfirmarTroca = () => {
+  const handleConfirmarTroca = async () => {
     if (!substitutoSelecionado) {
       alert("Por favor, selecione um exercício substituto na lista primeiro!");
       return;
     }
 
-    dispatch(trocarExercicioNoPlano({
-      idPlano: planoAtivo?.id,
-      idRotina: rotinaHoje?.id,
-      idAntigo: id,
-      idNovo: substitutoSelecionado
-    }));
+    try {
+      // Aguarda o backend confirmar a troca e o Redux ser atualizado
+      // antes de navegar, senão a nova página carrega sem o exercício no plano
+      await dispatch(trocarExercicioNoPlano({
+        idPlano: planoAtivo?.id,
+        idRotina: rotinaHoje?.id,
+        idAntigo: id,
+        idNovo: substitutoSelecionado
+      })).unwrap();
 
-    // Redireciona o usuário para a página do novo exercício substituto
-    navigate(`/exercicio/${substitutoSelecionado}`);
-    
-    // Limpa a seleção para o próximo uso
-    setSubstitutoSelecionado(null);
+      // Limpa a seleção e navega apenas após sucesso
+      setSubstitutoSelecionado(null);
+      navigate(`/exercicio/${substitutoSelecionado}`);
+    } catch (err) {
+      alert(`Erro ao trocar exercício: ${err?.message || err}`);
+    }
   };
 
   if (loading || !planos || !registrosUsuario) {
@@ -102,6 +106,7 @@ export default function Exercicio() {
   return (
     <div className={styles.container}>
       <HeaderBack
+        to="/treino"
         title={exercicioAtual.nome}
         subtitle={`${exercicioAtual.seriesPadrao || exercicioAtual.series || "-"} x ${exercicioAtual.repsPadrao || exercicioAtual.reps || "-"} reps`}
       />

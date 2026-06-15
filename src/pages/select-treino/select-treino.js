@@ -31,12 +31,17 @@ export default function Selecttreino() {
     }
 
     const handleSelecionarTreino = async (dia) => {
-        console.log("Dia clicado:", dia);
         if (!dia) {
             console.error("O clique falhou porque o dia está vazio!");
             return;
         }
-        dispatch(setTreinoAtivo(dia));
+        try {
+            // Aguarda o backend confirmar o activeDay antes de navegar,
+            // senão a página /treino carrega com o dia anterior ainda no Redux
+            await dispatch(setTreinoAtivo(dia)).unwrap();
+        } catch (err) {
+            console.error("Erro ao selecionar treino:", err);
+        }
         navigate('/treino');
     };
 

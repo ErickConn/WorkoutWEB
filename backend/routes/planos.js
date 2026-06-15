@@ -23,4 +23,7 @@ routerPlanos.delete('/planos/:id', authenticateToken, planosMiddlewares.validate
 // Fix #10: Endpoint atômico para remover um treino por dia sem depender do estado do frontend
 routerPlanos.delete('/planos/:id/treinos/:dia', authenticateToken, planosMiddlewares.validatePlanoId, planosMiddlewares.validatePlanoOwner, planosControllers.removerTreinoDaRotina);
 
+// Rota para trocar um exercício por outro dentro da rotina do plano
+routerPlanos.patch('/planos/:id/trocar-exercicio', authenticateToken, planosMiddlewares.validatePlanoId, planosMiddlewares.validatePlanoOwner, planosControllers.trocarExercicio);
+
 export default routerPlanos;

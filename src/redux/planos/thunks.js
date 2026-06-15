@@ -39,21 +39,48 @@ export const fetchPlanoList = createAsyncThunk('planos/fetchPlanoList', async (_
             const planoId = String(plano.id || plano._id);
             const isPlanoAtivo = activePlanId && planoId === activePlanId;
 
+            // IDs de todos os exercícios em todos os treinos do plano —
+            // substitutos não devem incluir exercícios que já existem em qualquer treino
+            const todosIdsNoPlano = new Set(
+                (plano.rotina || []).flatMap(t =>
+                    (t.exercicios || []).map(e => String(e.idExercicio || e.id || ''))
+                )
+            );
+
             const rotinaComAtivo = Array.isArray(plano.rotina)
                 ? plano.rotina.map((treino) => {
                     const exerciciosHidratados = Array.isArray(treino.exercicios)
                         ? treino.exercicios.map(ex => {
                             const exId = String(ex.idExercicio || ex.id || '');
                             const libData = exercicioMap[exId] || {};
+                            const grupo = ex.grupo || libData.grupo || '';
+
+                            // Substitutos: mesmo grupo, fora do plano inteiro (não apenas do treino atual)
+                            const substitutos = grupo
+                                ? exercicioLib
+                                    .filter(e =>
+                                        e.grupo === grupo &&
+                                        String(e.id) !== exId &&
+                                        !todosIdsNoPlano.has(String(e.id))
+                                    )
+                                    .map(e => ({
+                                        id: String(e.id),
+                                        nome: e.nome,
+                                        equipamento: e.equipamento || ''
+                                    }))
+                                : [];
+
                             return {
                                 id: exId,
                                 _id: ex._id ? String(ex._id) : undefined,
                                 nome: ex.nome || libData.nome || 'Exercício Desconhecido',
-                                grupo: ex.grupo || libData.grupo || 'Outros',
+                                grupo: grupo || 'Outros',
                                 equipamento: ex.equipamento || libData.equipamento || '',
                                 nivel_experiencia: ex.nivel_experiencia || libData.nivel_experiencia || '',
                                 seriesPadrao: ex.seriesPadrao || ex.numSeries || libData.seriesPadrao || 3,
                                 repsPadrao: ex.repsPadrao || ex.numReps || libData.repsPadrao || 12,
+                                dica_tecnica: ex.dica_tecnica || libData.dica_tecnica || '',
+                                substitutos,
                             };
                         })
                         : [];
@@ -179,20 +206,14 @@ export const editarPlano = createAsyncThunk('planos/editarPlano', async ({ idPla
 
 export const trocarExercicioNoPlano = createAsyncThunk( 'planos/trocarExercicioNoPlano', async ({ idPlano, idRotina, idAntigo, idNovo }, { dispatch, rejectWithValue }) => {
         try {
-            // Enviamos os IDs para a rota de atualização do plano
-            const payload = {
-                idRotina,
-                idAntigo,
-                idNovo
-            };
-            
+            const payload = { idRotina, idAntigo, idNovo };
+
             // Faz a requisição para o back-end atualizar no banco de dados
-            const res = await axios.patch(`${API_URL}/planos/${idPlano}/trocar-exercicio`, payload, { withCredentials: true });
-            
-            // Atualiza a lista global do front-end com os dados novos vindos do servidor
-            dispatch(fetchPlanoList());
-            
-            return res.data;
+            await axios.patch(`${API_URL}/planos/${idPlano}/trocar-exercicio`, payload, { withCredentials: true });
+
+            // Aguarda a re-hidratação completa do plano antes de resolver,
+            // para que o navigate() no componente carregue a página com o estado correto
+            await dispatch(fetchPlanoList());
         } catch (err) {
             return rejectWithValue(err.response?.data?.message || err.message);
         }

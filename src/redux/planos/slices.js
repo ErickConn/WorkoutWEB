@@ -91,6 +91,9 @@ const planosSlice = createSlice({
             .addCase(trocarExercicioNoPlano.pending, handlePending)
             .addCase(trocarExercicioNoPlano.rejected, handleRejected)
             .addCase(trocarExercicioNoPlano.fulfilled, (state) => {
+                // Não atualiza o estado diretamente pois o payload vem sem hidratação
+                // (sem dica_tecnica, substitutos, ids normalizados).
+                // O fetchPlanoList() despachado pelo thunk cuida da atualização completa.
                 state.loading = false;
             });
     }

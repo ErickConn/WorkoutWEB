@@ -1,5 +1,6 @@
 import Planos from '../models/planos.js';
 import Treino from '../models/treinos.js';
+import Exercicio from '../models/exercicios.js';
 
 const getAllPlanos = async (req, res) => {
     try {
@@ -179,6 +180,56 @@ const deletePlano = async (req, res) => {
 }
 
 
+const trocarExercicio = async (req, res) => {
+    try {
+        const { id } = req.params; // idPlano
+        const { idRotina, idAntigo, idNovo } = req.body;
+
+        if (!idRotina || !idAntigo || !idNovo) {
+            return res.status(400).json({ ok: false, message: "idRotina, idAntigo e idNovo são obrigatórios" });
+        }
+
+        // Verifica se o treino existe e contém o exercício a ser trocado
+        const treino = await Treino.findOne({
+            _id: idRotina,
+            'exercicios.idExercicio': String(idAntigo)
+        });
+
+        if (!treino) {
+            return res.status(404).json({ ok: false, message: "Treino ou exercício original não encontrado" });
+        }
+
+        const exAntigo = treino.exercicios.find(ex => String(ex.idExercicio) === String(idAntigo));
+
+        // Busca snapshot do exercício novo pelo _id (o frontend envia o _id devido ao toJSON transform)
+        const exNovoDados = await Exercicio.findById(idNovo).catch(() => null);
+
+        // Usa o operador posicional $ do MongoDB — forma confiável de atualizar subdocumento de array
+        await Treino.updateOne(
+            { _id: idRotina, 'exercicios.idExercicio': String(idAntigo) },
+            {
+                $set: {
+                    'exercicios.$.idExercicio': String(idNovo),
+                    'exercicios.$.nome': exNovoDados?.nome || exAntigo?.nome,
+                    'exercicios.$.grupo': exNovoDados?.grupo || exAntigo?.grupo,
+                    'exercicios.$.equipamento': exNovoDados?.equipamento || exAntigo?.equipamento,
+                    'exercicios.$.nivel_experiencia': exNovoDados?.nivel_experiencia || exAntigo?.nivel_experiencia,
+                }
+            }
+        );
+
+        // Retorna o plano atualizado e populado para que o Redux re-hidrate corretamente
+        const planoAtualizado = await Planos.findById(id)
+            .populate('rotina')
+            .populate('userId', 'nome imagem');
+
+        res.json(planoAtualizado);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ ok: false, message: "Erro ao trocar exercício" });
+    }
+};
+
 const removerTreinoDaRotina = async (req, res) => {
     try {
         const { id, dia } = req.params;
@@ -219,7 +270,8 @@ const planosControllers = {
     patchPlano,
     putPlano,
     deletePlano,
-    removerTreinoDaRotina
+    removerTreinoDaRotina,
+    trocarExercicio
 }
 
 export default planosControllers;
