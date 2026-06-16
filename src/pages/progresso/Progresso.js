@@ -112,7 +112,7 @@ export default function Progresso() {
             />
           </div>
           {/* Gráfico */}
-          <ProgressChart datas={datas} cargas={cargas} pesos={pesos} />
+          {/*<ProgressChart datas={datas} cargas={cargas} pesos={pesos} />*/}
           {/* Relatório */}
           <ProgressReport dadosUsuario={usuario} />
         </div>
