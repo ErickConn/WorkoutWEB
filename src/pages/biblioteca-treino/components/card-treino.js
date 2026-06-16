@@ -19,7 +19,8 @@ export default function CardTreino({
   nivel = "Iniciante",
   categoria = "modelo",
   rotina = [],
-  userId = null
+  userId = null,
+  mostrarCriador = false
 }) {
   // userId pode ser um ObjectId (string) ou um objeto populado { _id, id, nome, imagem }
   const criadorObj = userId && typeof userId === 'object' ? userId : null;
@@ -197,7 +198,7 @@ export default function CardTreino({
             <h3 className={styles.cardName}>{titulo || "Novo Plano"}</h3>
           </div>
           <p className={styles.cardDetails}>{rotina.length} treinos • {nivel}</p>
-          {categoria === 'modelo' && nomeCriador && (
+          {(categoria === 'modelo' || mostrarCriador) && nomeCriador && (
             <div className={styles.cardCriador}>
               {fotoCriador ? (
                 <img

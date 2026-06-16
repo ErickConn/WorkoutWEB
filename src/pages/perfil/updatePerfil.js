@@ -11,7 +11,7 @@ export default function UpdateUsuario() {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('aluno'); // aluno, treinador ou admin
+    const [role, setRole] = useState('aluno'); // aluno ou admin
 
     const [usuarioAtual, setUsuarioAtual] = useState(null);
 
@@ -151,7 +151,6 @@ export default function UpdateUsuario() {
                                     style={{ backgroundColor: 'white' }}
                                 >
                                     <option value="aluno">Aluno (Padrão)</option>
-                                    <option value="treinador">Treinador / Personal</option>
                                     <option value="admin">Administrador do Sistema</option>
                                 </select>
                             </div>

@@ -7,6 +7,7 @@ import {
     editarPlano,
     trocarExercicioNoPlano,
 } from "./thunks";
+import { logoutAuth } from "../user/slice";
 import {
     setTreinoAtivo,
     removerTreinoDaAPI,
@@ -94,6 +95,11 @@ const planosSlice = createSlice({
                 // Não atualiza o estado diretamente pois o payload vem sem hidratação
                 // (sem dica_tecnica, substitutos, ids normalizados).
                 // O fetchPlanoList() despachado pelo thunk cuida da atualização completa.
+                state.loading = false;
+            })
+            // Limpa os planos ao fazer logout para evitar vazamento de dados entre sessões
+            .addCase(logoutAuth.fulfilled, (state) => {
+                state.planos = [];
                 state.loading = false;
             });
     }

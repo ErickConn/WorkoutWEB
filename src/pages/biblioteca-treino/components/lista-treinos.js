@@ -1,7 +1,7 @@
 import CardTreino from "./card-treino";
 import styles from "../index.module.css";
 
-export default function ListaTreinos({ titulo, dados }) {
+export default function ListaTreinos({ titulo, dados, mostrarCriador = false }) {
   if (!dados || dados.length === 0) return null;
 
   return (
@@ -11,6 +11,7 @@ export default function ListaTreinos({ titulo, dados }) {
         <CardTreino
           key={treino.id}
           {...treino}
+          mostrarCriador={mostrarCriador}
         />
       ))}
     </div>

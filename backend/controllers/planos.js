@@ -6,9 +6,13 @@ const getAllPlanos = async (req, res) => {
     try {
         const userId = req.userId; // populado pelo authenticateToken (pode ser undefined em rotas públicas)
 
-        const filtro = userId
-            ? { $or: [{ categoria: 'modelo' }, { categoria: 'personalizado', userId }] }
-            : { categoria: 'modelo' };
+        // Admins veem todos os planos (modelo + personalizados de qualquer usuário)
+        // Usuários comuns veem apenas os planos modelo e os seus próprios personalizados
+        const filtro = req.userRole === 'admin'
+            ? {}
+            : userId
+                ? { $or: [{ categoria: 'modelo' }, { categoria: 'personalizado', userId }] }
+                : { categoria: 'modelo' };
 
         const planos = await Planos.find(filtro).populate('rotina').populate('userId', 'nome imagem');
         res.json(planos);

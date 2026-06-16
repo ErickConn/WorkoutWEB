@@ -6,6 +6,7 @@ import Filtro from "../../components/Filtro";
 import ListaTreinos from "./components/lista-treinos";
 import { fetchPlanoList } from '../../redux/planos/slices';
 import { useSelector, useDispatch } from 'react-redux';
+import { getLoggedUser } from '../../utils/userAuth';
 
 import React, { useState, useEffect } from "react";
 import Spinner from "../../components/Spinner";
@@ -13,13 +14,17 @@ import Spinner from "../../components/Spinner";
 export default function BibliotecaTreino() {
   const [busca, setBusca] = useState("");
   const [nivelAtivo, setNivelAtivo] = useState("Todos");
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
   const dispatch = useDispatch();
   const todosOsTreinos = useSelector(rootReducer => rootReducer.planosReducer.planos);
   const loading = useSelector(rootReducer => rootReducer.planosReducer.loading);
 
   useEffect(() => {
     dispatch(fetchPlanoList());
+    getLoggedUser().then(setUsuarioLogado);
   }, [dispatch])
+
+  const isAdmin = usuarioLogado?.usuario?.role === 'admin';
 
   if (loading) {
     return <Spinner className="vh-100" />;
@@ -34,6 +39,21 @@ export default function BibliotecaTreino() {
   const favoritos = treinosFiltrados.filter(t => t.categoria === "favorito");
   const modelos = treinosFiltrados.filter(t => t.categoria === "modelo");
   const personalizados = treinosFiltrados.filter(t => t.categoria === "personalizado");
+
+  // Para admins: separa os próprios planos personalizados dos planos de alunos
+  const adminId = usuarioLogado?.usuario?.id || usuarioLogado?.usuario?._id;
+  const personalizadosAdmin = isAdmin
+    ? personalizados.filter(t => {
+        const criadorId = t.userId?._id || t.userId?.id || t.userId;
+        return String(criadorId) === String(adminId);
+      })
+    : [];
+  const personalizadosAlunos = isAdmin
+    ? personalizados.filter(t => {
+        const criadorId = t.userId?._id || t.userId?.id || t.userId;
+        return String(criadorId) !== String(adminId);
+      })
+    : [];
 
   return (
     <div className={styles.container}>
@@ -55,7 +75,14 @@ export default function BibliotecaTreino() {
 
         <ListaTreinos titulo="✨ FAVORITOS" dados={favoritos} />
         <ListaTreinos titulo="Todos os Planos Modelo" dados={modelos} />
-        <ListaTreinos titulo="Seus Treinos" dados={personalizados} />
+        {isAdmin ? (
+          <>
+            <ListaTreinos titulo="🏋️ Seus Planos Personalizados" dados={personalizadosAdmin} />
+            <ListaTreinos titulo="👥 Planos de Alunos" dados={personalizadosAlunos} mostrarCriador />
+          </>
+        ) : (
+          <ListaTreinos titulo="Seus Treinos" dados={personalizados} />
+        )}
 
         {treinosFiltrados.length === 0 && (
           <div className={styles.emptyState}>
