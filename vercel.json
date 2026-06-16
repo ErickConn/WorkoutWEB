@@ -89,11 +89,23 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/admin",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/logout",
       "destination": "/api/index.js"
     },
     {
       "source": "/logout/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/refresh-token",
       "destination": "/api/index.js"
     },
     {
